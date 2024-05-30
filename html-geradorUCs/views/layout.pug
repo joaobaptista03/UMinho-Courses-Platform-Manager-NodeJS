@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/w3.css')
+  body
+    header.w3-bar.w3-blue
+      a.w3-bar-item.w3-button.w3-padding-large(href='/') Home
+      // TODO AUTH
+      if user
+        div.w3-bar-item.w3-right
+          span.w3-margin-right Welcome, #{user.username}
+          a.w3-button.w3-white.w3-right.w3-margin-right(href='/logout') Logout
+      else
+        a.w3-bar-item.w3-button.w3-right.w3-padding-large(href='/login') Login
+
+    block content

@@ -1,0 +1,20 @@
+extends layout
+
+block content
+  .w3-container
+    .w3-card-4.w3-margin.w3-white.w3-padding
+      .w3-container.w3-padding-16.w3-center
+        h1.w3-xxlarge.w3-text-red Erro
+        if error && error.message
+          p.w3-large= error.message
+        else
+          p.w3-large Ocorreu um erro inesperado.
+
+      .w3-container.w3-padding-16.w3-center
+        if error && error.status
+          p Código do erro: #{error.status}
+        else
+          p Código do erro: 500
+
+      .w3-container.w3-padding-16.w3-center
+        a.w3-button.w3-blue.w3-large(href="/") Página inicial

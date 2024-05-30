@@ -1,0 +1,69 @@
+extends layout
+
+block content
+  .w3-container
+    .w3-card-4.w3-margin.w3-white.w3-padding
+      .w3-container.w3-padding-16
+        h1.w3-xxlarge.w3-text-blue.w3-center= uc.titulo
+
+    .w3-container.w3-padding-16
+      h2.w3-text-deep-purple.w3-center Docentes
+      .w3-row-padding.w3-center
+        .w3-center.w3-padding-small(style="display: flex; flex-wrap: wrap; justify-content: center;")
+          each docente in uc.docentes
+            .w3-card-4.w3-margin.w3-padding.w3-light-grey(style="flex: 1 1 600px; max-width: 600px; margin: 10px; height: fit-content")
+              .w3-container.w3-center
+                img(src=`/images/docentes/${docente._id}.${docente.fotoExt}`, alt=docente.nome, class="w3-circle w3-margin-bottom", style="width:80px")
+                p
+                  strong #{docente.nome}
+                p
+                  | #{docente.categoria} - #{docente.filiacao}
+                p
+                  | Email: 
+                  a(href=`mailto:${docente.email}`)= docente.email
+                if docente.webpage
+                  p
+                    a(href=docente.webpage, target="_blank") Webpage
+
+    .w3-container.w3-padding-16
+      h2.w3-text-deep-purple Horário
+      .w3-row-padding
+        .w3-half
+          h3 Teóricas
+          ul.w3-ul.w3-border
+            each teorica in uc.horario.teoricas
+              li.w3-padding-small= teorica
+        .w3-half
+          h3 Práticas
+          ul.w3-ul.w3-border
+            each pratica in uc.horario.praticas
+              li.w3-padding-small= pratica
+
+    .w3-container.w3-padding-16
+      h2.w3-text-deep-purple Avaliação
+      ul.w3-ul.w3-border
+        each avaliacao in uc.avaliacao
+          li.w3-padding-small= avaliacao
+
+    .w3-container.w3-padding-16
+      h2.w3-text-deep-purple Datas Importantes
+      ul.w3-ul.w3-border
+        li.w3-padding-small Teste: #{uc.datas.teste}
+        li.w3-padding-small Exame: #{uc.datas.exame}
+        li.w3-padding-small Projeto: #{uc.datas.projeto}
+
+    .w3-container.w3-padding-16
+      h2.w3-text-deep-purple Aulas
+      .w3-row-padding
+        if uc.aulas.length === 0
+          h3.w3-text-red Não existem aulas
+        else
+          each aula in uc.aulas
+            .w3-card-4.w3-margin.w3-white
+              .w3-container.w3-padding
+                h3.w3-text-blue #{aula.tipo} - #{aula.data}
+                ul.w3-ul
+                  each sumario in aula.sumario
+                      - const regex = /\[(.+?)\]\((.+?)\)/
+                      - const newSumario = sumario.replace(regex, '<a href="/download/$2">$1</a>')
+                      li.w3-padding-small!= newSumario

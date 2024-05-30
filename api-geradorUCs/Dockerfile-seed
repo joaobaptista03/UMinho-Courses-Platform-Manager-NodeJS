@@ -1,0 +1,6 @@
+FROM mongo:latest
+
+WORKDIR /data
+
+COPY ./docentes.json /data/docentes.json
+COPY ./ucs.json /data/ucs.json

@@ -1,0 +1,32 @@
+extends layout
+
+block content
+  .w3-container
+    .w3-card-4.w3-margin.w3-white.w3-padding
+      .w3-container.w3-padding-16
+        h1.w3-xxlarge.w3-text-blue.w3-center Adicionar Novo Docente
+
+    .w3-container.w3-padding-16
+      form.w3-container.w3-padding-large.w3-card-4.w3-white(action="/addDocente" method="POST", enctype="multipart/form-data")
+        .w3-section
+          label Sigla:
+          input.w3-input(type="text" name="_id" required)
+        .w3-section
+          label Nome:
+          input.w3-input(type="text" name="nome" required)
+        .w3-section
+          label Foto:
+          input.w3-input(type="file" name="foto")
+        .w3-section
+          label Categoria:
+          input.w3-input(type="text" name="categoria")
+        .w3-section
+          label Filiação:
+          input.w3-input(type="text" name="filiacao")
+        .w3-section
+          label Email:
+          input.w3-input(type="email" name="email" required)
+        .w3-section
+          label Webpage:
+          input.w3-input(type="text" name="webpage")
+        button.w3-button.w3-blue.w3-large(type="submit") Adicionar Docente

@@ -1,0 +1,4 @@
+api-geradorUCs/node_modules/*
+api-geradorUCs/package-lock.json
+html-geradorUCs/node_modules/*
+html-geradorUCs/package-lock.json
