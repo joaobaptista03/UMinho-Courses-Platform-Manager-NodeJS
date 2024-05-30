@@ -44,7 +44,7 @@ router.post('/', upload.single('foto'), function (req, res, next) {
         if (err) throw err;
     });
 
-    axios.post('http://localhost:3000/docentes', docente)
+    axios.post('http://api-geradorucs:3124/docentes', docente)
         .then((response) => {
             res.redirect('/');
         })

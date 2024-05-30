@@ -6,13 +6,13 @@ var fs = require('fs');
 
 router.get('/edit/:id', async function (req, res, next) {
     try {
-        let ucResponse = await axios.get('http://localhost:3000/ucs/' + req.params.id);
-        let docentesResponse = await axios.get('http://localhost:3000/docentes');
+        let ucResponse = await axios.get('http://api-geradorucs:3124/ucs/' + req.params.id);
+        let docentesResponse = await axios.get('http://api-geradorucs:3124/docentes');
         let uc = ucResponse.data;
         let docentes = docentesResponse.data;
         
         uc.docentes = await Promise.all(uc.docentes.map(async docenteId => {
-            let docenteResponse = await axios.get('http://localhost:3000/docentes/' + docenteId);
+            let docenteResponse = await axios.get('http://api-geradorucs:3124/docentes/' + docenteId);
             return docenteResponse.data;
         }));
         
@@ -41,7 +41,7 @@ router.post('/edit/:id', async function (req, res, next) {
             aulas: JSON.parse(req.body.aulas)
         };
 
-        await axios.put('http://localhost:3000/ucs/' + req.params.id, updatedUC);
+        await axios.put('http://api-geradorucs:3124/ucs/' + req.params.id, updatedUC);
         res.redirect('/uc/' + req.params.id);
     } catch (error) {
         res.render('error', { error: { status: 501, message: 'Erro ao editar UC' } });
@@ -52,7 +52,7 @@ router.get('/:id', async function (req, res, next) {
 	try {
 		console.log('GET /ucs/' + req.params.id);
 		
-		let dados = await axios.get('http://localhost:3000/ucs/' + req.params.id);
+		let dados = await axios.get('http://api-geradorucs:3124/ucs/' + req.params.id);
 		if (dados.data == null) {
 			res.render('error', { error: { status: 404, message: 'UC não encontrada' } });
 			return;
@@ -62,7 +62,7 @@ router.get('/:id', async function (req, res, next) {
 		var newDocentes = [];
 		for (var j = 0 ; j < docentes.length ; j++) {
 			try {
-				let docenteData = await axios.get('http://localhost:3000/docentes/' + docentes[j]);
+				let docenteData = await axios.get('http://api-geradorucs:3124/docentes/' + docentes[j]);
 				newDocentes.push(docenteData.data);
 			} catch (erro) {
 				res.render('error', { error: { status: 501, message: 'Erro ao consultar Docente' } });
@@ -98,7 +98,7 @@ router.post('/', function (req, res, next) {
 	};
 
 
-    axios.post('http://localhost:3000/ucs', newUC)
+    axios.post('http://api-geradorucs:3124/ucs', newUC)
         .then((response) => {
             res.redirect('/uc/' + response.data._id);
         })
@@ -108,7 +108,7 @@ router.post('/', function (req, res, next) {
 });
 
 router.delete('/:id', async function (req, res, next) {
-	axios.delete('http://localhost:3000/ucs/' + req.params.id)
+	axios.delete('http://api-geradorucs:3124/ucs/' + req.params.id)
 		.then(dados => res.redirect('/'))
 		.catch(erro => res.render('error', { error: { status: 501, message: 'Erro ao eliminar UC' } }));
 });

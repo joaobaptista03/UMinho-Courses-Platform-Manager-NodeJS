@@ -5,7 +5,7 @@ var axios = require('axios');
 router.get('/', function (req, res, next) {
 	const { titulo, docente } = req.query;
 
-	axios.get('http://localhost:3000/ucs')
+	axios.get('http://api-geradorucs:3124/ucs')
 		.then(async dados => {
 			if (dados.data.length == 0) {
 				res.render('error', { error: { status: 404, message: 'Não existem UCs' } });
@@ -22,7 +22,7 @@ router.get('/', function (req, res, next) {
 				var newDocentes = [];
 
 				for (var j = 0 ; j < docentes.length ; j++) {
-					await axios.get('http://localhost:3000/docentes/' + docentes[j])
+					await axios.get('http://api-geradorucs:3124/docentes/' + docentes[j])
 						.then(dados => {
 							newDocentes.push(dados.data);
 						})
@@ -59,7 +59,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/addUC', function (req, res, next) {
-    axios.get('http://localhost:3000/docentes')
+    axios.get('http://api-geradorucs:3124/docentes')
         .then((response) => {
             res.render('addUC', { docentes: response.data });
         })

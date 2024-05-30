@@ -19,8 +19,8 @@ services:
       - mongo
     command: >
       bash -c "sleep 10 && 
-      mongoimport -d projeto-geradorUCS -c ucs /data/ucs.json --jsonArray &&
-      mongoimport -d projeto-geradorUCS -c docentes /data/docentes.json --jsonArray"
+      mongoimport --host mongo --db projeto-geradorUCS --collection ucs --type json --file /data/ucs.json --jsonArray &&
+      mongoimport --host mongo --db projeto-geradorUCS --collection docentes --type json --file /data/docentes.json --jsonArray"
     networks:
       - app-network
     restart: "no"
