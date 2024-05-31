@@ -12,6 +12,7 @@ html
           span.w3-margin-right Welcome, #{user.username}
           a.w3-button.w3-white.w3-right.w3-margin-right(href='/logout') Logout
       else
+        a.w3-bar-item.w3-button.w3-right.w3-padding-large(href='/signUp') SignUp
         a.w3-bar-item.w3-button.w3-right.w3-padding-large(href='/login') Login
 
     block content

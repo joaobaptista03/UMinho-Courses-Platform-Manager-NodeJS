@@ -5,7 +5,7 @@ var axios = require('axios');
 router.get('/', function (req, res, next) {
 	const { titulo, docente } = req.query;
 
-	axios.get('http://api-geradorucs:3124/ucs')
+	axios.get(process.env.API_URI + '/ucs')
 		.then(async dados => {
 			if (dados.data.length == 0) {
 				res.render('error', { error: { status: 404, message: 'Não existem UCs' } });
@@ -16,13 +16,13 @@ router.get('/', function (req, res, next) {
 				dados.data = dados.data.filter(uc => uc.titulo.toLowerCase().includes(titulo.toLowerCase()));
 			}
 
-			for (var i = 0 ; i < dados.data.length ; i++) {
+			for (var i = 0; i < dados.data.length; i++) {
 				let docentes = dados.data[i].docentes;
 
 				var newDocentes = [];
 
-				for (var j = 0 ; j < docentes.length ; j++) {
-					await axios.get('http://api-geradorucs:3124/docentes/' + docentes[j])
+				for (var j = 0; j < docentes.length; j++) {
+					await axios.get(process.env.API_URI + '/docentes/' + docentes[j])
 						.then(dados => {
 							newDocentes.push(dados.data);
 						})
@@ -59,17 +59,21 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/addUC', function (req, res, next) {
-    axios.get('http://api-geradorucs:3124/docentes')
-        .then((response) => {
-            res.render('addUC', { docentes: response.data });
-        })
-        .catch((error) => {
-            res.render('error', { error: { status: 501, message: 'Erro ao obter docentes' } });
-        });
+	axios.get(process.env.API_URI + '/docentes')
+		.then((response) => {
+			res.render('addUC', { docentes: response.data });
+		})
+		.catch((error) => {
+			res.render('error', { error: { status: 501, message: 'Erro ao obter docentes' } });
+		});
 });
 
 router.get('/login', function (req, res, next) {
-    res.render('login');
+	res.render('login');
+});
+
+router.get('/signUp', function (req, res, next) {
+	res.render('signUp');
 });
 
 module.exports = router;

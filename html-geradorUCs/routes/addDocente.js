@@ -23,8 +23,6 @@ router.post('/', upload.single('foto'), function (req, res, next) {
         fotoExt: req.file.mimetype.split('/')[1]
     };
 
-    console.log(docente);
-
     if (req.file.mimetype.split('/')[0] != 'image') {
         res.render('error', { error: { status: 501, message: 'Formato da foto inválido' } });
         fs.unlink(__dirname + '/../' + req.file.path, (err) => {
@@ -44,7 +42,7 @@ router.post('/', upload.single('foto'), function (req, res, next) {
         if (err) throw err;
     });
 
-    axios.post('http://api-geradorucs:3124/docentes', docente)
+    axios.post(process.env.API_URI + '/docentes', docente)
         .then((response) => {
             res.redirect('/');
         })
