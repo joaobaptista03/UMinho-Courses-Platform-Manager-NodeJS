@@ -46,8 +46,10 @@ services:
       context: ./html-geradorUCs
     ports:
       - "3125:3125"
-    depends_on:
+    environment:
       - API_URI=http://api-geradorucs:3124
+    depends_on:
+      - api-geradorucs
     networks:
       - app-network
     restart: always
