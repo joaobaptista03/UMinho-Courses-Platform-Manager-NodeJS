@@ -52,8 +52,8 @@ block content
                   input.w3-input.w3-border.w3-round-large(type="text" name=`aula[${index}][data]` value=aula.data required)
                 .w3-container.w3-margin-bottom
                   label.w3-text-deep-purple Sumário:
-                  textarea.w3-input.w3-border.w3-round-large(name=`aula[${index}][sumario]` oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"' required)= aula.sumario.join('\n')
-                button.w3-button.w3-red.w3-margin-bottom(type="button", onclick=`removeAula(this)`) Remover Aula
+                  textarea.w3-input.w3-border.w3-round-large(name=`aula[${index}][sumario]` oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"')= aula.sumario.join('\n')
+                button.w3-button.w3-red.w3-small.w3-round-large(type="button", onclick=`removeAula(this)`) Remover Aula
 
           button.w3-button.w3-green.w3-large.w3-round-large(type="button", onclick="addAula()") Adicionar Aula
 
@@ -88,9 +88,9 @@ block content
           </div>
           <div class="w3-container w3-margin-bottom">
             <label class="w3-text-deep-purple">Sumário:</label>
-            <textarea class="w3-input w3-border w3-round-large" name="aula[${newIndex}][sumario]" required></textarea>
+            <textarea class="w3-input w3-border w3-round-large" name="aula[${newIndex}][sumario]"></textarea>
           </div>
-          <button class="w3-button w3-red w3-margin-bottom" type="button" onclick="removeAula(this)">Remover Aula</button>
+          <button class="w3-button w3-red w3-small w3-round-large" type="button" onclick="removeAula(this)">Remover Aula</button>
         `;
 
         aulasContainer.appendChild(aulasCard);
