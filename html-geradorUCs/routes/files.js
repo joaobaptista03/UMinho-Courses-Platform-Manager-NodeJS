@@ -93,6 +93,35 @@ router.post('/upload', upload.single('file'), async function (req, res, next) {
 	});
 });
 
+router.post('/createFolder', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+	
+	if (!userLogged) {
+		res.redirect('/login')
+		return;
+	}
+
+	var relativePath = req.body.path || '';
+	var absolutePath = path.join(__dirname, '/../public/filesUploaded/', username, relativePath, req.body.folderName);
+
+	fs.mkdir(absolutePath, err => {
+		if (err) {
+			return next(err);
+		}
+
+		res.redirect('/files?path=' + relativePath);
+	});
+});
+
 router.get('/delete', async function (req, res, next) {
 	var userLogged = false;
 	var isAdmin = false;
