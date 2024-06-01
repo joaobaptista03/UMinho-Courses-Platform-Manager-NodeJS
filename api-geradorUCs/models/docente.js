@@ -10,4 +10,4 @@ const docenteSchema = new mongoose.Schema({
     fotoExt: String
 }, { versionKey: false });
 
-module.exports = mongoose.model('docentes', docenteSchema);
+module.exports = mongoose.model('docente', docenteSchema);

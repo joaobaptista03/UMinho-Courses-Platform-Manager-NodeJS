@@ -21,4 +21,4 @@ const ucSchema = new mongoose.Schema({
     }],
 }, { versionKey: false });
 
-module.exports = mongoose.model('ucs', ucSchema);
+module.exports = mongoose.model('uc', ucSchema);

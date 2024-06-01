@@ -8,8 +8,8 @@ RUN npm install
 
 COPY . .
 
-ENV PORT 3124
+ENV PORT 3123
 
-EXPOSE 3124
+EXPOSE 3123
 
 CMD ["npm", "start"]

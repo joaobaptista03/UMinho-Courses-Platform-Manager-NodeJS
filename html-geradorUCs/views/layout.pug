@@ -10,11 +10,13 @@ html
       .w3-bar-item
         a.w3-button.w3-padding-large(href='/') Home
       // TODO AUTH
-      if user
+      if userLogged
+        .w3-left.w3-bar-item
+          a.w3-button.w3-padding-large(href='/files') Os Meus Ficheiros
+          a.w3-button.w3-padding-large(onclick="logout()") Logout
+          
         .w3-right.w3-bar-item
-          a.w3-padding-large Welcome, #{user.username}
-        a.w3-bar-item.w3-button.w3-padding-large(href='/files') Os Meus Ficheiros
-        a.w3-bar-item.w3-button.w3-padding-large(onclick="logout()") Logout
+          a.w3-padding-large Welcome, #{username}
       else
         .w3-right.w3-bar-item
           a.w3-button.w3-padding-large(href='/signup') Registar
@@ -25,11 +27,11 @@ html
         .w3-container.w3-padding-16
           h1.w3-xxlarge.w3-text-blue.w3-center= title
 
-    .w3-container.w3-padding
+    .w3-container.w3-padding.w3-animate-opacity
       block content
 
     script.
       function logout() {
-        // TODO AUTH
-        alert('Logout function not implemented yet.');
+        fetch('/logout', { method: 'GET' })
+          .then(() => window.location = '/')
       }

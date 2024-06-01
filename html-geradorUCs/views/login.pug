@@ -1,7 +1,11 @@
 extends layout
 
 block content
-  .w3-container.w3-padding-16
+  if register
+    .w3-container
+      p.w3-text-green Registrado com sucesso! Faça login para continuar.
+
+  .w3-container
     form(action="/login" method="POST")
       .w3-section
         label.w3-text-deep-purple Username:
@@ -9,5 +13,8 @@ block content
       .w3-section
         label.w3-text-deep-purple Password:
         input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
+      if error
+        .w3-section
+          p.w3-text-red= error
       .w3-section
         button.w3-button.w3-blue.w3-large.w3-round-large(type="submit") Login

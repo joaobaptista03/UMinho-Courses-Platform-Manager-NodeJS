@@ -1,7 +1,7 @@
 extends layout
 
 block content
-  a.w3-button.w3-blue.w3-round-large.w3-hover-shadow(href=`/files?path=${path.split('/').slice(0, -1).join('/')}`) &#8592;
+  a.w3-button.w3-blue.w3-round-large.w3-hover-shadow.w3-margin-right(href=`/files?path=${path.split('/').slice(0, -1).join('/')}`) &#8592;
 
   a.w3-button.w3-green.w3-round-large.w3-large.w3-margin-right.w3-hover-shadow(onclick="addFicheiro()") Adicionar Novo Ficheiro
 
@@ -19,7 +19,7 @@ block content
               if file.isDirectory
                 a.w3-button.w3-green.w3-round-large.w3-hover-shadow(href=`/files?path=${path}/${file.name}`) Abrir
               else
-                a.w3-button.w3-blue.w3-round-large.w3-hover-shadow.w3-margin-right(href=`/files/download?path=${path}/${file.name}`) Download
+                a.w3-button.w3-blue.w3-round-large.w3-hover-shadow.w3-margin-right(href=`/files/download?path=${username}/${path}/${file.name}`) Download
                 a.w3-button.w3-red.w3-round-large.w3-hover-shadow(onclick=`deleteFile('${path}','${file.name}')`) Apagar
 
   style.

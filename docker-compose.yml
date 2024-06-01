@@ -48,8 +48,22 @@ services:
       - "3125:3125"
     environment:
       - API_URI=http://api-geradorucs:3124
+      - AUTH_URI=http://auth-geradorucs:3123
     depends_on:
       - api-geradorucs
+    networks:
+      - app-network
+    restart: always
+
+  auth-geradorucs:
+    build:
+      context: ./auth-geradorUCs
+    ports:
+      - "3123:3123"
+    depends_on:
+      - mongo
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/projeto-geradorUCS
     networks:
       - app-network
     restart: always
