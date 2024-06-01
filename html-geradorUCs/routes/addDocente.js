@@ -12,6 +12,11 @@ router.get('/', async function (req, res, next) {
 
 	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
 		username = response.data.username;
@@ -32,6 +37,11 @@ router.post('/', upload.single('foto'), async function (req, res, next) {
 
 	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
 		username = response.data.username;

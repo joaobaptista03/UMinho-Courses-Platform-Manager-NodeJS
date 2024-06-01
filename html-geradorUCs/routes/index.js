@@ -86,6 +86,11 @@ router.get('/addUC', async function (req, res, next) {
 
 	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
 		username = response.data.username;
@@ -112,6 +117,11 @@ router.get('/login', async function (req, res, next) {
 
 	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
 		username = response.data.username;
@@ -132,6 +142,11 @@ router.post('/login', async function (req, res, next) {
 
 	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
 		username = response.data.username;
@@ -159,6 +174,11 @@ router.get('/signup', async function (req, res, next) {
 
 	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
 		username = response.data.username;
@@ -179,6 +199,11 @@ router.post('/signup', async function (req, res, next) {
 
 	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
 		username = response.data.username;
@@ -217,6 +242,11 @@ router.get('/logout', async (req, res) => {
 
 	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
 		username = response.data.username;
@@ -236,6 +266,11 @@ router.get('/downloadBackup', async (req, res) => {
 
 	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
 		username = response.data.username;
