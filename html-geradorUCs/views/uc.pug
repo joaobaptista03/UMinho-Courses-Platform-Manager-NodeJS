@@ -4,14 +4,14 @@ block content
   .w3-container
     .w3-card-4.w3-margin.w3-white.w3-padding
       .w3-container.w3-padding-16
-        h1.w3-xxlarge.w3-text-blue.w3-center= uc.titulo
+        h1.w3-xxlarge.w3-text-blue.w3-center.w3-animate-opacity= uc.titulo
 
     .w3-container.w3-padding-16
       h2.w3-text-deep-purple.w3-center Docentes
       .w3-row-padding.w3-center
-        .w3-center.w3-padding-small(style="display: flex; flex-wrap: wrap; justify-content: center;")
+        .w3-center.w3-padding-small(style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;")
           each docente in uc.docentes
-            .w3-card-4.w3-margin.w3-padding.w3-light-grey(style="flex: 1 1 600px; max-width: 600px; margin: 10px; height: fit-content")
+            .w3-card-4.w3-margin.w3-padding.w3-light-grey.w3-hover-shadow(style="flex: 1 1 600px; max-width: 600px; margin: 10px; height: fit-content")
               .w3-container.w3-center
                 img(src=`/images/docentes/${docente._id}.${docente.fotoExt}`, alt=docente.nome, class="w3-circle w3-margin-bottom", style="width:80px")
                 p
@@ -26,44 +26,66 @@ block content
                     a(href=docente.webpage, target="_blank") Webpage
 
     .w3-container.w3-padding-16
-      h2.w3-text-deep-purple Horário
+      h2.w3-text-deep-purple.w3-center Horário
       .w3-row-padding
         .w3-half
-          h3 Teóricas
-          ul.w3-ul.w3-border
-            each teorica in uc.horario.teoricas
-              li.w3-padding-small= teorica
+          h3.w3-text-blue Teóricas
+          .w3-card-4.w3-white.w3-hover-shadow.w3-ul.w3-container.w3-padding
+            each teorica, index in uc.horario.teoricas
+              | #{teorica}
+              if index < uc.horario.teoricas.length - 1
+                p
+                
         .w3-half
-          h3 Práticas
-          ul.w3-ul.w3-border
-            each pratica in uc.horario.praticas
-              li.w3-padding-small= pratica
+          h3.w3-text-blue Práticas
+          .w3-card-4.w3-white.w3-hover-shadow.w3-ul.w3-container.w3-padding
+            each pratica, index in uc.horario.praticas
+              | #{pratica}
+              if index < uc.horario.praticas.length - 1
+                p
 
     .w3-container.w3-padding-16
-      h2.w3-text-deep-purple Avaliação
-      ul.w3-ul.w3-border
-        each avaliacao in uc.avaliacao
-          li.w3-padding-small= avaliacao
+      h2.w3-text-deep-purple.w3-center Avaliação
+      .w3-card-4.w3-white.w3-hover-shadow.w3-ul.w3-container.w3-padding
+        each avaliacao, index in uc.avaliacao
+          | #{avaliacao}
+          if index !== uc.avaliacao.length - 1
+            p
 
     .w3-container.w3-padding-16
-      h2.w3-text-deep-purple Datas Importantes
-      ul.w3-ul.w3-border
-        li.w3-padding-small Teste: #{uc.datas.teste}
-        li.w3-padding-small Exame: #{uc.datas.exame}
-        li.w3-padding-small Projeto: #{uc.datas.projeto}
+      h2.w3-text-deep-purple.w3-center Datas Importantes
+      .w3-card-4.w3-white.w3-hover-shadow.w3-ul.w3-container.w3-padding
+        | Teste: #{uc.datas.teste}
+        p
+        | Exame: #{uc.datas.exame}
+        p
+        | Projeto: #{uc.datas.projeto}
 
     .w3-container.w3-padding-16
-      h2.w3-text-deep-purple Aulas
+      h2.w3-text-deep-purple.w3-center Aulas
       .w3-row-padding
         if uc.aulas.length === 0
-          h3.w3-text-red Não existem aulas
+          h3.w3-text-red.w3-center Não existem aulas
         else
           each aula in uc.aulas
-            .w3-card-4.w3-margin.w3-white
+            .w3-card-4.w3-margin.w3-white.w3-hover-shadow
               .w3-container.w3-padding
                 h3.w3-text-blue #{aula.tipo} - #{aula.data}
                 ul.w3-ul
                   each sumario in aula.sumario
-                      - const regex = /\[(.+?)\]\((.+?)\)/
-                      - const newSumario = sumario.replace(regex, '<a href="/download/$2">$1</a>')
-                      li.w3-padding-small!= newSumario
+                      - const regexHTTP = /\[(.+?)\]\((http.+?)\)/
+                      - const regexLocal = /\[(.+?)\]\(\.\/(.+?)\)/
+                      - const newSumarioHTTP = sumario.replace(regexHTTP, '<a href="$2">$1</a>')
+                      - const newSumarioLocal = newSumarioHTTP.replace(regexLocal, '<a href="/download/$2">$1</a>')
+                      li.w3-padding-small!= newSumarioLocal
+
+  script.
+    function deleteUC(id) {
+      if (confirm('Tem a certeza que deseja apagar esta UC?')) {
+        fetch(`/uc/${id}`, {
+          method: 'DELETE'
+        }).then(() => {
+          window.location.href = '/';
+        });
+      }
+    }

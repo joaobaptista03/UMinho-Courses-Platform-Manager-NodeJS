@@ -13,12 +13,13 @@ block content
         .w3-third.w3-margin-bottom(style="max-width: 600px; flex: 1 1 600px;")
           input.w3-input.w3-border.w3-round-large(type="text" name="docente" placeholder="Pesquisar por Docente" value=docente)
         .w3-third.w3-margin-bottom(style="display: flex; justify-content: space-between; max-width: 600px; flex: 1 1 600px;")
-          button.w3-button.w3-blue.w3-round-large.w3-input.w3-margin-right(type="submit") Pesquisar
-          button.w3-button.w3-gray.w3-round-large.w3-input(type="button", onclick="window.location.href='/'") Limpar Filtros
+          button.w3-button.w3-blue.w3-round-large.w3-input.w3-margin-right.w3-hover-shadow(type="submit") Pesquisar
+          button.w3-button.w3-gray.w3-round-large.w3-input.w3-hover-shadow(type="button", onclick="window.location.href='/'") Limpar Filtros
 
+    // TODO AUTH
     .w3-container.w3-padding-16.w3-center
-      a.w3-button.w3-green.w3-round-large.w3-large.w3-margin-right(href="/addUC") Adicionar Nova UC
-      a.w3-button.w3-green.w3-round-large.w3-large(href="/addDocente") Adicionar Novo Docente
+      a.w3-button.w3-green.w3-round-large.w3-large.w3-margin-right.w3-hover-shadow(href="/addUC") Adicionar Nova UC
+      a.w3-button.w3-green.w3-round-large.w3-large.w3-hover-shadow(href="/addDocente") Adicionar Novo Docente
 
     .w3-row-padding.w3-margin-top.w3-center
       .w3-container(style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;")
@@ -33,48 +34,10 @@ block content
                       span.w3-tag.w3-deep-purple.w3-round= docente.nome
                       | &nbsp;
               .w3-container.w3-padding-small.w3-center
-                button.w3-button.w3-green.w3-round-large.w3-small.w3-margin-right(onclick=`window.location.href='/uc/${uc._id}'`) Ver Detalhes
-                button.w3-button.w3-yellow.w3-round-large.w3-small.w3-margin-right(onclick=`window.location.href='/uc/edit/${uc._id}'`) Editar
-                button.w3-button.w3-red.w3-round-large.w3-small(onclick=`deleteUC('${uc._id}')`) Apagar
-
-  style.
-    body {
-      background-color: #f9f9f9;
-      font-family: "Roboto", sans-serif;
-    }
-    .w3-card-4 {
-      border-radius: 15px;
-      transition: transform 0.3s ease-in-out, box-shadow 0.3s;
-    }
-    .w3-card-4:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
-    }
-    .w3-button {
-      transition: background-color 0.3s, color 0.3s, transform 0.3s;
-      height: 44px; /* mesma altura que os inputs */
-    }
-    .w3-button:hover {
-      background-color: #444;
-      color: #fff;
-      transform: scale(1.05);
-    }
-    .w3-xxlarge {
-      font-weight: bold;
-    }
-    .w3-text-blue {
-      color: #007bff !important;
-    }
-    .w3-text-deep-purple {
-      color: #673ab7 !important;
-    }
-    .w3-tag {
-      background-color: #673ab7 !important;
-      color: #fff;
-    }
-    .w3-round-large {
-      border-radius: 15px;
-    }
+                button.w3-button.w3-green.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/uc/${uc._id}'`) Ver Detalhes
+                // TODO AUTH
+                button.w3-button.w3-yellow.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/uc/edit/${uc._id}'`) Editar
+                button.w3-button.w3-red.w3-round-large.w3-small.w3-hover-shadow(onclick=`deleteUC('${uc._id}')`) Apagar
 
   script.
     function deleteUC(id) {

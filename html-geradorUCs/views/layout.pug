@@ -3,16 +3,27 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/w3.css')
+    link(rel='stylesheet', href='/stylesheets/w3_overlap.css')
+
   body
-    header.w3-bar.w3-blue
-      a.w3-bar-item.w3-button.w3-padding-large(href='/') Home
+    header.w3-bar
+      .w3-bar-item
+        a.w3-button.w3-padding-large(href='/') Home
       // TODO AUTH
       if user
-        div.w3-bar-item.w3-right
-          span.w3-margin-right Welcome, #{user.username}
-          a.w3-button.w3-white.w3-right.w3-margin-right(href='/logout') Logout
+        .w3-right.w3-bar-item
+          a.w3-padding-large Welcome, #{user.username}
+        a.w3-bar-item.w3-button.w3-padding-large(href='/files') Os Meus Ficheiros
+        a.w3-bar-item.w3-button.w3-padding-large(onclick="logout()") Logout
       else
-        a.w3-bar-item.w3-button.w3-right.w3-padding-large(href='/signUp') SignUp
-        a.w3-bar-item.w3-button.w3-right.w3-padding-large(href='/login') Login
+        .w3-right.w3-bar-item
+          a.w3-button.w3-padding-large(href='/signup') Registar
+          a.w3-button.w3-padding-large(href='/login') Login
 
     block content
+
+    script.
+      function logout() {
+        // TODO AUTH
+        alert('Logout function not implemented yet.');
+      }
