@@ -4,6 +4,7 @@ var path = require('path');
 var logger = require('morgan');
 const favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
+var axios = require('axios');
 
 var indexRouter = require('./routes/index');
 var ucRouter = require('./routes/uc');
