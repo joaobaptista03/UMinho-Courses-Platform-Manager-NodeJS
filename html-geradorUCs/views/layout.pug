@@ -11,12 +11,11 @@ html
         a.w3-button.w3-padding-large(href='/') Home
       // TODO AUTH
       if userLogged
-        .w3-left.w3-bar-item
-          a.w3-button.w3-padding-large(href='/files') Os Meus Ficheiros
-          a.w3-button.w3-padding-large(onclick="logout()") Logout
-          
         .w3-right.w3-bar-item
           a.w3-padding-large Welcome, #{username}
+        .w3-right.w3-bar-item
+          a.w3-button.w3-padding-large(href='/files') Os Meus Ficheiros
+          a.w3-button.w3-padding-large(onclick="logout()") Logout
       else
         .w3-right.w3-bar-item
           a.w3-button.w3-padding-large(href='/signup') Registar
