@@ -40,7 +40,7 @@ router.post('/login', passport.authenticate('local'), function (req, res) {
     sub: 'Gerador WebSite UCs - EngWeb2024'
   },
     "ProjetoEW2024-a100705-a100896-a100711",
-    { expiresIn: 10 },
+    { expiresIn: 3600 },
     function (e, token) {
       if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })
       else {
