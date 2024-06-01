@@ -18,7 +18,7 @@ block content
           label.w3-text-deep-purple Docentes:
           select.w3-input.w3-border.w3-round-large(name="docentes" multiple required)
             each docente in docentes
-              option(value=docente._id) #{docente.nome}
+              option.w3-border.w3-round-large(value=docente._id, style="margin:7px; padding:7px;") #{docente.nome}
         .w3-section
           label.w3-text-deep-purple Horários Teóricos (separados por ponto e vírgula):
           input.w3-input.w3-border.w3-round-large(type="text" name="horarioTeoricas")
