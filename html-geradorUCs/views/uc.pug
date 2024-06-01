@@ -23,21 +23,34 @@ block content
   .w3-container.w3-padding-16
     h2.w3-text-deep-purple.w3-center Horário
     .w3-row-padding
-      .w3-half
-        h3.w3-text-blue Teóricas
-        .w3-card-4.w3-white.w3-hover-shadow.w3-ul.w3-container.w3-padding
-          each teorica, index in uc.horario.teoricas
-            | #{teorica}
-            if index < uc.horario.teoricas.length - 1
-              p
-              
-      .w3-half
-        h3.w3-text-blue Práticas
-        .w3-card-4.w3-white.w3-hover-shadow.w3-ul.w3-container.w3-padding
-          each pratica, index in uc.horario.praticas
-            | #{pratica}
-            if index < uc.horario.praticas.length - 1
-              p
+        .w3-card-4.w3-white.w3-hover-shadow.w3-container.w3-padding
+            table.w3-table-all.w3-centered
+                thead
+                    tr.w3-blue
+                        th(style="width: 14%") Início-Fim
+                        th(style="width: 14%") Segunda
+                        th(style="width: 14%") Terça
+                        th(style="width: 14%") Quarta
+                        th(style="width: 14%") Quinta
+                        th(style="width: 14%") Sexta
+                tbody
+                    each hora in ['08:00-10:00', '10:00-12:00', '12:00-14:00', '14:00-16:00', '16:00-18:00']
+                        tr
+                            td(style="width: 120px") #{hora}
+                            each dia in ['segunda', 'terça', 'quarta', 'quinta', 'sexta']
+                                - var aulas = uc.horarios[dia] || [];
+                                td(style="width: 120px")
+                                    each aula in aulas
+                                        if aula.horario === hora
+                                            if aula.tipo === 'teorica'
+                                                p.w3-text-blue T : #{aula.sala}
+                                            else if aula.tipo === 'pratica'
+                                                p.w3-text-blue #{aula.turno} : #{aula.sala}
+                                    if aulas.length === 0
+                                        p -
+
+
+
 
   .w3-container.w3-padding-16
     h2.w3-text-deep-purple.w3-center Avaliação

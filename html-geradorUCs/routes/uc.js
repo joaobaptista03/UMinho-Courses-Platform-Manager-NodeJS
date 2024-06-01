@@ -49,31 +49,54 @@ router.post('/edit/:id', async function (req, res, next) {
 });
 
 router.get('/:id', async function (req, res, next) {
-	try {		
-		let dados = await axios.get(process.env.API_URI + '/ucs/' + req.params.id);
-		if (dados.data == null) {
-			res.render('error', { error: { status: 404, message: 'UC não encontrada' }, title: 'Erro' });
-			return;
-		}
+    try {        
+        let dados = await axios.get(process.env.API_URI + '/ucs/' + req.params.id);
+        if (dados.data == null) {
+            res.render('error', { error: { status: 404, message: 'UC não encontrada' }, title: 'Erro' });
+            return;
+        }
 
-		let docentes = dados.data.docentes;
-		var newDocentes = [];
-		for (var j = 0 ; j < docentes.length ; j++) {
-			try {
-				let docenteData = await axios.get(process.env.API_URI + '/docentes/' + docentes[j]);
-				newDocentes.push(docenteData.data);
-			} catch (erro) {
-				res.render('error', { error: { status: 501, message: 'Erro ao consultar Docente' }, title: 'Erro' });
-				return;
-			}
-		}
-		dados.data.docentes = newDocentes;
-		
-		res.render('uc', { uc: dados.data, title: 'UC: ' + dados.data.titulo});
-	} catch (erro) {
-		res.render('error', { error: { status: 501, message: 'Erro ao consultar UC' }, title: 'Erro' });
-	}
+        let docentes = dados.data.docentes;
+        var newDocentes = [];
+        for (var j = 0 ; j < docentes.length ; j++) {
+            try {
+                let docenteData = await axios.get(process.env.API_URI + '/docentes/' + docentes[j]);
+                newDocentes.push(docenteData.data);
+            } catch (erro) {
+                res.render('error', { error: { status: 501, message: 'Erro ao consultar Docente' }, title: 'Erro' });
+                return;
+            }
+        }
+        dados.data.docentes = newDocentes;
+
+        let horarios = {};
+        dados.data.horario.teoricas.forEach(teorica => {
+            let [dia, horaSala] = teorica.split(' das ');
+            let [horario, sala] = horaSala.split(', ');
+            horario = horario.replace(/h/g, ':00').replace(/ às /g, '-');
+            sala = sala.replace('sala ', '');
+            if (!horarios[dia]) horarios[dia] = [];
+            horarios[dia].push({ tipo: 'teorica', horario: horario, sala: sala});
+        });
+        dados.data.horario.praticas.forEach(pratica => {
+            let [tp, turno] = pratica.split(': ');
+            tp = tp.replace('Turno ', 'TP')
+            let [dia, horaSala] = turno.split(' das ');
+            let [horario, sala] = horaSala.split(', ');
+            horario = horario.replace(/h/g, ':00').replace(/ às /g, '-');
+            sala = sala.replace('sala ', '');
+            if (!horarios[dia]) horarios[dia] = [];
+            horarios[dia].push({ tipo: 'pratica', turno: tp , horario: horario, sala: sala});
+        });
+        dados.data.horarios = horarios;
+
+
+        res.render('uc', { uc: dados.data, title: 'UC: ' + dados.data.titulo});
+    } catch (erro) {
+        res.render('error', { error: { status: 501, message: 'Erro ao consultar UC' }, title: 'Erro' });
+    }
 });
+
 
 router.post('/', function (req, res, next) {
     // TODO AUTH
