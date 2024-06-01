@@ -40,7 +40,7 @@ router.post('/login', passport.authenticate('local'), function (req, res) {
     sub: 'Gerador WebSite UCs - EngWeb2024'
   },
     "ProjetoEW2024-a100705-a100896-a100711",
-    { expiresIn: 3600 },
+    { expiresIn: 10 },
     function (e, token) {
       if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })
       else {
@@ -56,10 +56,23 @@ router.post('/login', passport.authenticate('local'), function (req, res) {
 })
 
 router.get('/isLogged', auth.verificaAcesso, function (req, res) {
+  if (req.tokenExpired || req.tokenError) {
+    res.jsonp({
+      isAdmin: false,
+      username: "",
+      isLogged: false,
+      isExpired: req.tokenExpired,
+      isError: req.tokenError
+    })
+    return
+  }
+  
   res.jsonp({
     isAdmin: (req.payload.level === "admin" ? true : false),
     username: req.payload.username,
-    isLogged: true
+    isLogged: true,
+    isExpired: req.tokenExpired,
+    isError: req.tokenError
   })
 })
 
