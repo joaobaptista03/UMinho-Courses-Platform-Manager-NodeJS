@@ -7,7 +7,7 @@ var fs = require('fs');
 
 router.get('/', function (req, res, next) {
     // TODO AUTH
-    res.render('addDocente');
+    res.render('addDocente', { title: 'Adicionar Docente' });
 });
 
 router.post('/', upload.single('foto'), function (req, res, next) {
@@ -24,7 +24,7 @@ router.post('/', upload.single('foto'), function (req, res, next) {
     };
 
     if (req.file.mimetype.split('/')[0] != 'image') {
-        res.render('error', { error: { status: 501, message: 'Formato da foto inválido' } });
+        res.render('error', { error: { status: 501, message: 'Formato da foto inválido' }, title: 'Erro'});
         fs.unlink(__dirname + '/../' + req.file.path, (err) => {
             if (err) console.error('Erro a apagar ficheiro: ' + err);
         });
@@ -47,7 +47,7 @@ router.post('/', upload.single('foto'), function (req, res, next) {
             res.redirect('/');
         })
         .catch((error) => {
-            res.render('error', { error: { status: 501, message: 'Erro ao adicionar Docente' } });
+            res.render('error', { error: { status: 501, message: 'Erro ao adicionar Docente' }, title: 'Erro' });
         });
 });
 

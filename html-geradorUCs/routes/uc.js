@@ -16,9 +16,9 @@ router.get('/edit/:id', async function (req, res, next) {
             return docenteResponse.data;
         }));
         
-        res.render('editUC', { uc, docentes });
+        res.render('editUC', { uc, docentes, title: 'Editar UC: ' + uc.titulo});
     } catch (error) {
-        res.render('error', { error: { status: 501, message: 'Erro ao consultar UC ou Docentes' } });
+        res.render('error', { error: { status: 501, message: 'Erro ao consultar UC ou Docentes' }, title: 'Erro' });
     }
 });
 
@@ -44,7 +44,7 @@ router.post('/edit/:id', async function (req, res, next) {
         await axios.put(process.env.API_URI + '/ucs/' + req.params.id, updatedUC);
         res.redirect('/uc/' + req.params.id);
     } catch (error) {
-        res.render('error', { error: { status: 501, message: 'Erro ao editar UC' } });
+        res.render('error', { error: { status: 501, message: 'Erro ao editar UC' }, title: 'Erro' });
     }
 });
 
@@ -52,7 +52,7 @@ router.get('/:id', async function (req, res, next) {
 	try {		
 		let dados = await axios.get(process.env.API_URI + '/ucs/' + req.params.id);
 		if (dados.data == null) {
-			res.render('error', { error: { status: 404, message: 'UC não encontrada' } });
+			res.render('error', { error: { status: 404, message: 'UC não encontrada' }, title: 'Erro' });
 			return;
 		}
 
@@ -63,15 +63,15 @@ router.get('/:id', async function (req, res, next) {
 				let docenteData = await axios.get(process.env.API_URI + '/docentes/' + docentes[j]);
 				newDocentes.push(docenteData.data);
 			} catch (erro) {
-				res.render('error', { error: { status: 501, message: 'Erro ao consultar Docente' } });
+				res.render('error', { error: { status: 501, message: 'Erro ao consultar Docente' }, title: 'Erro' });
 				return;
 			}
 		}
 		dados.data.docentes = newDocentes;
 		
-		res.render('uc', { uc: dados.data });
+		res.render('uc', { uc: dados.data, title: 'UC: ' + dados.data.titulo});
 	} catch (erro) {
-		res.render('error', { error: { status: 501, message: 'Erro ao consultar UC' } });
+		res.render('error', { error: { status: 501, message: 'Erro ao consultar UC' }, title: 'Erro' });
 	}
 });
 
@@ -101,14 +101,14 @@ router.post('/', function (req, res, next) {
             res.redirect('/uc/' + response.data._id);
         })
         .catch((error) => {
-            res.render('error', { error: { status: 501, message: 'Erro ao adicionar UC' } });
+            res.render('error', { error: { status: 501, message: 'Erro ao adicionar UC' }, title: 'Erro' });
         });
 });
 
 router.delete('/:id', async function (req, res, next) {
 	axios.delete(process.env.API_URI + '/ucs/' + req.params.id)
 		.then(dados => res.redirect('/'))
-		.catch(erro => res.render('error', { error: { status: 501, message: 'Erro ao eliminar UC' } }));
+		.catch(erro => res.render('error', { error: { status: 501, message: 'Erro ao eliminar UC' }, title: 'Erro' }));
 });
 
 module.exports = router;

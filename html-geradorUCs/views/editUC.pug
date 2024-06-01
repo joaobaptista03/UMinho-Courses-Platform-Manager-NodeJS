@@ -1,119 +1,114 @@
 extends layout
 
 block content
-  .w3-container
-    .w3-card-4.w3-margin.w3-white.w3-padding
-      .w3-container.w3-padding-16
-        h1.w3-xxlarge.w3-text-blue.w3-center Editar UC: #{uc.titulo}
+  .w3-container.w3-padding-16
+    form(action=`/uc/edit/${uc._id}` method="POST" class="w3-container w3-padding-large w3-card-4 w3-white")
+      .w3-section
+        label.w3-text-deep-purple ID:
+        input.w3-input.w3-border.w3-round-large(type="text" name="_id" value=uc._id readonly)
+      .w3-section
+        label.w3-text-deep-purple Título:
+        input.w3-input.w3-border.w3-round-large(type="text" name="titulo" value=uc.titulo required)
+      .w3-section
+        label.w3-text-deep-purple Docentes:
+        select.w3-input.w3-border.w3-round-large(name="docentes" multiple required)
+          each docente in docentes
+            - const isSelected = uc.docentes.some(d => d._id === docente._id)
+            option.w3-border.w3-round-large(value=docente._id selected=isSelected style="margin:7px; padding:7px;") #{docente.nome}
+      .w3-section
+        label.w3-text-deep-purple Horários Teóricos (separados por ponto e vírgula):
+        input.w3-input.w3-border.w3-round-large(type="text" name="horarioTeoricas" value=uc.horario.teoricas.join(';') required)
+      .w3-section
+        label.w3-text-deep-purple Horários Práticos (separados por ponto e vírgula):
+        input.w3-input.w3-border.w3-round-large(type="text" name="horarioPraticas" value=uc.horario.praticas.join(';') required)
+      .w3-section
+        label.w3-text-deep-purple Avaliação (separados por ponto e vírgula):
+        input.w3-input.w3-border.w3-round-large(type="text" name="avaliacao" value=uc.avaliacao.join(';') required)
+      .w3-section
+        label.w3-text-deep-purple Data do Teste:
+        input.w3-input.w3-border.w3-round-large(type="text" name="dataTeste" value=uc.datas.teste required)
+      .w3-section
+        label.w3-text-deep-purple Data do Exame:
+        input.w3-input.w3-border.w3-round-large(type="text" name="dataExame" value=uc.datas.exame required)
+      .w3-section
+        label.w3-text-deep-purple Data do Projeto:
+        input.w3-input.w3-border.w3-round-large(type="text" name="dataProjeto" value=uc.datas.projeto required)
 
-    .w3-container.w3-padding-16
-      form(action=`/uc/edit/${uc._id}` method="POST" class="w3-container w3-padding-large w3-card-4 w3-white")
-        .w3-section
-          label.w3-text-deep-purple ID:
-          input.w3-input.w3-border.w3-round-large(type="text" name="_id" value=uc._id readonly)
-        .w3-section
-          label.w3-text-deep-purple Título:
-          input.w3-input.w3-border.w3-round-large(type="text" name="titulo" value=uc.titulo required)
-        .w3-section
-          label.w3-text-deep-purple Docentes:
-          select.w3-input.w3-border.w3-round-large(name="docentes" multiple required)
-            each docente in docentes
-              - const isSelected = uc.docentes.some(d => d._id === docente._id)
-              option.w3-border.w3-round-large(value=docente._id selected=isSelected style="margin:7px; padding:7px;") #{docente.nome}
-        .w3-section
-          label.w3-text-deep-purple Horários Teóricos (separados por ponto e vírgula):
-          input.w3-input.w3-border.w3-round-large(type="text" name="horarioTeoricas" value=uc.horario.teoricas.join(';') required)
-        .w3-section
-          label.w3-text-deep-purple Horários Práticos (separados por ponto e vírgula):
-          input.w3-input.w3-border.w3-round-large(type="text" name="horarioPraticas" value=uc.horario.praticas.join(';') required)
-        .w3-section
-          label.w3-text-deep-purple Avaliação (separados por ponto e vírgula):
-          input.w3-input.w3-border.w3-round-large(type="text" name="avaliacao" value=uc.avaliacao.join(';') required)
-        .w3-section
-          label.w3-text-deep-purple Data do Teste:
-          input.w3-input.w3-border.w3-round-large(type="text" name="dataTeste" value=uc.datas.teste required)
-        .w3-section
-          label.w3-text-deep-purple Data do Exame:
-          input.w3-input.w3-border.w3-round-large(type="text" name="dataExame" value=uc.datas.exame required)
-        .w3-section
-          label.w3-text-deep-purple Data do Projeto:
-          input.w3-input.w3-border.w3-round-large(type="text" name="dataProjeto" value=uc.datas.projeto required)
+      .w3-section
+        label.w3-text-deep-purple Aulas:
+        #aulas-container
+          each aula, index in uc.aulas
+            .w3-card-4.w3-margin.w3-padding.w3-light-grey
+              .w3-container.w3-margin-bottom
+                label.w3-text-deep-purple Tipo:
+                input.w3-input.w3-border.w3-round-large(type="text" name=`aula[${index}][tipo]` value=aula.tipo required)
+              .w3-container.w3-margin-bottom
+                label.w3-text-deep-purple Data:
+                input.w3-input.w3-border.w3-round-large(type="text" name=`aula[${index}][data]` value=aula.data required)
+              .w3-container.w3-margin-bottom
+                label.w3-text-deep-purple Sumário:
+                textarea.w3-input.w3-border.w3-round-large(name=`aula[${index}][sumario]` oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"')= aula.sumario.join('\n')
+              button.w3-button.w3-red.w3-small.w3-round-large(type="button", onclick=`removeAula(this)`) Remover Aula
 
-        .w3-section
-          label.w3-text-deep-purple Aulas:
-          #aulas-container
-            each aula, index in uc.aulas
-              .w3-card-4.w3-margin.w3-padding.w3-light-grey
-                .w3-container.w3-margin-bottom
-                  label.w3-text-deep-purple Tipo:
-                  input.w3-input.w3-border.w3-round-large(type="text" name=`aula[${index}][tipo]` value=aula.tipo required)
-                .w3-container.w3-margin-bottom
-                  label.w3-text-deep-purple Data:
-                  input.w3-input.w3-border.w3-round-large(type="text" name=`aula[${index}][data]` value=aula.data required)
-                .w3-container.w3-margin-bottom
-                  label.w3-text-deep-purple Sumário:
-                  textarea.w3-input.w3-border.w3-round-large(name=`aula[${index}][sumario]` oninput='this.style.height = "";this.style.height = this.scrollHeight + 3 + "px"')= aula.sumario.join('\n')
-                button.w3-button.w3-red.w3-small.w3-round-large(type="button", onclick=`removeAula(this)`) Remover Aula
+        button.w3-button.w3-green.w3-large.w3-round-large(type="button", onclick="addAula()") Adicionar Aula
 
-          button.w3-button.w3-green.w3-large.w3-round-large(type="button", onclick="addAula()") Adicionar Aula
+      button.w3-button.w3-blue.w3-large.w3-round-large(type="submit" onclick="prepareSubmit(event)") Salvar Alterações
 
-        button.w3-button.w3-blue.w3-large.w3-round-large(type="submit" onclick="prepareSubmit(event)") Salvar Alterações
-
-    script.
-      window.addEventListener('DOMContentLoaded', () => {
-        const textareas = document.querySelectorAll('textarea');
-        textareas.forEach(textarea => {
-          textarea.style.height = textarea.scrollHeight + 3 + 'px';
-        });
+  script.
+    window.addEventListener('DOMContentLoaded', () => {
+      const textareas = document.querySelectorAll('textarea');
+      textareas.forEach(textarea => {
+        textarea.style.height = textarea.scrollHeight + 3 + 'px';
       });
+    });
 
-      function removeAula(button) {
-        button.closest('.w3-card-4').remove();
+    function removeAula(button) {
+      button.closest('.w3-card-4').remove();
+    }
+
+    function addAula() {
+      const aulasContainer = document.getElementById('aulas-container');
+      const newIndex = aulasContainer.children.length;
+      const aulasCard = document.createElement('div');
+      aulasCard.classList.add('w3-card-4', 'w3-margin', 'w3-padding', 'w3-light-grey');
+
+      aulasCard.innerHTML = `
+        <div class="w3-container w3-margin-bottom">
+          <label class="w3-text-deep-purple">Tipo:</label>
+          <input class="w3-input w3-border w3-round-large" type="text" name="aula[${newIndex}][tipo]" required>
+        </div>
+        <div class="w3-container w3-margin-bottom">
+          <label class="w3-text-deep-purple">Data:</label>
+          <input class="w3-input w3-border w3-round-large" type="text" name="aula[${newIndex}][data]" required>
+        </div>
+        <div class="w3-container w3-margin-bottom">
+          <label class="w3-text-deep-purple">Sumário:</label>
+          <textarea class="w3-input w3-border w3-round-large" name="aula[${newIndex}][sumario]"></textarea>
+        </div>
+        <button class="w3-button w3-red w3-small w3-round-large" type="button" onclick="removeAula(this)">Remover Aula</button>
+      `;
+
+      aulasContainer.appendChild(aulasCard);
+    }
+
+    function prepareSubmit(event) {
+      const aulas = [];
+      const aulasContainer = document.getElementById('aulas-container');
+      const aulasCards = aulasContainer.children;
+
+      for (let i = 0; i < aulasCards.length; i++) {
+        const aulaCard = aulasCards[i];
+        const tipo = aulaCard.querySelector(`[name="aula[${i}][tipo]"]`).value;
+        const data = aulaCard.querySelector(`[name="aula[${i}][data]"]`).value;
+        const sumario = aulaCard.querySelector(`[name="aula[${i}][sumario]"]`).value.split('\n');
+
+        aulas.push({ tipo, data, sumario });
       }
 
-      function addAula() {
-        const aulasContainer = document.getElementById('aulas-container');
-        const newIndex = aulasContainer.children.length;
-        const aulasCard = document.createElement('div');
-        aulasCard.classList.add('w3-card-4', 'w3-margin', 'w3-padding', 'w3-light-grey');
+      const aulasInput = document.createElement('input');
+      aulasInput.type = 'hidden';
+      aulasInput.name = 'aulas';
+      aulasInput.value = JSON.stringify(aulas);
 
-        aulasCard.innerHTML = `
-          <div class="w3-container w3-margin-bottom">
-            <label class="w3-text-deep-purple">Tipo:</label>
-            <input class="w3-input w3-border w3-round-large" type="text" name="aula[${newIndex}][tipo]" required>
-          </div>
-          <div class="w3-container w3-margin-bottom">
-            <label class="w3-text-deep-purple">Data:</label>
-            <input class="w3-input w3-border w3-round-large" type="text" name="aula[${newIndex}][data]" required>
-          </div>
-          <div class="w3-container w3-margin-bottom">
-            <label class="w3-text-deep-purple">Sumário:</label>
-            <textarea class="w3-input w3-border w3-round-large" name="aula[${newIndex}][sumario]"></textarea>
-          </div>
-          <button class="w3-button w3-red w3-small w3-round-large" type="button" onclick="removeAula(this)">Remover Aula</button>
-        `;
-
-        aulasContainer.appendChild(aulasCard);
-      }
-
-      function prepareSubmit(event) {
-        const aulas = [];
-        const aulasContainer = document.getElementById('aulas-container');
-        const aulasCards = aulasContainer.children;
-
-        for (let i = 0; i < aulasCards.length; i++) {
-          const aulaCard = aulasCards[i];
-          const tipo = aulaCard.querySelector(`[name="aula[${i}][tipo]"]`).value;
-          const data = aulaCard.querySelector(`[name="aula[${i}][data]"]`).value;
-          const sumario = aulaCard.querySelector(`[name="aula[${i}][sumario]"]`).value.split('\n');
-
-          aulas.push({ tipo, data, sumario });
-        }
-
-        const aulasInput = document.createElement('input');
-        aulasInput.type = 'hidden';
-        aulasInput.name = 'aulas';
-        aulasInput.value = JSON.stringify(aulas);
-
-        event.target.appendChild(aulasInput);
-      }
+      event.target.appendChild(aulasInput);
+    }

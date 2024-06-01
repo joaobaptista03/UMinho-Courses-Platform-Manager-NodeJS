@@ -22,7 +22,7 @@ router.get('/files', function (req, res, next) {
             isDirectory: file.isDirectory()
         }));
 
-        res.render('files', { path: relativePath, files: fileList });
+        res.render('files', { path: relativePath, files: fileList, title: 'Ficheiros' });
     });
 });
 

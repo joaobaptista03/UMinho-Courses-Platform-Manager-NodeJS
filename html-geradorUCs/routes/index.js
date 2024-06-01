@@ -12,7 +12,7 @@ router.get('/', function (req, res, next) {
 	axios.get(process.env.API_URI + '/ucs')
 		.then(async dados => {
 			if (dados.data.length == 0) {
-				res.render('error', { error: { status: 404, message: 'Não existem UCs' } });
+				res.render('error', { error: { status: 404, message: 'Não existem UCs' }, title: 'Erro' });
 				return;
 			}
 
@@ -31,7 +31,7 @@ router.get('/', function (req, res, next) {
 							newDocentes.push(dados.data);
 						})
 						.catch(erro => {
-							res.render('error', { error: { status: 501, message: 'Erro ao consultar Docente' } })
+							res.render('error', { error: { status: 501, message: 'Erro ao consultar Docente' }, title: 'Erro' })
 						})
 				}
 
@@ -55,25 +55,25 @@ router.get('/', function (req, res, next) {
 				}
 			}
 
-			res.render('index', { ucs: dados.data, titulo, docente });
+			res.render('index', { ucs: dados.data, title: 'Lista de UCs', docente });
 		})
 		.catch(erro => {
-			res.render('error', { error: { status: 501, message: 'Erro ao consultar UCs' } })
+			res.render('error', { error: { status: 501, message: 'Erro ao consultar UCs' }, title: 'Erro' })
 		})
 });
 
 router.get('/addUC', function (req, res, next) {
 	axios.get(process.env.API_URI + '/docentes')
 		.then((response) => {
-			res.render('addUC', { docentes: response.data });
+			res.render('addUC', { docentes: response.data, title: 'Adicionar UC' });
 		})
 		.catch((error) => {
-			res.render('error', { error: { status: 501, message: 'Erro ao obter docentes' } });
+			res.render('error', { error: { status: 501, message: 'Erro ao obter docentes' }, title: 'Erro' });
 		});
 });
 
 router.get('/login', function (req, res, next) {
-	res.render('login');
+	res.render('login', { title: 'Login' });
 });
 
 router.post('/login', function (req, res, next) {
@@ -87,13 +87,13 @@ router.post('/login', function (req, res, next) {
 			res.redirect('/');
 		})
 		.catch((error) => {
-			res.render('error', { error: { status: 401, message: 'Credenciais inválidas' } });
+			res.render('error', { error: { status: 401, message: 'Credenciais inválidas' }, title: 'Erro' });
 		});
 	*/
 });
 
 router.get('/signup', function (req, res, next) {
-	res.render('signup');
+	res.render('signup', { title: 'Registar' });
 });
 
 router.post('/signup', function (req, res, next) {
@@ -106,94 +106,9 @@ router.post('/signup', function (req, res, next) {
 			res.redirect('/login');
 		})
 		.catch((error) => {
-			res.render('error', { error: { status: 501, message: 'Erro ao criar utilizador' } });
+			res.render('error', { error: { status: 501, message: 'Erro ao criar utilizador' }, title: 'Erro' });
 		});
 	*/
-});
-
-router.get('/files', function (req, res, next) {
-    // TODO AUTH
-    var username = 'jcr';
-    var relativePath = req.query.path || '';
-    var absolutePath = path.join(__dirname, '/../public/filesUploaded/', username, relativePath);
-
-    fs.readdir(absolutePath, { withFileTypes: true }, (err, files) => {
-        if (err) {
-            return next(err);
-        }
-
-        var fileList = files.map(file => ({
-            name: file.name,
-            isDirectory: file.isDirectory()
-        }));
-
-        res.render('files', { path: relativePath, files: fileList });
-    });
-});
-
-router.post('/files', function (req, res, next) {
-    // TODO AUTH
-    var username = 'jcr';
-    var relativePath = req.body.path || '';
-    var absolutePath = path.join(__dirname, '/../public/filesUploaded/', username, relativePath);
-
-    fs.mkdir(absolutePath, { recursive: true }, err => {
-        if (err) {
-            return next(err);
-        }
-
-        res.redirect('/files?path=' + relativePath);
-    });
-});
-
-
-router.get('/files/download', function (req, res, next) {
-    // TODO AUTH
-    var username = 'jcr';
-    var relativePath = req.query.path;
-    var absolutePath = path.join(__dirname, '/../public/filesUploaded/', username, relativePath);
-
-    res.download(absolutePath, err => {
-        if (err) {
-            next(err);
-        }
-    });
-});
-
-router.post('/files/upload', upload.single('file'), function (req, res, next) {
-	// TODO AUTH
-	var username = 'jcr';
-	var relativePath = req.body.path || '';
-	var absolutePath = path.join(__dirname, '/../public/filesUploaded/', username, relativePath);
-
-	fs.mkdir(absolutePath, { recursive: true }, err => {
-		if (err) {
-			return next(err);
-		}
-
-		fs.rename(req.file.path, path.join(absolutePath, req.file.originalname), err => {
-			if (err) {
-				return next(err);
-			}
-
-			res.redirect('/files?path=' + relativePath);
-		});
-	});
-});
-
-router.get('/files/delete', function (req, res, next) {
-	// TODO AUTH
-	var username = 'jcr';
-	var relativePath = req.query.path;
-	var absolutePath = path.join(__dirname, '/../public/filesUploaded/', username, relativePath);
-
-	fs.unlink(absolutePath, err => {
-		if (err) {
-			return next(err);
-		}
-
-		res.redirect('/files?path=' + path.dirname(relativePath));
-	});
 });
 
 module.exports = router;

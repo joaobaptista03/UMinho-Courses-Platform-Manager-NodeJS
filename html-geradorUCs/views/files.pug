@@ -1,32 +1,26 @@
 extends layout
 
 block content
-  .w3-container
-    .w3-card-4.w3-margin.w3-white.w3-padding-large
-      .w3-container.w3-padding-16
-        .header-container
-          if path
-            a.w3-button.w3-blue.w3-round-large.w3-hover-shadow(href=`/files?path=${path.split('/').slice(0, -1).join('/')}`) &#8592;
-          h1.w3-xxlarge.w3-text-blue.w3-animate-opacity Lista de Arquivos
+  a.w3-button.w3-blue.w3-round-large.w3-hover-shadow(href=`/files?path=${path.split('/').slice(0, -1).join('/')}`) &#8592;
 
-      a.w3-button.w3-green.w3-round-large.w3-large.w3-margin-right.w3-hover-shadow(onclick="addFicheiro()") Adicionar Novo Ficheiro
+  a.w3-button.w3-green.w3-round-large.w3-large.w3-margin-right.w3-hover-shadow(onclick="addFicheiro()") Adicionar Novo Ficheiro
 
-      .w3-container.w3-padding-16
-        table.w3-table.w3-bordered.w3-striped.w3-hoverable.w3-white.w3-card-4
-          thead.w3-light-grey
-            tr
-              th Nome
-              th Ação
-          tbody
-            each file in files
-              tr
-                td= file.name
-                td
-                  if file.isDirectory
-                    a.w3-button.w3-green.w3-round-large.w3-hover-shadow(href=`/files?path=${path}/${file.name}`) Abrir
-                  else
-                    a.w3-button.w3-blue.w3-round-large.w3-hover-shadow.w3-margin-right(href=`/files/download?path=${path}/${file.name}`) Download
-                    a.w3-button.w3-red.w3-round-large.w3-hover-shadow(onclick=`deleteFile('${path}','${file.name}')`) Apagar
+  .w3-container.w3-padding-16
+    table.w3-table.w3-bordered.w3-striped.w3-hoverable.w3-white.w3-card-4
+      thead.w3-light-grey
+        tr
+          th Nome
+          th Ação
+      tbody
+        each file in files
+          tr
+            td= file.name
+            td
+              if file.isDirectory
+                a.w3-button.w3-green.w3-round-large.w3-hover-shadow(href=`/files?path=${path}/${file.name}`) Abrir
+              else
+                a.w3-button.w3-blue.w3-round-large.w3-hover-shadow.w3-margin-right(href=`/files/download?path=${path}/${file.name}`) Download
+                a.w3-button.w3-red.w3-round-large.w3-hover-shadow(onclick=`deleteFile('${path}','${file.name}')`) Apagar
 
   style.
     .header-container {

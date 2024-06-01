@@ -1,21 +1,16 @@
 extends layout
 
 block content
-  .w3-container
-    .w3-card-4.w3-margin.w3-white.w3-padding
-      .w3-container.w3-padding-16
-        h1.w3-xxlarge.w3-text-blue.w3-center Registo
-
-    .w3-container.w3-padding-16
-      form(action="/signUp" method="POST")
-        .w3-section
-          label.w3-text-deep-purple(for="email") Email:
-          input.w3-input.w3-border.w3-round-large(type="email" name="email" required)
-        .w3-section
-          label.w3-text-deep-purple(for="username") Nome de Utilizador:
-          input.w3-input.w3-border.w3-round-large(type="text" name="username" required)
-        .w3-section
-          label.w3-text-deep-purple(for="password") Palavra-passe:
-          input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
-        .w3-section
-          button.w3-button.w3-blue.w3-large.w3-round-large(type="submit") Registar
+  .w3-container.w3-padding-16
+    form(action="/signUp" method="POST")
+      .w3-section
+        label.w3-text-deep-purple(for="email") Email:
+        input.w3-input.w3-border.w3-round-large(type="email" name="email" required)
+      .w3-section
+        label.w3-text-deep-purple(for="username") Nome de Utilizador:
+        input.w3-input.w3-border.w3-round-large(type="text" name="username" required)
+      .w3-section
+        label.w3-text-deep-purple(for="password") Palavra-passe:
+        input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
+      .w3-section
+        button.w3-button.w3-blue.w3-large.w3-round-large(type="submit") Registar

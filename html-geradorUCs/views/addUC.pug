@@ -1,40 +1,35 @@
 extends layout
 
 block content
-  .w3-container
-    .w3-card-4.w3-margin.w3-white.w3-padding
-      .w3-container.w3-padding-16
-        h1.w3-xxlarge.w3-text-blue.w3-center Adicionar Nova UC
-
-    .w3-container.w3-padding-16
-      form(action="/uc" method="POST" class="w3-container w3-padding-large w3-card-4 w3-white")
-        .w3-section
-          label.w3-text-deep-purple ID:
-          input.w3-input.w3-border.w3-round-large(type="text" name="_id" required)
-        .w3-section
-          label.w3-text-deep-purple Título:
-          input.w3-input.w3-border.w3-round-large(type="text" name="titulo" required)
-        .w3-section
-          label.w3-text-deep-purple Docentes:
-          select.w3-input.w3-border.w3-round-large(name="docentes" multiple required)
-            each docente in docentes
-              option.w3-border.w3-round-large(value=docente._id, style="margin:7px; padding:7px;") #{docente.nome}
-        .w3-section
-          label.w3-text-deep-purple Horários Teóricos (separados por ponto e vírgula):
-          input.w3-input.w3-border.w3-round-large(type="text" name="horarioTeoricas")
-        .w3-section
-          label.w3-text-deep-purple Horários Práticos (separados por ponto e vírgula):
-          input.w3-input.w3-border.w3-round-large(type="text" name="horarioPraticas")
-        .w3-section
-          label.w3-text-deep-purple Avaliação (separados por ponto e vírgula):
-          input.w3-input.w3-border.w3-round-large(type="text" name="avaliacao")
-        .w3-section
-          label.w3-text-deep-purple Data do Teste:
-          input.w3-input.w3-border.w3-round-large(type="text" name="dataTeste")
-        .w3-section
-          label.w3-text-deep-purple Data do Exame:
-          input.w3-input.w3-border.w3-round-large(type="text" name="dataExame")
-        .w3-section
-          label.w3-text-deep-purple Data do Projeto:
-          input.w3-input.w3-border.w3-round-large(type="text" name="dataProjeto")
-        button.w3-button.w3-blue.w3-large.w3-round-large(type="submit") Adicionar UC
+  .w3-container.w3-padding-16
+    form(action="/uc" method="POST" class="w3-container w3-padding-large w3-card-4 w3-white")
+      .w3-section
+        label.w3-text-deep-purple ID:
+        input.w3-input.w3-border.w3-round-large(type="text" name="_id" required)
+      .w3-section
+        label.w3-text-deep-purple Título:
+        input.w3-input.w3-border.w3-round-large(type="text" name="titulo" required)
+      .w3-section
+        label.w3-text-deep-purple Docentes:
+        select.w3-input.w3-border.w3-round-large(name="docentes" multiple required)
+          each docente in docentes
+            option.w3-border.w3-round-large(value=docente._id, style="margin:7px; padding:7px;") #{docente.nome}
+      .w3-section
+        label.w3-text-deep-purple Horários Teóricos (separados por ponto e vírgula):
+        input.w3-input.w3-border.w3-round-large(type="text" name="horarioTeoricas")
+      .w3-section
+        label.w3-text-deep-purple Horários Práticos (separados por ponto e vírgula):
+        input.w3-input.w3-border.w3-round-large(type="text" name="horarioPraticas")
+      .w3-section
+        label.w3-text-deep-purple Avaliação (separados por ponto e vírgula):
+        input.w3-input.w3-border.w3-round-large(type="text" name="avaliacao")
+      .w3-section
+        label.w3-text-deep-purple Data do Teste:
+        input.w3-input.w3-border.w3-round-large(type="text" name="dataTeste")
+      .w3-section
+        label.w3-text-deep-purple Data do Exame:
+        input.w3-input.w3-border.w3-round-large(type="text" name="dataExame")
+      .w3-section
+        label.w3-text-deep-purple Data do Projeto:
+        input.w3-input.w3-border.w3-round-large(type="text" name="dataProjeto")
+      button.w3-button.w3-blue.w3-large.w3-round-large(type="submit") Adicionar UC
