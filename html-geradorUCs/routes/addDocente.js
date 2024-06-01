@@ -10,7 +10,7 @@ router.get('/', async function (req, res, next) {
 	var isAdmin = false;
 	var username = "";
 
-	if (req.cookies.token != 'undefined') {
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
@@ -30,7 +30,7 @@ router.post('/', upload.single('foto'), async function (req, res, next) {
 	var isAdmin = false;
 	var username = "";
 
-	if (req.cookies.token != 'undefined') {
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;

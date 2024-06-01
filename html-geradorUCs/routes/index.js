@@ -12,7 +12,7 @@ router.get('/', async function (req, res, next) {
 	var isAdmin = false;
 	var username = "";
 
-	if (req.cookies.token != 'undefined') {
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
@@ -79,7 +79,7 @@ router.get('/addUC', async function (req, res, next) {
 	var isAdmin = false;
 	var username = "";
 
-	if (req.cookies.token != 'undefined') {
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
@@ -105,7 +105,7 @@ router.get('/login', async function (req, res, next) {
 	var isAdmin = false;
 	var username = "";
 
-	if (req.cookies.token != 'undefined') {
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
@@ -125,7 +125,7 @@ router.post('/login', async function (req, res, next) {
 	var isAdmin = false;
 	var username = "";
 
-	if (req.cookies.token != 'undefined') {
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
@@ -152,7 +152,7 @@ router.get('/signup', async function (req, res, next) {
 	var isAdmin = false;
 	var username = "";
 
-	if (req.cookies.token != 'undefined') {
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
@@ -172,7 +172,7 @@ router.post('/signup', async function (req, res, next) {
 	var isAdmin = false;
 	var username = "";
 
-	if (req.cookies.token != 'undefined') {
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
@@ -211,7 +211,7 @@ router.get('/logout', async (req, res) => {
 	var isAdmin = false;
 	var username = "";
 
-	if (req.cookies.token != 'undefined') {
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
 		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
