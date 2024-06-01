@@ -63,4 +63,10 @@ router.get('/isLogged', auth.verificaAcesso, function (req, res) {
   })
 })
 
+router.get('/users', auth.verificaAcesso, function (req, res) {
+  User.find()
+    .then(users => res.jsonp(users))
+    .catch(e => res.status(500).jsonp({ error: "Erro na listagem de utilizadores: " + e }))
+});
+
 module.exports = router;

@@ -225,4 +225,72 @@ router.get('/logout', async (req, res) => {
 	res.redirect('/')
 })
 
+router.get('/downloadBackup', async (req, res) => {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+
+	if (!isAdmin) {
+		res.render('error', { error: { status: 401, message: 'Acesso negado' }, title: 'Erro', userLogged, isAdmin, username });
+		return;
+	}
+
+	var ucsAxios = await axios.get(process.env.API_URI + '/ucs')
+		.catch(erro => {
+			res.render('error', { error: { status: 501, message: 'Erro ao consultar UCs' }, title: 'Erro', userLogged, isAdmin, username });
+			return;
+		})
+
+	var docentesAxios = await axios.get(process.env.API_URI + '/docentes')
+		.catch(erro => {
+			res.render('error', { error: { status: 501, message: 'Erro ao consultar Docentes' }, title: 'Erro', userLogged, isAdmin, username });
+			return;
+		})
+	
+	var usersAxios = await axios.get(process.env.AUTH_URI + '/users?token=' + req.cookies.token)
+		.catch(erro => {
+			res.render('error', { error: { status: 501, message: 'Erro ao consultar Users' }, title: 'Erro', userLogged, isAdmin, username });
+			return;
+		})
+
+	var ucs = ucsAxios.data;
+	var docentes = docentesAxios.data;
+	var users = usersAxios.data;
+
+	var backup = {
+		ucs,
+		docentes,
+		users
+	}
+
+	var backupPath = path.join(__dirname, '/../public/', 'backup.json');
+	fs.writeFile(backupPath, JSON.stringify(backup), (err) => {
+		if (err) {
+			res.render('error', { error: { status: 501, message: 'Erro ao criar backup' }, title: 'Erro', userLogged, isAdmin, username });
+			return;
+		}
+		
+		res.download(backupPath, (err) => {
+			if (err) {
+				res.render('error', { error: { status: 501, message: 'Erro ao fazer download do backup' }, title: 'Erro', userLogged, isAdmin, username });
+				return;
+			}
+
+			fs.unlink(backupPath, (err) => {
+				if (err) {
+					res.render('error', { error: { status: 501, message: 'Erro ao apagar backup' }, title: 'Erro', userLogged, isAdmin, username });
+					return;
+				}
+			});
+		});
+	});
+});
+
 module.exports = router;

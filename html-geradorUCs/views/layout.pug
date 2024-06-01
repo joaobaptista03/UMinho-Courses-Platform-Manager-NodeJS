@@ -9,7 +9,7 @@ html
     header.w3-bar
       .w3-bar-item
         a.w3-button.w3-padding-large.w3-round-large(href='/') Home
-      // TODO AUTH
+        
       if userLogged
         .w3-right.w3-bar-item
           a.w3-padding-large Welcome, #{username}
@@ -17,7 +17,9 @@ html
           a.w3-button.w3-padding-large.w3-round-large(onclick="logout()") Logout
         .w3-right.w3-bar-item
           a.w3-button.w3-padding-large.w3-round-large(href='/files') Os Meus Ficheiros
-        
+        .w3-right.w3-bar-item
+          a.w3-button.w3-padding-large.w3-round-large(href="/downloadBackup") Download Backup
+
       else
         .w3-right.w3-bar-item
           a.w3-button.w3-padding-large(href='/signup') Registar
