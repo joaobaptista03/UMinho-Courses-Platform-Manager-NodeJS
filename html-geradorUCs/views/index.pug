@@ -18,29 +18,32 @@ block content
 
   .w3-row-padding.w3-margin-top.w3-center
     .w3-container(style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;")
-      each uc in ucs
-        .w3-card-4.w3-hover-shadow.w3-animate-opacity.w3-white(style="max-width: 750px; flex: 1 1 750px; margin: 20px;")
-          .w3-container.w3-padding-large
-            h3.w3-text-deep-purple.w3-center.w3-padding-small.w3-border-bottom.w3-border-deep-purple #{uc.titulo}
-            .w3-container.w3-padding-small
-              p.w3-small
-                strong Docentes: 
-                  each docente in uc.docentes
-                    span.w3-tag.w3-deep-purple.w3-round= docente.nome
-                    | &nbsp;
-            .w3-container.w3-padding-small.w3-center
-              button.w3-button.w3-green.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/uc/${uc._id}'`) Ver Detalhes
-              // TODO AUTH
-              button.w3-button.w3-yellow.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/uc/edit/${uc._id}'`) Editar
-              button.w3-button.w3-red.w3-round-large.w3-small.w3-hover-shadow(onclick=`deleteUC('${uc._id}')`) Apagar
+      if ucs.length === 0
+        h3.w3-text-deep-purple Não foram encontradas UCs
+      else
+        each uc in ucs
+          .w3-card-4.w3-hover-shadow.w3-white(style="max-width: 750px; flex: 1 1 750px; margin: 20px;")
+            .w3-container.w3-padding-large
+              h3.w3-text-deep-purple.w3-center.w3-padding-small.w3-border-bottom.w3-border-deep-purple #{uc.titulo}
+              .w3-container.w3-padding-small
+                p.w3-small
+                  strong Docentes: 
+                    each docente in uc.docentes
+                      span.w3-tag.w3-deep-purple.w3-round= docente.nome
+                      | &nbsp;
+              .w3-container.w3-padding-small.w3-center
+                button.w3-button.w3-green.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/uc/${uc._id}'`) Ver Detalhes
+                if uc.criador == username || isAdmin
+                  button.w3-button.w3-yellow.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/uc/edit/${uc._id}'`) Editar
+                  button.w3-button.w3-red.w3-round-large.w3-small.w3-hover-shadow(onclick=`deleteUC('${uc._id}')`) Apagar
 
   script.
     function deleteUC(id) {
       if (confirm('Tem a certeza que deseja apagar esta UC?')) {
-        fetch(`/uc/${id}`, {
-          method: 'DELETE'
+        fetch(`/uc/delete/${id}`, {
+          method: 'GET'
         }).then(() => {
-          window.location.href = '/';
+          window.location.reload();
         });
       }
     }

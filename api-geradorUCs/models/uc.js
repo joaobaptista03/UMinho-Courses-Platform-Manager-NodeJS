@@ -19,6 +19,7 @@ const ucSchema = new mongoose.Schema({
         data: String,
         sumario: [String],
     }],
+    criador: String
 }, { versionKey: false });
 
-module.exports = mongoose.model('ucs', ucSchema);
+module.exports = mongoose.model('uc', ucSchema);

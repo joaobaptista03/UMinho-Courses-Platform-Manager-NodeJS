@@ -4,3 +4,4 @@ WORKDIR /data
 
 COPY ./docentes.json /data/docentes.json
 COPY ./ucs.json /data/ucs.json
+COPY ./users.json /data/users.json

@@ -4,15 +4,27 @@ var axios = require('axios');
 const path = require('path');
 const fs = require('fs');
 var multer = require('multer');
-var upload = multer({dest : 'uploads'})
+const { error } = require('console');
+var upload = multer({ dest: 'uploads' })
 
-router.get('/', function (req, res, next) {
+router.get('/', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined') {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+
 	const { titulo, docente } = req.query;
 
 	axios.get(process.env.API_URI + '/ucs')
 		.then(async dados => {
 			if (dados.data.length == 0) {
-				res.render('error', { error: { status: 404, message: 'Não existem UCs' }, title: 'Erro' });
+				res.render('index', { ucs: [], title: 'Lista de UCs', docente, userLogged, isAdmin, username });
 				return;
 			}
 
@@ -31,7 +43,7 @@ router.get('/', function (req, res, next) {
 							newDocentes.push(dados.data);
 						})
 						.catch(erro => {
-							res.render('error', { error: { status: 501, message: 'Erro ao consultar Docente' }, title: 'Erro' })
+							res.render('error', { error: { status: 501, message: 'Erro ao consultar Docente' }, title: 'Erro', userLogged, isAdmin, username})
 						})
 				}
 
@@ -55,60 +67,162 @@ router.get('/', function (req, res, next) {
 				}
 			}
 
-			res.render('index', { ucs: dados.data, title: 'Lista de UCs', docente });
+			res.render('index', { ucs: dados.data, title: 'Lista de UCs', docente, userLogged, isAdmin, username });
 		})
 		.catch(erro => {
-			res.render('error', { error: { status: 501, message: 'Erro ao consultar UCs' }, title: 'Erro' })
+			res.render('error', { error: { status: 501, message: 'Erro ao consultar UCs' }, title: 'Erro', userLogged, isAdmin, username });
 		})
 });
 
-router.get('/addUC', function (req, res, next) {
+router.get('/addUC', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined') {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+
+	if (!userLogged) {
+		res.redirect('/login')
+		return;
+	}
+
 	axios.get(process.env.API_URI + '/docentes')
 		.then((response) => {
-			res.render('addUC', { docentes: response.data, title: 'Adicionar UC' });
+			res.render('addUC', { docentes: response.data, title: 'Adicionar UC', userLogged, isAdmin, username });
 		})
 		.catch((error) => {
-			res.render('error', { error: { status: 501, message: 'Erro ao obter docentes' }, title: 'Erro' });
+			res.render('error', { error: { status: 501, message: 'Erro ao obter docentes' }, title: 'Erro', userLogged, isAdmin, username });
 		});
 });
 
-router.get('/login', function (req, res, next) {
+router.get('/login', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined') {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+	
+	if (userLogged) {
+		res.redirect('/')
+		return;
+	}
+
 	res.render('login', { title: 'Login' });
 });
 
-router.post('/login', function (req, res, next) {
-	res.redirect('/');
-	/* TODO AUTH
-	const { username, password } = req.body;
+router.post('/login', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
 
-	axios.post(process.env.API_URI + '/login', { username, password })
-		.then((response) => {
-			res.cookie('token', response.data.token);
-			res.redirect('/');
+	if (req.cookies.token != 'undefined') {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+	
+	if (userLogged) {
+		res.redirect('/')
+		return;
+	}
+
+	axios.post(process.env.AUTH_URI + '/login', req.body)
+		.then(response => {
+			res.cookie('token', response.data.token)
+			res.redirect('/')
 		})
-		.catch((error) => {
-			res.render('error', { error: { status: 401, message: 'Credenciais inválidas' }, title: 'Erro' });
-		});
-	*/
+		.catch(e => {
+			res.render('login', { title: 'Login', error: 'Username ou password errados.' });
+		})
 });
 
-router.get('/signup', function (req, res, next) {
+router.get('/signup', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined') {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+
+	if (userLogged) {
+		res.redirect('/')
+		return;
+	}
+	
 	res.render('signup', { title: 'Registar' });
 });
 
-router.post('/signup', function (req, res, next) {
-	res.redirect('/');
-	/* TODO AUTH
-	const { email, username, password } = req.body;
+router.post('/signup', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
 
-	axios.post(process.env.API_URI + '/signup', { email, username, password })
-		.then((response) => {
-			res.redirect('/login');
+	if (req.cookies.token != 'undefined') {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+
+	if (userLogged) {
+		res.redirect('/')
+		return;
+	}
+	
+	axios.post(process.env.AUTH_URI + "/register", req.body)
+		.then(response => {
+			if (response.data.error && response.data.message ) {
+				res.render('signup', { title: 'Registar', error: response.data.message });
+				return;
+			}
+
+			var folderPath = path.join(__dirname, '/../public/filesUploaded/', req.body.username);
+			fs.mkdir(folderPath, { recursive: true }, (err) => {
+				if (err) {
+					res.render('error', { error: { status: 501, message: 'Erro ao criar pasta' }, title: 'Erro' });
+				}
+			});
+
+			res.render('login', { title: 'Login', register: true })
 		})
-		.catch((error) => {
-			res.render('error', { error: { status: 501, message: 'Erro ao criar utilizador' }, title: 'Erro' });
-		});
-	*/
+		.catch(err => {
+			console.log(err);
+			res.render('error', { error: { status: 501, message: err.message }, title: 'Erro' });
+		})
 });
+
+router.get('/logout', async (req, res) => {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined') {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+
+	if (userLogged) {
+		res.cookie('token', undefined)
+	}
+
+	res.redirect('/')
+})
 
 module.exports = router;

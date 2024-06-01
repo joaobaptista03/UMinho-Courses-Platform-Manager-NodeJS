@@ -6,15 +6,36 @@ const fs = require('fs');
 var multer = require('multer');
 var upload = multer({dest : 'uploads'})
 
-router.get('/files', function (req, res, next) {
-    // TODO AUTH
-    var username = '';
+router.get('/', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined') {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+
+	if (!userLogged) {
+		res.redirect('/login')
+		return;
+	}
+	
     var relativePath = req.query.path || '';
-    var absolutePath = path.join(__dirname, '/../public/filesUploaded/', username, relativePath);
+	var subPath = path.join(__dirname, '/../public/filesUploaded/', username);
+
+    var absolutePath = path.join(subPath, relativePath);
+
+	if (!absolutePath.startsWith(subPath)) {
+		res.redirect('/files');
+		return;
+	}
 
     fs.readdir(absolutePath, { withFileTypes: true }, (err, files) => {
         if (err) {
-            return next(err);
+			res.render('error', { error: { status: 501, message: 'Erro ao listar ficheiros' }, title: 'Erro', userLogged, isAdmin, username});
         }
 
         var fileList = files.map(file => ({
@@ -22,15 +43,13 @@ router.get('/files', function (req, res, next) {
             isDirectory: file.isDirectory()
         }));
 
-        res.render('files', { path: relativePath, files: fileList, title: 'Ficheiros' });
-    });
+        res.render('files', { path: relativePath, files: fileList, title: 'Ficheiros', userLogged, isAdmin, username });
+    })
 });
 
 router.get('/download', function (req, res, next) {
-    // TODO AUTH
-    var username = '';
     var relativePath = req.query.path;
-    var absolutePath = path.join(__dirname, '/../public/filesUploaded/', username, relativePath);
+    var absolutePath = path.join(__dirname, '/../public/filesUploaded/', relativePath);
 
     res.download(absolutePath, err => {
         if (err) {
@@ -39,9 +58,23 @@ router.get('/download', function (req, res, next) {
     });
 });
 
-router.get('/upload', upload.single('file'), function (req, res, next) {
-	// TODO AUTH
-	var username = '';
+router.post('/upload', upload.single('file'), async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined') {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+	
+	if (!userLogged) {
+		res.redirect('/login')
+		return;
+	}
+
 	var relativePath = req.body.path || '';
 	var absolutePath = path.join(__dirname, '/../public/filesUploaded/', username, relativePath);
 
@@ -60,9 +93,23 @@ router.get('/upload', upload.single('file'), function (req, res, next) {
 	});
 });
 
-router.get('/delete', function (req, res, next) {
-	// TODO AUTH
-	var username = '';
+router.get('/delete', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined') {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+	
+	if (!userLogged) {
+		res.redirect('/login')
+		return;
+	}
+
 	var relativePath = req.query.path || '';
 	var absolutePath = path.join(__dirname, '/../public/filesUploaded/', username, relativePath);
 
