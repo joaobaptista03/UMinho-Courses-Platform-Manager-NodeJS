@@ -71,7 +71,7 @@ block content
                     - const regexHTTP = /\[(.+?)\]\((http.+?)\)/
                     - const regexLocal = /\[(.+?)\]\(\.\/(.+?)\)/
                     - const newSumarioHTTP = sumario.replace(regexHTTP, '<a href="$2">$1</a>')
-                    - const newSumarioLocal = newSumarioHTTP.replace(regexLocal, '<a href="/download/$2">$1</a>')
+                    - const newSumarioLocal = newSumarioHTTP.replace(regexLocal, '<a href="/files/download?path=$2">$1</a>')
                     li.w3-padding-small!= newSumarioLocal
 
   script.

@@ -29,8 +29,19 @@ router.get('/edit/:id', async function (req, res, next) {
 			return;
 		}
 
+		let uc = ucResponse.data;
+		const regexWithUsername = /\[(.+?)\]\(\.\/(?:.+?)\/(.+?)\)/;
+		const regexWithoutUsername = '\[$1\]\(\.\/$2\)';
+		
+		for (var i = 0 ; i < uc.aulas.length ; i++) {
+			var sumarios = uc.aulas[i].sumario;
+			for (var j = 0; j < sumarios.length; j++) {
+				var sumario = sumarios[j];
+				uc.aulas[i].sumario[j] = sumario.replace(regexWithUsername, regexWithoutUsername);
+			}
+		}
+
         let docentesResponse = await axios.get(process.env.API_URI + '/docentes');
-        let uc = ucResponse.data;
         let docentes = docentesResponse.data;
         
         uc.docentes = await Promise.all(uc.docentes.map(async docenteId => {
@@ -68,6 +79,17 @@ router.post('/edit/:id', async function (req, res, next) {
 	}
 
     try {
+		var aulasBody = JSON.parse(req.body.aulas);
+		const regexLocal = /\[(.+?)\]\(\.\/(.+?)\)/;
+
+		for (var i = 0 ; i < aulasBody.length ; i++) {
+			var sumarios = aulasBody[i].sumario;
+			for (var j = 0; j < sumarios.length; j++) {
+				var sumario = sumarios[j];
+				aulasBody[i].sumario = sumario.replace(regexLocal, '[$1](./' + username + '/$2)');
+			}	
+		}
+
         var updatedUC = {
             _id: req.body._id,
             titulo: req.body.titulo,
@@ -82,7 +104,7 @@ router.post('/edit/:id', async function (req, res, next) {
                 exame: req.body.dataExame,
                 projeto: req.body.dataProjeto
             },
-            aulas: JSON.parse(req.body.aulas),
+            aulas: aulasBody,
 			criador: username
         };
 
