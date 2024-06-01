@@ -201,7 +201,6 @@ router.post('/signup', async function (req, res, next) {
 			res.render('login', { title: 'Login', register: true })
 		})
 		.catch(err => {
-			console.log(err);
 			res.render('error', { error: { status: 501, message: err.message }, title: 'Erro' });
 		})
 });
