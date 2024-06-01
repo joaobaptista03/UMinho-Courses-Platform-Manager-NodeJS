@@ -4,6 +4,9 @@ block content
   .w3-container.w3-padding-16
     form(action="/signUp" method="POST")
       .w3-section
+        label.w3-text-deep-purple(for="email") Nome:
+        input.w3-input.w3-border.w3-round-large(type="text" name="name" required)
+      .w3-section
         label.w3-text-deep-purple(for="email") Email:
         input.w3-input.w3-border.w3-round-large(type="email" name="email" required)
       .w3-section
@@ -12,5 +15,8 @@ block content
       .w3-section
         label.w3-text-deep-purple(for="password") Palavra-passe:
         input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
+      if error
+        .w3-section
+          p.w3-text-red #{error}
       .w3-section
         button.w3-button.w3-blue.w3-large.w3-round-large(type="submit") Registar

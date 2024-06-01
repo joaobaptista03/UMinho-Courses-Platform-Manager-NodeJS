@@ -33,17 +33,17 @@ block content
                       | &nbsp;
               .w3-container.w3-padding-small.w3-center
                 button.w3-button.w3-green.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/uc/${uc._id}'`) Ver Detalhes
-                // TODO AUTH
-                button.w3-button.w3-yellow.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/uc/edit/${uc._id}'`) Editar
-                button.w3-button.w3-red.w3-round-large.w3-small.w3-hover-shadow(onclick=`deleteUC('${uc._id}')`) Apagar
+                if uc.criador == username || isAdmin
+                  button.w3-button.w3-yellow.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/uc/edit/${uc._id}'`) Editar
+                  button.w3-button.w3-red.w3-round-large.w3-small.w3-hover-shadow(onclick=`deleteUC('${uc._id}')`) Apagar
 
   script.
     function deleteUC(id) {
       if (confirm('Tem a certeza que deseja apagar esta UC?')) {
-        fetch(`/uc/${id}`, {
-          method: 'DELETE'
+        fetch(`/uc/delete/${id}`, {
+          method: 'GET'
         }).then(() => {
-          window.location.href = '/';
+          window.location.reload();
         });
       }
     }

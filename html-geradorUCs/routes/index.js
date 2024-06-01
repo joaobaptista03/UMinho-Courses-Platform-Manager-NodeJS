@@ -186,6 +186,11 @@ router.post('/signup', async function (req, res, next) {
 	
 	axios.post(process.env.AUTH_URI + "/register", req.body)
 		.then(response => {
+			if (response.data.error && response.data.message ) {
+				res.render('signup', { title: 'Registar', error: response.data.message });
+				return;
+			}
+
 			var folderPath = path.join(__dirname, '/../public/filesUploaded/', req.body.username);
 			fs.mkdir(folderPath, { recursive: true }, (err) => {
 				if (err) {
@@ -196,7 +201,8 @@ router.post('/signup', async function (req, res, next) {
 			res.render('login', { title: 'Login', register: true })
 		})
 		.catch(err => {
-			res.render('error', { error: { status: 501, message: 'Erro ao registar' }, title: 'Erro' });
+			console.log(err);
+			res.render('error', { error: { status: 501, message: err.message }, title: 'Erro' });
 		})
 });
 

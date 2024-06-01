@@ -24,11 +24,18 @@ router.get('/', async function (req, res, next) {
 	}
 	
     var relativePath = req.query.path || '';
-    var absolutePath = path.join(__dirname, '/../public/filesUploaded/', username, relativePath);
+	var subPath = path.join(__dirname, '/../public/filesUploaded/', username);
+
+    var absolutePath = path.join(subPath, relativePath);
+
+	if (!absolutePath.startsWith(subPath)) {
+		res.redirect('/files');
+		return;
+	}
 
     fs.readdir(absolutePath, { withFileTypes: true }, (err, files) => {
         if (err) {
-            return next(err);
+			res.render('error', { error: { status: 501, message: 'Erro ao listar ficheiros' }, title: 'Erro', userLogged, isAdmin, username});
         }
 
         var fileList = files.map(file => ({
@@ -37,7 +44,7 @@ router.get('/', async function (req, res, next) {
         }));
 
         res.render('files', { path: relativePath, files: fileList, title: 'Ficheiros', userLogged, isAdmin, username });
-    });
+    })
 });
 
 router.get('/download', function (req, res, next) {

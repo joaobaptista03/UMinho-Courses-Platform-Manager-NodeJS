@@ -17,28 +17,16 @@ function updateLastAccess(id, d) {
 }
 
 router.post('/register', function (req, res) {
-  var d = new Date().toISOString().substring(0, 19)
   User.register(new User({
-    username: req.body.username, filiation: req.body.filiation, name: req.body.name, email: req.body.email,
-    level: req.body.level, active: true, dateCreated: d
+    username: req.body.username, name: req.body.name, email: req.body.email,
+    level: 'Consumer',
   }),
     req.body.password,
     function (err, user) {
       if (err)
         res.jsonp({ error: err, message: "Register error: " + err })
       else {
-        passport.authenticate("local")(req, res, function () {
-          jwt.sign({
-            username: req.user.username, level: req.user.level,
-            sub: 'projeto de EngWeb2023 - Base de Dados de Acordãos'
-          },
-            "EWProject_a97368_a97642_a97158",
-            { expiresIn: 3600 },
-            function (e, token) {
-              if (e) res.status(507).jsonp({ error: "Erro na geração do token: " + e })
-              else res.status(201).jsonp({ token: token })
-            });
-        })
+        res.jsonp({ message: "User registered with success" })
       }
     }
   )

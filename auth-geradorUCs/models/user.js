@@ -5,12 +5,8 @@ var userSchema = new mongoose.Schema({
     username: String,
     password: String,
     email: String,
-    filiation: String,
     name: String,
     level: String,
-    active: Boolean,
-    dateCreated: String,
-    lastAccess: String,
   });
 
 userSchema.plugin(passportLocalMongoose);

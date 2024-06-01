@@ -23,6 +23,12 @@ router.get('/edit/:id', async function (req, res, next) {
 
     try {
         let ucResponse = await axios.get(process.env.API_URI + '/ucs/' + req.params.id);
+
+		if (ucResponse.data.criador != username && !isAdmin) {
+			res.render('error', { error: { status: 401, message: 'Não tem permissões para editar esta UC' }, title: 'Erro', userLogged, isAdmin, username});
+			return;
+		}
+
         let docentesResponse = await axios.get(process.env.API_URI + '/docentes');
         let uc = ucResponse.data;
         let docentes = docentesResponse.data;
@@ -55,6 +61,12 @@ router.post('/edit/:id', async function (req, res, next) {
         return;
     }
 
+	var ucResponse = await axios.get(process.env.API_URI + '/ucs/' + req.params.id);
+	if (ucResponse.data.criador != username && !isAdmin) {
+		res.render('error', { error: { status: 401, message: 'Não tem permissões para editar esta UC' }, title: 'Erro', userLogged, isAdmin, username});
+		return;
+	}
+
     try {
         var updatedUC = {
             _id: req.body._id,
@@ -70,7 +82,8 @@ router.post('/edit/:id', async function (req, res, next) {
                 exame: req.body.dataExame,
                 projeto: req.body.dataProjeto
             },
-            aulas: JSON.parse(req.body.aulas)
+            aulas: JSON.parse(req.body.aulas),
+			criador: username
         };
 
         await axios.put(process.env.API_URI + '/ucs/' + req.params.id, updatedUC);
@@ -149,7 +162,8 @@ router.post('/', async function (req, res, next) {
 			exame: req.body.dataExame,
 			projeto: req.body.dataProjeto
 		},
-		aulas: []
+		aulas: [],
+		criador: username
 	};
 
 
@@ -162,7 +176,7 @@ router.post('/', async function (req, res, next) {
         });
 });
 
-router.delete('/:id', async function (req, res, next) {
+router.get('/delete/:id', async function (req, res, next) {
 	var userLogged = false;
 	var isAdmin = false;
 	var username = "";
@@ -172,6 +186,12 @@ router.delete('/:id', async function (req, res, next) {
 		userLogged = response.data.isLogged;
 		isAdmin = response.data.isAdmin;
 		username = response.data.username;
+	}
+
+	var ucResponse = await axios.get(process.env.API_URI + '/ucs/' + req.params.id);
+	if (ucResponse.data.criador != username && !isAdmin) {
+		res.render('error', { error: { status: 401, message: 'Não tem permissões para eliminar esta UC' }, title: 'Erro', userLogged, isAdmin, username});
+		return;
 	}
 
     if (!userLogged) {

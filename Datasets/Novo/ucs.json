@@ -269,7 +269,8 @@
                     "Implementação de alguns exemplos: stock e lista de compras."
                 ]
             }
-        ]
+        ],
+        "criador": "jpmb"
     },
     {
         "_id": "ENGWEB2024",
@@ -432,7 +433,8 @@
                     "Resolução de uma ficha de aferição."
                 ]
             }
-        ]
+        ],
+        "criador": "jpmb"
     },
     {
         "_id": "RPCW2024",
@@ -594,6 +596,7 @@
                     "Harvesting do repositorium."
                 ]
             }
-        ]
+        ],
+        "criador": "jpmb"
     }
 ]
