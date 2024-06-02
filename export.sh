@@ -14,4 +14,7 @@ for collection in ${collection_list[@]}; do
     else
         echo "Collection $collection does not exist in the database."
     fi
+
+cp -r html-geradorUCs/public $db_name/
+
 done
