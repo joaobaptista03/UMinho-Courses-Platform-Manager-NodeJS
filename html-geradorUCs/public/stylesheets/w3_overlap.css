@@ -154,3 +154,51 @@ body {
   justify-content: space-around;
   flex-wrap: wrap; 
 }
+
+.w3-buttonX {
+  border: none;
+  display: inline-block;
+  padding: 4px 12px;
+  margin: 1% 1%;
+  vertical-align: middle;
+  overflow: hidden;
+  text-decoration: none;
+  color: inherit;
+  background-color: inherit;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 50%;
+  white-space: nowrap;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none
+}
+
+.w3-buttonX:disabled {
+  cursor: not-allowed;
+  opacity: 0.3
+}
+
+.w3-bar .w3-buttonX {
+  white-space: normal
+}
+
+.w3-buttonX:hover {
+  color: #ffffff !important;
+  background-color: #000000 !important
+}
+
+@media (max-width:600px) {
+  .w3-button {
+    width: 100%
+  }
+}
+
+.w3-fadeblue,
+.w3-hover-fadeblue:hover {
+  color: #fff !important;
+  background: linear-gradient(to right, #007bff, #00c6ff);
+}

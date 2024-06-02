@@ -8,7 +8,7 @@ block content
     a.w3-button.w3-green.w3-round-large.w3-large.w3-margin-right.w3-hover-shadow(onclick="addPasta()") Adicionar Nova Pasta
 
   .w3-container.w3-padding-16
-    table.w3-table.w3-bordered.w3-striped.w3-hoverable.w3-white.w3-card-4
+    table.w3-table.w3-bordered.w3-striped.w3-white.w3-card-4
       thead.w3-light-grey
         tr
           th Nome
@@ -25,22 +25,6 @@ block content
                 a.w3-button.w3-blue.w3-round-large.w3-hover-shadow.w3-margin-right(href=`/files/download?path=${username}/${path}/${file.name}`) Download
                 a.w3-button.w3-red.w3-round-large.w3-hover-shadow(onclick=`deleteFile('${path}','${file.name}', "file")`) Apagar
 
-  style.
-    .header-container {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .header-container a {
-      margin-right: 20px;
-    }
-
-    .header-container h1 {
-      margin: 0;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
   script.
     const path = !{JSON.stringify(path)};
   
@@ -50,9 +34,9 @@ block content
       modal.classList.add('w3-modal');
       modal.innerHTML = `
         <div class="w3-modal-content w3-animate-opacity w3-card-4">
-          <header class="w3-container w3-teal"> 
+          <header class="w3-container w3-fadeblue"> 
             <span onclick="document.getElementById('addFileModal').style.display='none'" 
-            class="w3-button w3-display-topright">&times;</span>
+            class="w3-buttonX w3-display-topright">&times;</span>
             <h2>Adicionar Novo Ficheiro</h2>
           </header>
           <div class="w3-container">
@@ -62,7 +46,7 @@ block content
               </p>
               <input type="hidden" name="path" value="${path}">
               <p>
-                <button type="submit" class="w3-button w3-green w3-round-large w3-hover-shadow">Enviar</button>
+                <button type="submit" class="w3-button w3-blue w3-round-large w3-hover-shadow">Enviar</button>
               </p>
             </form>
           </div>
@@ -93,9 +77,9 @@ block content
       modal.classList.add('w3-modal');
       modal.innerHTML = `
         <div class="w3-modal-content w3-animate-opacity w3-card-4">
-          <header class="w3-container w3-teal"> 
+          <header class="w3-container w3-fadeblue"> 
             <span onclick="document.getElementById('addFolderModal').style.display='none'" 
-            class="w3-button w3-display-topright">&times;</span>
+            class="w3-buttonX w3-display-topright">&times;</span>
             <h2>Adicionar Nova Pasta</h2>
           </header>
           <div class="w3-container">
@@ -105,7 +89,7 @@ block content
               </p>
               <input type="hidden" name="path" value="${path}">
               <p>
-                <button type="submit" class="w3-button w3-green w3-round-large w3-hover-shadow">Enviar</button>
+                <button type="submit" class="w3-button w3-blue w3-round-large w3-hover-shadow">Enviar</button>
               </p>
             </form>
           </div>
