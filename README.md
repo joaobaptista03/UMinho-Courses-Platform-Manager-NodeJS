@@ -2,7 +2,7 @@
 
 ## Introdução
 
-Este projeto envolve a criação de uma plataforma web para a gestão de Unidades Curriculares (UCs). Utiliza Node.js, Express.js, MongoDB e Docker para fornecer uma solução completa e modular. A plataforma é composta por três serviços principais: Servidor de API de Dados, Servidor de Autenticação e Servidor de Interface.
+Este projeto envolve a criação de uma plataforma web para a gestão e consulta de Unidades Curriculares (UCs). Utiliza Node.js, Express.js, MongoDB e Docker para fornecer uma solução completa e modular. A plataforma é composta por três serviços principais: Servidor de API de Dados, Servidor de Autenticação e Servidor de Interface.
 
 ![Página Inicial](./imgs/IndexAdmin.png)
 
@@ -21,7 +21,7 @@ Implementa operações CRUD para UCs e Docentes, expondo funcionalidades atravé
   - **`UC`**: Representa as Unidades Curriculares, incluindo informações como `titulo`, `docentes`, `horario`, `avaliacao`, `datas`, `aulas`, e `criador`.
 
 - **Controladores**
-  - **`docente.js`**: Contém funções para listar, buscar por ID, inserir, atualizar e remover docentes.
+  - **`docente.js`**: Contém funções para listar, procurar por ID, inserir, atualizar e remover docentes.
   - **`uc.js`**: Similar ao controlador de docentes, mas para operações relacionadas às UCs.
 
 - **Rotas**
@@ -31,12 +31,12 @@ Implementa operações CRUD para UCs e Docentes, expondo funcionalidades atravé
 - **Configuração do Servidor**
   - **`www`**: Configura o servidor HTTP, define a porta e gere eventos de erro e de escuta.
 
-- **Arquivo de Inicialização**
+- **Ficheiro de Inicialização**
   - **`app.js`**: Configura o Express, define middleware e rotas, e gere a conexão com o MongoDB.
 
 #### Docker
 
-A API é containerizada usando Docker. O `Dockerfile` define o ambiente de execução, e o `Dockerfile-seed` é usado para inicializar a base de dados com dados de exemplo.
+A API é colocada num container usando Docker. O `Dockerfile` define o ambiente de execução, e o `Dockerfile-seed` é usado para inicializar a base de dados com dados de exemplo.
 
 ### 2. **Autenticação (`auth-geradorUCs`)**
 
@@ -70,7 +70,7 @@ O serviço de autenticação é configurado para ser executado em um container D
 
 #### Função
 
-Fornece a interface do utilizador para interação com a plataforma, permitindo a gestão visual de UCs e Docentes.
+Fornece a interface ao utilizador para integração com a plataforma, permitindo a gestão visual de UCs e Docentes.
 
 #### Principais Componentes
 
@@ -99,7 +99,7 @@ Fornece a interface do utilizador para interação com a plataforma, permitindo 
 
 #### Docker
 
-A interface HTML é configurada para ser executada em um container Docker, facilitando a implantação e garantindo consistência entre diferentes ambientes de execução.
+A interface HTML é configurada para ser executada em um container Docker, garantindo consistência entre diferentes ambientes de execução.
 
 ## Scripts de Automação
 
@@ -120,7 +120,7 @@ A interface HTML é configurada para ser executada em um container Docker, facil
 ### 2. **Gestão de UCs**
 
 - **Adicionar UC**: Formulário para adicionar uma nova UC, especificando título, docentes, horários, avaliação e datas importantes.
-- **Editar UC**: Formulário para editar uma UC existente, permitindo a atualização de todas as informações associadas, incluindo adicionar e remover aulas. Para adicionar um ficheiro ou link a um sumário, pode-se utilizar a notação MD. Por exemplo: "`[Nome do Ficheiro](./<CaminhoParaOFicheiro>)`", para ficheiros que já estão na plataforma do utilizador; então simplesmente, no link para o ficheiro, colocar qualquer link externo que, com a ajuda de REGEX, o programa reconhece que o é.
+- **Editar UC**: Formulário para editar uma UC existente, permitindo a atualização de todas as informações associadas, incluindo adicionar e remover aulas. Para adicionar um ficheiro ou link a um sumário de hma aula, pode-se utilizar a notação MD, por exemplo: "`[Nome do Ficheiro](./<CaminhoParaOFicheiro>)`", para ficheiros que já estão carregados na plataforma do utilizador; ou então simplesmente, no `<CaminhoParaOFicheiro>` colocar qualquer link externo que, com a ajuda de REGEX, o programa reconhece que o é.
 - **Eliminar UC**: Opção para eliminar uma UC, disponível apenas para criadores ou administradores.
 
 ### 3. **Gestão de Docentes**
@@ -157,7 +157,7 @@ A orquestração dos serviços é realizada com Docker Compose. O `docker-compos
 
 ## Conclusão
 
-Este projeto representa uma solução integrada e modular para a gestão de UCs, destacando-se pela sua arquitetura baseada em micro serviços e pela facilidade de implantação e manutenção proporcionada pela containerização. A estrutura modular e o uso do Docker garantem escalabilidade e flexibilidade, tornando o sistema fácil de manter e expandir.
+Este projeto representa uma solução integrada e modular para a gestão de UCs, destacando-se pela sua arquitetura baseada em micro serviços e pela facilidade de implantação e manutenção proporcionada pelo docker. A estrutura modular e o uso do Docker garantem escalabilidade e flexibilidade, tornando o sistema fácil de manter e expandir.
 
 ## Screenshots do Site
 
