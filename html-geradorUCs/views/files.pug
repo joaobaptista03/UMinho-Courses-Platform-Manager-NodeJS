@@ -19,10 +19,11 @@ block content
             td= file.name
             td
               if file.isDirectory
-                a.w3-button.w3-green.w3-round-large.w3-hover-shadow(href=`/files?path=${path}/${file.name}`) Abrir
+                a.w3-button.w3-green.w3-round-large.w3-hover-shadow.w3-margin-right(href=`/files?path=${path}/${file.name}`) Abrir
+                a.w3-button.w3-red.w3-round-large.w3-hover-shadow(onclick=`deleteFile('${path}','${file.name}', "dir")`) Apagar
               else
                 a.w3-button.w3-blue.w3-round-large.w3-hover-shadow.w3-margin-right(href=`/files/download?path=${username}/${path}/${file.name}`) Download
-                a.w3-button.w3-red.w3-round-large.w3-hover-shadow(onclick=`deleteFile('${path}','${file.name}')`) Apagar
+                a.w3-button.w3-red.w3-round-large.w3-hover-shadow(onclick=`deleteFile('${path}','${file.name}', "file")`) Apagar
 
   style.
     .header-container {
@@ -71,10 +72,10 @@ block content
       document.getElementById('addFileModal').style.display = 'block';
     }
 
-    function deleteFile(path, fileName) {
-      if (confirm('Tem a certeza que deseja apagar este ficheiro?')) {
+    function deleteFile(path, fileName, dirOrFile) {
+      if (confirm('Tem a certeza que deseja apagar?')) {
         var filePath = path ? `${path}/${fileName}` : fileName;
-        fetch(`/files/delete?path=${filePath}`, {
+        fetch(`/files/delete?path=${filePath}&type=${dirOrFile}`, {
           method: 'GET'
         })
         .then(() => {

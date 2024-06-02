@@ -159,16 +159,28 @@ router.get('/delete', async function (req, res, next) {
 		return;
 	}
 
+	var type = req.query.type;
 	var relativePath = req.query.path || '';
 	var absolutePath = path.join(__dirname, '/../public/filesUploaded/', username, relativePath);
 
-	fs.unlink(absolutePath, err => {
-		if (err) {
-			return next(err);
-		}
+	console.log(type);
+	console.log(absolutePath);
 
-		res.redirect('/files?path=' + path.dirname(relativePath));
-	});
+	if (type == 'file') {
+		fs.unlink(absolutePath, err => {
+			if (err) {
+				return next(err);
+			}
+		});
+	} else if (type == 'dir') {
+		fs.rmdir(absolutePath, { recursive: true }, err => {
+			if (err) {
+				return next(err);
+			}			
+		});
+	}
+
+	res.redirect('/files?path=' + path.dirname(relativePath));
 });
 
 module.exports = router;
