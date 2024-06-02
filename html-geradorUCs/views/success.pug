@@ -1,0 +1,14 @@
+extends layout
+
+block content
+  .w3-container
+    .w3-card-4.w3-margin.w3-white.w3-padding
+      .w3-container.w3-padding-16.w3-center
+        h1.w3-xxlarge.w3-text-green Sucesso
+        if sucesso
+          p.w3-large= sucesso
+        else
+          p.w3-large Sucesso!
+
+      .w3-container.w3-padding-16.w3-center
+        a.w3-button.w3-blue.w3-large.w3-round-large(href="/") Página inicial

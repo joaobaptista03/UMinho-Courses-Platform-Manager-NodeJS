@@ -192,6 +192,31 @@ router.get('/signup', async function (req, res, next) {
 	res.render('signup', { title: 'Registar' });
 });
 
+router.get('/addAdmin', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+
+	if (!isAdmin) {
+		res.redirect('/')
+		return;
+	}
+	
+	res.render('addAdmin', { title: 'Registar Administrador' });
+});
+
 router.post('/signup', async function (req, res, next) {
 	var userLogged = false;
 	var isAdmin = false;
@@ -229,6 +254,49 @@ router.post('/signup', async function (req, res, next) {
 			});
 
 			res.render('login', { title: 'Login', register: true })
+		})
+		.catch(err => {
+			res.render('error', { error: { status: 501, message: err.message }, title: 'Erro' });
+		})
+});
+
+router.post('/signupAdmin', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+
+	if (!isAdmin) {
+		res.redirect('/')
+		return;
+	}
+	
+	axios.post(process.env.AUTH_URI + "/registerAdmin", req.body)
+		.then(response => {
+			if (response.data.error && response.data.message) {
+				res.render('addAdmin', { title: 'Registar Administrador', error: response.data.message });
+				return;
+			}
+
+			var folderPath = path.join(__dirname, '/../public/filesUploaded/', req.body.username);
+			fs.mkdir(folderPath, { recursive: true }, (err) => {
+				if (err) {
+					res.render('error', { error: { status: 501, message: 'Erro ao criar pasta' }, title: 'Erro' });
+				}
+			});
+			
+			res.render('success', { title: 'Sucesso', sucesso: 'Administrador registado com sucesso.', userLogged, isAdmin, username });
 		})
 		.catch(err => {
 			res.render('error', { error: { status: 501, message: err.message }, title: 'Erro' });

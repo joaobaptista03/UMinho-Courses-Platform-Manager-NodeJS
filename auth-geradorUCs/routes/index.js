@@ -32,6 +32,22 @@ router.post('/register', function (req, res) {
   )
 })
 
+router.post('/registerAdmin', function (req, res) {
+  User.register(new User({
+    username: req.body.username, name: req.body.name, email: req.body.email,
+    level: 'admin',
+  }),
+    req.body.password,
+    function (err, user) {
+      if (err)
+        res.jsonp({ error: err, message: "Register error: " + err })
+      else {
+        res.jsonp({ message: "User registered with success" })
+      }
+    }
+  )
+})
+
 router.post('/login', passport.authenticate('local'), function (req, res) {
   var d = new Date().toISOString().substring(0, 19);
 

@@ -83,7 +83,7 @@ router.post('/', upload.single('foto'), async function (req, res, next) {
 
     axios.post(process.env.API_URI + '/docentes', docente)
         .then((response) => {
-            res.redirect('/');
+            res.render('success', {title: 'Sucesso', sucesso: 'Docente adicionado com sucesso', userLogged, isAdmin, username});
         })
         .catch((error) => {
             res.render('error', { error: { status: 501, message: 'Erro ao adicionar Docente' }, title: 'Erro', userLogged, isAdmin, username});
