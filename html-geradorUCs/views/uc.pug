@@ -68,8 +68,8 @@ block content
               h3.w3-text-blue #{aula.tipo} - #{aula.data}
               ul.w3-ul
                 each sumario in aula.sumario
-                    - const regexHTTP = /\[(.+?)\]\((http.+?)\)/
-                    - const regexLocal = /\[(.+?)\]\(\.\/(.+?)\)/
+                    - const regexHTTP = /\[(.+?)\]\((http.+?)\)/g
+                    - const regexLocal = /\[(.+?)\]\(\.\/(.+?)\)/g
                     - const newSumarioHTTP = sumario.replace(regexHTTP, '<a href="$2">$1</a>')
                     - const newSumarioLocal = newSumarioHTTP.replace(regexLocal, '<a href="/files/download?path=$2">$1</a>')
                     li.w3-padding-small!= newSumarioLocal

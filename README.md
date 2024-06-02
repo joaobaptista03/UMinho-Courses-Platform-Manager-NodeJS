@@ -120,7 +120,7 @@ A interface HTML é configurada para ser executada em um container Docker, garan
 ### 2. **Gestão de UCs**
 
 - **Adicionar UC**: Formulário para adicionar uma nova UC, especificando título, docentes, horários, avaliação e datas importantes.
-- **Editar UC**: Formulário para editar uma UC existente, permitindo a atualização de todas as informações associadas, incluindo adicionar e remover aulas. Para adicionar um ficheiro ou link a um sumário de hma aula, pode-se utilizar a notação MD, por exemplo: "`[Nome do Ficheiro](./<CaminhoParaOFicheiro>)`", para ficheiros que já estão carregados na plataforma do utilizador; ou então simplesmente, no `<CaminhoParaOFicheiro>` colocar qualquer link externo que, com a ajuda de REGEX, o programa reconhece que o é.
+- **Editar UC**: Formulário para editar uma UC existente, permitindo a atualização de todas as informações associadas, incluindo adicionar e remover aulas. Para adicionar um ficheiro ou link a um sumário de uma aula, pode-se utilizar a notação MD, por exemplo: "`[Nome do Ficheiro](./<CaminhoParaOFicheiro>)`", para ficheiros que já estão carregados na plataforma do utilizador; ou então simplesmente, no `<CaminhoParaOFicheiro>` colocar qualquer link externo que, com a ajuda de REGEX, o programa reconhece que o é. Para simplificação, existe um botão "Copiar HyperLink" em cada ficheiro, na página dos ficheiros, que copia automaticamente.
 - **Eliminar UC**: Opção para eliminar uma UC, disponível apenas para criadores ou administradores.
 
 ### 3. **Gestão de Docentes**

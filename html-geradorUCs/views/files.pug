@@ -24,7 +24,7 @@ block content
               else
                 a.w3-button.w3-blue.w3-round-large.w3-hover-shadow.w3-margin-right(href=`/files/download?path=${username}/${path}/${file.name}`) Download
                 a.w3-button.w3-red.w3-round-large.w3-hover-shadow.w3-margin-right(onclick=`deleteFile('${path}','${file.name}', "file")`) Apagar
-                a.w3-button.w3-red.w3-round-large.w3-hover-shadow(onclick=`copyHyperlink('${path}','${file.name}')`) Copiar Hyperlink
+                a.w3-button.w3-green.w3-round-large.w3-hover-shadow(onclick=`copyHyperlink('${path}','${file.name}')`) Copiar Hyperlink
 
   script.
     const path = !{JSON.stringify(path)};

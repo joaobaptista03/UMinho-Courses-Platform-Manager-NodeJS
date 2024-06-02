@@ -42,7 +42,7 @@
                     "Tipos de dados: inteiros e reais.",
                     "Operações e operadores sobre tipos numéricos.",
                     "Operações de IO: input e print.",
-                    "[Slides apresentados na aula.](./aulas-ex-feitos/ATP2023.pdf)"
+                    "[Slides apresentados na aula.](./jcr/ATP2023/aulas-ex-feitos/ATP2023.pdf)"
                 ]
             },
             {
@@ -51,7 +51,7 @@
                 "sumario": [
                     "Tipos de dados estruturados: listas e strings.",
                     "Principais métodos e operações.",
-                    "[Notebook criado durante a aula.](./aulas-ex-feitos/AulaT3-20230928.ipynb.zip)"
+                    "[Notebook criado durante a aula.](./jcr/ATP2023/aulas-ex-feitos/AulaT3-20230928.ipynb.zip)"
                 ]
             },
             {
@@ -61,7 +61,7 @@
                     "Tipos de dados estruturados: listas e tuplos.",
                     "Principais métodos e operações.",
                     "Leitura e escrita de ficheiros.",
-                    "[Notebook criado durante a aula.](./aulas-ex-feitos/AulaT4.zip)"
+                    "[Notebook criado durante a aula.](./jcr/ATP2023/aulas-ex-feitos/AulaT4.zip)"
                 ]
             },
             {
@@ -72,7 +72,7 @@
                     "Principais métodos e operações.",
                     "Criação de distribuições.",
                     "Criação de gráficos com a biblioteca matplotlib.",
-                    "[Notebook criado durante a aula.](./aulas-ex-feitos/AulaT5-20231019.ipynb.zip)"
+                    "[Notebook criado durante a aula.](./jcr/ATP2023/aulas-ex-feitos/AulaT5-20231019.ipynb.zip)"
                 ]
             },
             {
@@ -83,9 +83,9 @@
                     "Processamento de datasets em ficheiro.",
                     "O formato JSON e a respetiva biblioteca Python.",
                     "Criação de gráficos com a biblioteca matplotlib para distribuições.",
-                    "[Notebook criado durante a aula.](./aulas-ex-feitos/AulaT6-20231026.ipynb.zip)",
-                    "[Dataset dos EMD em JSON.](./aulas-ex-feitos/datasets/emd.json)",
-                    "[Dataset dos EMD em CSV.](./aulas-ex-feitos/datasets/emd.csv)"
+                    "[Notebook criado durante a aula.](./jcr/ATP2023/aulas-ex-feitos/AulaT6-20231026.ipynb.zip)",
+                    "[Dataset dos EMD em JSON.](./jcr/ATP2023/aulas-ex-feitos/datasets/emd.json)",
+                    "[Dataset dos EMD em CSV.](./jcr/ATP2023/aulas-ex-feitos/datasets/emd.csv)"
                 ]
             },
             {
@@ -101,9 +101,9 @@
                 "data": "2023-11-09",
                 "sumario": [
                     "Apresentação do projeto e respetivo kit.",
-                    "[Kit para o projeto.](./aulas-ex-feitos/projeto-2023.zip)",
+                    "[Kit para o projeto.](./jcr/ATP2023/aulas-ex-feitos/projeto-2023.zip)",
                     "Desenvolvimento de uma aplicação para gerir uma pequena base de dados de EMD: 1) Operações CRUD sobre o modelo; 2) Cálculo de algumas distribuições e sua visualização gráfica, ... 3) Configuração e manipulação de gráficos com o matplotlib.",
-                    "[Material base da aula.](./aulas-ex-feitos/AulaT8-20231109.ipynb.zip)"
+                    "[Material base da aula.](./jcr/ATP2023/aulas-ex-feitos/AulaT8-20231109.ipynb.zip)"
                 ]
             },
             {
@@ -112,7 +112,7 @@
                 "sumario": [
                     "Introdução à utilização de interfaces gráficas para programas em Python.",
                     "O módulo PySimpleGUI: estrutura, componentes disponíveis, modelo de comportamento.",
-                    "[Material base da aula.](./aulas-ex-feitos/AulaT9-20231116.ipynb.zip)"
+                    "[Material base da aula.](./jcr/ATP2023/aulas-ex-feitos/AulaT9-20231116.ipynb.zip)"
                 ]
             },
             {
@@ -128,20 +128,20 @@
                 "data": "2023-09-18/19",
                 "sumario": [
                     "Resolução de exercícios de programação visual em Scratch 3.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaP2-20230918.pdf).",
-                    "[Explorando_o_Scratch_1.4](./aulas-ex-feitos/biblio/Explorando_o_Scratch_1.4_.pdf).",
-                    "[Manual do Scratch](./aulas-ex-feitos/biblio/manual-scratch.pdf).",
-                    "[Manual Apoio 1](./aulas-ex-feitos/biblio/ManualApoio1.pdf).",
-                    "[Manual Apoio 2](./aulas-ex-feitos/biblio/ManualApoio2.pdf).",
-                    "[Scratch3 Comunidad atenea](./aulas-ex-feitos/biblio/Scratch3-Comunidadatenea.pdf).",
-                    "Algumas soluções do TP1: [Quadrado](./aulas-ex-feitos/P2-soluções/quadrado.sb3), [Poligono](./aulas-ex-feitos/P2-soluções/poligono.sb3), [Movimento](./aulas-ex-feitos/P2-soluções/movimento-sprite.sb3), [Par ou Ímpar](./aulas-ex-feitos/P2-soluções/parOuImpar.sb3), [Divisores](./aulas-ex-feitos/P2-soluções/divisores.sb3)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaP2-20230918.pdf).",
+                    "[Explorando_o_Scratch_1.4](./jcr/ATP2023/aulas-ex-feitos/biblio/Explorando_o_Scratch_1.4_.pdf).",
+                    "[Manual do Scratch](./jcr/ATP2023/aulas-ex-feitos/biblio/manual-scratch.pdf).",
+                    "[Manual Apoio 1](./jcr/ATP2023/aulas-ex-feitos/biblio/ManualApoio1.pdf).",
+                    "[Manual Apoio 2](./jcr/ATP2023/aulas-ex-feitos/biblio/ManualApoio2.pdf).",
+                    "[Scratch3 Comunidad atenea](./jcr/ATP2023/aulas-ex-feitos/biblio/Scratch3-Comunidadatenea.pdf).",
+                    "Algumas soluções do TP1: [Quadrado](./jcr/ATP2023/aulas-ex-feitos/P2-soluções/quadrado.sb3), [Poligono](./jcr/ATP2023/aulas-ex-feitos/P2-soluções/poligono.sb3), [Movimento](./jcr/ATP2023/aulas-ex-feitos/P2-soluções/movimento-sprite.sb3), [Par ou Ímpar](./jcr/ATP2023/aulas-ex-feitos/P2-soluções/parOuImpar.sb3), [Divisores](./jcr/ATP2023/aulas-ex-feitos/P2-soluções/divisores.sb3)."
                 ]
             },
             {
                 "tipo": "P",
                 "data": "2023-09-25/26",
                 "sumario": [
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaP3-20230925.ipynb.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaP3-20230925.ipynb.zip)."
                 ]
             },
             {
@@ -149,7 +149,7 @@
                 "data": "2023-10-02/03",
                 "sumario": [
                     "Resolução de exercícios sobre modelação e operações com listas.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaP4-20231002.ipynb.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaP4-20231002.ipynb.zip)."
                 ]
             },
             {
@@ -157,7 +157,7 @@
                 "data": "2023-10-09/10",
                 "sumario": [
                     "Resolução de exercícios sobre modelação e operações com listas e listas de listas.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaP5-20231009.ipynb.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaP5-20231009.ipynb.zip)."
                 ]
             },
             {
@@ -165,8 +165,8 @@
                 "data": "2023-10-16/17",
                 "sumario": [
                     "Resolução de exercícios sobre modelação e operações sobre ficheiros, listas e tuplos.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaP6-20231016.ipynb.zip).",
-                    "[Dataset para o TPC](./aulas-ex-feitos/datasets/diabetes_prediction_dataset.csv.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaP6-20231016.ipynb.zip).",
+                    "[Dataset para o TPC](./jcr/ATP2023/aulas-ex-feitos/datasets/diabetes_prediction_dataset.csv.zip)."
                 ]
             },
             {
@@ -174,7 +174,7 @@
                 "data": "2023-10-23/24",
                 "sumario": [
                     "Resolução de exercícios sobre modelação e operações sobre ficheiros e estruturas de dados.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaP7-20231023.ipynb.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaP7-20231023.ipynb.zip)."
                 ]
             },
             {
@@ -182,7 +182,7 @@
                 "data": "2023-10-30/31",
                 "sumario": [
                     "Resolução de exercícios visando a aferição de conhecimentos.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaP8-20231030.ipynb.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaP8-20231030.ipynb.zip)."
                 ]
             },
             {
@@ -190,7 +190,7 @@
                 "data": "2023-11-06/07",
                 "sumario": [
                     "Resolução de exercícios com algoritmos recursivos.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaP9-20231106.ipynb.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaP9-20231106.ipynb.zip)."
                 ]
             },
             {
@@ -198,7 +198,7 @@
                 "data": "2023-11-13/14",
                 "sumario": [
                     "Resolução de exercícios com algoritmos sobre strings, listas e dicionários.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaP10-20231113.ipynb.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaP10-20231113.ipynb.zip)."
                 ]
             },
             {
@@ -206,7 +206,7 @@
                 "data": "2023-11-20/21",
                 "sumario": [
                     "Resolução de exercícios com algoritmos sobre interfaces gráficas.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaP11-20231120.ipynb.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaP11-20231120.ipynb.zip)."
                 ]
             },
             {
@@ -215,7 +215,7 @@
                 "sumario": [
                     "Alguns algoritmos envolvendo tipos estruturados de dados.",
                     "Módulo OS e a manipulação do sistema de ficheiros a partir de uma aplicação.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaT10-20231123.ipynb.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaT10-20231123.ipynb.zip)."
                 ]
             },
             {
@@ -223,7 +223,7 @@
                 "data": "2023-11-27/28",
                 "sumario": [
                     "Resolução de exercícios com algoritmos cobrindo toda a matéria.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaP12-20231127.ipynb.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaP12-20231127.ipynb.zip)."
                 ]
             },
             {
@@ -233,7 +233,7 @@
                     "Funções de ordem superior (FOS).",
                     "As funções map, filter e reduce.",
                     "Introdução à construção de catamorfismos: abstração sobre o modelo.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaT11-20231130.ipynb.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaT11-20231130.ipynb.zip)."
                 ]
             },
             {
@@ -241,7 +241,7 @@
                 "data": "2023-12-04/05",
                 "sumario": [
                     "Resolução de exercícios com algoritmos cobrindo toda a matéria com particular incidência em dicionários.",
-                    "[Guião para a aula prática](./aulas-ex-feitos/AulaP13-20231204.ipynb.zip)."
+                    "[Guião para a aula prática](./jcr/ATP2023/aulas-ex-feitos/AulaP13-20231204.ipynb.zip)."
                 ]
             },
             {
@@ -256,7 +256,7 @@
                 "data": "2023-12-11/12",
                 "sumario": [
                     "Resolução do teste de avaliação.",
-                    "[Teste em PDF](./aulas-ex-feitos/atp2023-normal.pdf)."
+                    "[Teste em PDF](./jcr/ATP2023/aulas-ex-feitos/atp2023-normal.pdf)."
                 ]
             },
             {
@@ -270,7 +270,7 @@
                 ]
             }
         ],
-        "criador": "jpmb"
+        "criador": "jcr"
     },
     {
         "_id": "ENGWEB2024",
@@ -392,7 +392,7 @@
                     "Criação dos formulários e das páginas de resposta a estes;",
                     "Criar um módulo templates.js com as templates das páginas;",
                     "Programação do serviço principal.",
-                    "Material para a aula: [Esqueleto do serviço](./semana4/alunos_server_skeleton.js), [Módulo static](./semana4/static.js), [Pasta public](./semana4/public), [Templates das páginas HTML](./semana4/templates.js)."
+                    "Material para a aula: [Esqueleto do serviço](./jcr/EW2024/semana4/alunos_server_skeleton.js), [Módulo static](./jcr/EW2024/semana4/static.js), [Pasta public](./jcr/EW2024/semana4/pasta-public.zip), [Templates das páginas HTML](./jcr/EW2024/semana4/templates.js)."
                 ]
             },
             {
@@ -434,7 +434,7 @@
                 ]
             }
         ],
-        "criador": "jpmb"
+        "criador": "jcr"
     },
     {
         "_id": "RPCW2024",
@@ -478,7 +478,7 @@
                     "Desenvolvimento de ontologias com o Protégé.",
                     "Processamento de ontologias no formato Turtle: TTL.",
                     "Resolução de alguns exercícios.",
-                    "TPC1: 1) Descarregar o [dataset plantas.json](./datasets/plantas.json); 2) Analisá-lo; 3) Converter para TTL."
+                    "TPC1: 1) Descarregar o [dataset plantas.json](./jcr/RPCW2024/datasets/plantas.json); 2) Analisá-lo; 3) Converter para TTL."
                 ]
             },
             {
@@ -493,7 +493,7 @@
                 "data": "2024-02-20",
                 "sumario": [
                     "Resolução de alguns exercícios.",
-                    "TPC2: 1) Descarregar o [dataset db.json](./datasets/db.json) correspondente a uma escola de música; 2) Analisá-lo; 3) Criar o modelo ontológico; 4) Povoar o modelo com os dados."
+                    "TPC2: 1) Descarregar o [dataset db.json](./jcr/RPCW2024/datasets/db.json) correspondente a uma escola de música; 2) Analisá-lo; 3) Criar o modelo ontológico; 4) Povoar o modelo com os dados."
                 ]
             },
             {
@@ -508,7 +508,7 @@
                 "data": "2024-02-27",
                 "sumario": [
                     "Resolução de alguns exercícios: História de Portugal.",
-                    "TPC3: 1) Descarregar o [dataset mapa-virtual.json](./datasets/mapa-virtual.json) correspondente a um mapa com ligações entre cidades; 2) Analisá-lo; 3) Criar o modelo ontológico; 4) Povoar o modelo com os dados."
+                    "TPC3: 1) Descarregar o [dataset mapa-virtual.json](./jcr/RPCW2024/datasets/mapa-virtual.json) correspondente a um mapa com ligações entre cidades; 2) Analisá-lo; 3) Criar o modelo ontológico; 4) Povoar o modelo com os dados."
                 ]
             },
             {
@@ -524,7 +524,7 @@
                 "tipo": "TP",
                 "data": "2024-03-05",
                 "sumario": [
-                    "Criação de uma [App web para a Tabela Periódica](./apps/tabperiodica.zip).",
+                    "Criação de uma [App web para a Tabela Periódica](./jcr/RPCW2024/apps/tabperiodica.zip).",
                     "TPC4: Tabela Periódica (completar a App desenvolvida na aula)",
                     "- elementos.html",
                     "1. Acrescentar c/ o grupo;",
@@ -597,6 +597,6 @@
                 ]
             }
         ],
-        "criador": "jpmb"
+        "criador": "jcr"
     }
 ]
