@@ -33,7 +33,7 @@ router.get('/', async function (req, res, next) {
 
     var absolutePath = path.join(subPath, relativePath);
 
-	if (!absolutePath.startsWith(subPath)) {
+	if (!absolutePath.startsWith(subPath) && !isAdmin) {
 		res.redirect('/files');
 		return;
 	}
