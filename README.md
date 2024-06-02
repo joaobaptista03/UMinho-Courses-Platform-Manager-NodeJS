@@ -75,7 +75,7 @@ Fornece a interface ao utilizador para integração com a plataforma, permitindo
 #### Principais Componentes
 
 - **Rotas**
-  - **`index.js`**: gere a visualização de UCs e a página de login.
+  - **`index.js`**: gere o rendering das páginas cujos botões existem na página inicial, bem como o login, registo, logout e adicionar Administradores (no caso de já ser um).
   - **`uc.js`**: gere a adição, edição e visualização de detalhes das UCs.
   - **`addDocente.js`**: gere a adição de novos docentes.
   - **`files.js`**: gere o upload, download e organização de ficheiros dos utilizadores.
@@ -85,11 +85,13 @@ Fornece a interface ao utilizador para integração com a plataforma, permitindo
   - **`addUC.pug`**: Formulário para adicionar uma nova UC.
   - **`editUC.pug`**: Formulário para editar uma UC existente.
   - **`addDocente.pug`**: Formulário para adicionar um novo docente.
+  - **`addAdmin.pug`**: Formulário para adicionar um novo Administrador.
   - **`uc.pug`**: Página de detalhes de uma UC específica.
   - **`login.pug`**: Formulário de login do utilizador.
   - **`signup.pug`**: Formulário de registo de novo utilizador.
   - **`files.pug`**: Interface para gestão de ficheiros dos utilizadores.
   - **`error.pug`**: Página de erro para exibição de mensagens de erro.
+  - **`success.pug`**: Página de sucesso para exibição de mensagens de sucesso.
 
 - **Configuração do Servidor**
   - **`www`**: Configura o servidor HTTP, define a porta e gere eventos de erro e de escuta.
@@ -137,6 +139,7 @@ A interface HTML é configurada para ser executada em um container Docker, garan
 ### 5. **Autenticação e Autorização**
 
 - **Registo de Utilizador**: Formulário para criar uma nova conta de utilizador.
+- **Registo de Administrador**: Formulário para criar uma nova conta de Administrador, caso já seja um.
 - **Login**: Formulário de login que autentica os utilizadores e gera um token JWT.
 - **Logout**: Opção de logout que termina a sessão do utilizador.
 - **Verificação de Sessão**: Verifica se um utilizador está autenticado e se o token JWT é válido.
@@ -200,3 +203,11 @@ Este projeto representa uma solução integrada e modular para a gestão de UCs,
 ![Página de Ficheiros de um Utilizador (1)](./imgs/Ficheiros1.png)
 ![Página de Ficheiros de um Utilizador (2)](./imgs/Ficheiros2.png)
 ![Página de Ficheiros de um Utilizador (3)](./imgs/Ficheiros3.png)
+
+### Página de Sucesso
+
+![Página de Sucesso](./imgs/Sucesso.png)
+
+### Página de Erro
+
+![Página de Erro](./imgs/Erro.png)
