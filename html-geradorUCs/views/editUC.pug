@@ -11,7 +11,7 @@ block content
         input.w3-input.w3-border.w3-round-large(type="text" name="titulo" value=uc.titulo required)
       .w3-section
         label.w3-text-deep-purple Docentes:
-        select.w3-input.w3-border.w3-round-large(name="docentes" multiple required)
+        select.w3-input.w3-border.w3-round-large(name="docentes" multiple required id="docentes-select")
           each docente in docentes
             - const isSelected = uc.docentes.some(d => d._id === docente._id)
             option.w3-border.w3-round-large(value=docente._id selected=isSelected style="margin:7px; padding:7px;") #{docente.nome}
@@ -59,6 +59,16 @@ block content
       const textareas = document.querySelectorAll('textarea');
       textareas.forEach(textarea => {
         textarea.style.height = textarea.scrollHeight + 3 + 'px';
+      });
+      
+      var select = document.getElementById('docentes-select');
+      select.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+
+        var options = select.options;
+        var option = options[e.target.index];
+
+        option.selected = !option.selected;
       });
     });
 
