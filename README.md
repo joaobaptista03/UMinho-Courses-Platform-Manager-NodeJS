@@ -4,6 +4,8 @@
 
 Este projeto envolve a criação de uma plataforma web para a gestão e consulta de Unidades Curriculares (UCs). Utiliza Node.js, Express.js, MongoDB e Docker para fornecer uma solução completa e modular. A plataforma é composta por três serviços principais: Servidor de API de Dados, Servidor de Autenticação e Servidor de Interface.
 
+O conteúdo inicial já contém dados de exemplo (ATP2023, RPCW2024 e EngWeb2024), incluíndo os seus ficheiros.
+
 ![Página Inicial](./imgs/IndexAdmin.png)
 
 ## Estrutura do Projeto
