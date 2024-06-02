@@ -11,9 +11,9 @@ block content
         input.w3-input.w3-border.w3-round-large(type="text" name="titulo" required)
       .w3-section
         label.w3-text-deep-purple Docentes:
-        select.w3-input.w3-border.w3-round-large(name="docentes" multiple required)
+        select.w3-input.w3-border.w3-round-large(name="docentes" multiple required id="docentes-select")
           each docente in docentes
-            option.w3-border.w3-round-large(value=docente._id, style="margin:7px; padding:7px;") #{docente.nome}
+            option.w3-border.w3-round-large(value=docente._id,  style="margin:7px; padding:7px;") #{docente.nome}
       .w3-section
         label.w3-text-deep-purple Horários Teóricos (separados por ponto e vírgula):
         input.w3-input.w3-border.w3-round-large(type="text" name="horarioTeoricas")
@@ -33,3 +33,17 @@ block content
         label.w3-text-deep-purple Data do Projeto:
         input.w3-input.w3-border.w3-round-large(type="text" name="dataProjeto")
       button.w3-button.w3-blue.w3-large.w3-round-large(type="submit") Adicionar UC
+
+
+    script.
+      document.addEventListener('DOMContentLoaded', function() {
+        var select = document.getElementById('docentes-select');
+        select.addEventListener('mousedown', function(e) {
+          e.preventDefault();
+
+          var options = select.options;
+          var option = options[e.target.index];
+
+          option.selected = !option.selected;
+        });
+      });
