@@ -142,8 +142,9 @@ A interface HTML é configurada para ser executada em um container Docker, garan
 ### 5. **Autenticação e Autorização**
 
 - **Registo de Utilizador**: Formulário para criar uma nova conta de utilizador.
-- **Registo de Administrador**: Formulário para criar uma nova conta de Administrador, caso já seja um.
-- **Consulta e Remoção de Utilizadores**: Página que permite visualizar os administradores que existem, e remover caso seja necessário.
+- **Registo de Administrador**: Formulário para criar uma nova conta de Administrador (é necessário ser administrador).
+- **Consulta e Remoção de Administradores**: Página que permite visualizar os administradores que existem, e remover caso seja necessário (é necessário ser administrador).
+- **Consulta e Remoção de Todos os Ficheiros**: Página que permite aos administradores visualizar e remover todos os ficheiros do servidor.  
 - **Alteração de Password**: Formulário para alterar a password do utilizador.
 - **Login**: Formulário de login que autentica os utilizadores e gera um token JWT.
 - **Logout**: Opção de logout que termina a sessão do utilizador.
