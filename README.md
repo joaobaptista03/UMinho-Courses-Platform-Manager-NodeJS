@@ -145,6 +145,20 @@ A interface HTML é configurada para ser executada em um container Docker, facil
 
 - **Página de Erro**: Apresenta mensagens de erro detalhadas quando ocorrem problemas na aplicação, como erros de autenticação ou problemas com a base de dados.
 
+## Docker Compose
+
+A orquestração dos serviços é realizada com Docker Compose. O `docker-compose.yml` define a configuração dos serviços, volumes e redes necessários para a operação da plataforma, incluindo:
+
+- **Serviço MongoDB**: Base de dados MongoDB.
+- **Serviço de Seed MongoDB**: Inicializa a base de dados com dados de exemplo.
+- **Serviço API**: Executa o servidor da API de dados.
+- **Serviço de Autenticação**: Executa o servidor de autenticação.
+- **Serviço de Interface HTML**: Executa o servidor da interface.
+
+## Conclusão
+
+Este projeto representa uma solução integrada e modular para a gestão de UCs, destacando-se pela sua arquitetura baseada em micro serviços e pela facilidade de implantação e manutenção proporcionada pela containerização. A estrutura modular e o uso do Docker garantem escalabilidade e flexibilidade, tornando o sistema fácil de manter e expandir.
+
 ## Screenshots do Site
 
 ### Página Inicial (não autenticado)
@@ -186,17 +200,3 @@ A interface HTML é configurada para ser executada em um container Docker, facil
 ![Página de Ficheiros de um Utilizador (1)](./imgs/Ficheiros1.png)
 ![Página de Ficheiros de um Utilizador (2)](./imgs/Ficheiros2.png)
 ![Página de Ficheiros de um Utilizador (3)](./imgs/Ficheiros3.png)
-
-## Docker Compose
-
-A orquestração dos serviços é realizada com Docker Compose. O `docker-compose.yml` define a configuração dos serviços, volumes e redes necessários para a operação da plataforma, incluindo:
-
-- **Serviço MongoDB**: Base de dados MongoDB.
-- **Serviço de Seed MongoDB**: Inicializa a base de dados com dados de exemplo.
-- **Serviço API**: Executa o servidor da API de dados.
-- **Serviço de Autenticação**: Executa o servidor de autenticação.
-- **Serviço de Interface HTML**: Executa o servidor da interface.
-
-## Conclusão
-
-Este projeto representa uma solução integrada e modular para a gestão de UCs, destacando-se pela sua arquitetura baseada em micro serviços e pela facilidade de implantação e manutenção proporcionada pela containerização. A estrutura modular e o uso do Docker garantem escalabilidade e flexibilidade, tornando o sistema fácil de manter e expandir.
