@@ -132,3 +132,25 @@ body {
 .w3-bar .w3-right .w3-bar-item {
   margin-left: 10px;
 }
+
+.w3-40percent {
+  float: left;
+  width: 39.99999%
+}
+
+.w3-row-padding-40percent:after,
+.w3-row-padding-40percent:before{
+  content: "";
+  display: table;
+  clear: both
+}
+
+.w3-row-padding-40percent>.w3-40percent {
+  padding: 0 8px
+}
+
+.w3-row-padding-40percent {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap; 
+}

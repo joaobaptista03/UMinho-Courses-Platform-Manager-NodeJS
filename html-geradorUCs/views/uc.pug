@@ -6,7 +6,7 @@ block content
     .w3-row-padding.w3-center
       .w3-center.w3-padding-small(style="display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;")
         each docente in uc.docentes
-          .w3-card-4.w3-margin.w3-padding.w3-light-grey.w3-hover-shadow(style="flex: 1 1 600px; max-width: 600px; margin: 10px; height: fit-content")
+          .w3-card-4.w3-margin.w3-padding.w3-white.w3-hover-shadow(style="flex: 1 1 600px; max-width: 600px; margin: 10px; height: fit-content")
             .w3-container.w3-center
               img(src=`/images/docentes/${docente._id}.${docente.fotoExt}`, alt=docente.nome, class="w3-circle w3-margin-bottom", style="width:80px")
               p
@@ -22,18 +22,18 @@ block content
 
   .w3-container.w3-padding-16
     h2.w3-text-deep-purple.w3-center Horário
-    .w3-row-padding
-      .w3-half
-        h3.w3-text-blue Teóricas
-        .w3-card-4.w3-white.w3-hover-shadow.w3-ul.w3-container.w3-padding
+    .w3-row-padding-40percent
+      .w3-40percent
+        h3.w3-text-blue.w3-center Teóricas
+        .w3-card-4.w3-white.w3-hover-shadow.w3-ul.w3-container.w3-padding.w3-center
           each teorica, index in uc.horario.teoricas
             | #{teorica}
             if index < uc.horario.teoricas.length - 1
               p
               
-      .w3-half
-        h3.w3-text-blue Práticas
-        .w3-card-4.w3-white.w3-hover-shadow.w3-ul.w3-container.w3-padding
+      .w3-40percent
+        h3.w3-text-blue.w3-center Práticas
+        .w3-card-4.w3-white.w3-hover-shadow.w3-ul.w3-container.w3-padding.w3-center
           each pratica, index in uc.horario.praticas
             | #{pratica}
             if index < uc.horario.praticas.length - 1
