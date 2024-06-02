@@ -53,7 +53,7 @@ Lida com a autenticação dos utilizadores, utilizando tokens JWT para verificar
   - Usa `passport-local-mongoose` para simplificar a autenticação com Passport.js.
 
 - **Rotas**
-  - **`index.js`**: Inclui rotas para registo (`/register`), login (`/login`) e verificação de sessão (`/isLogged`).
+  - **`index.js`**: Inclui rotas para registo (`/register`), registo de administradores (`/registerAdmin`), login (`/login`) verificação de sessão (`/isLogged`), listar administradores (`/admins`), apagar administradores (`/deleteAdmin`) e alterar palavra-passe (`/changePassword`).
 
 - **Middleware de Autenticação**
   - **`auth.js`**: Middleware que verifica e valida tokens JWT fornecidos nas requisições, e gere erros de autenticação.
@@ -77,7 +77,7 @@ Fornece a interface ao utilizador para integração com a plataforma, permitindo
 #### Principais Componentes
 
 - **Rotas**
-  - **`index.js`**: gere o rendering das páginas cujos botões existem na página inicial, bem como o login, registo, logout e adicionar Administradores (no caso de já ser um).
+  - **`index.js`**: gere o rendering das páginas cujos botões existem na página inicial e header, bem como o login, registo, logout, alterar password e adicionar e remover administradores (no caso de já ser um).
   - **`uc.js`**: gere a adição, edição e visualização de detalhes das UCs.
   - **`addDocente.js`**: gere a adição de novos docentes.
   - **`files.js`**: gere o upload, download e organização de ficheiros dos utilizadores.
@@ -92,6 +92,7 @@ Fornece a interface ao utilizador para integração com a plataforma, permitindo
   - **`login.pug`**: Formulário de login do utilizador.
   - **`signup.pug`**: Formulário de registo de novo utilizador.
   - **`files.pug`**: Interface para gestão de ficheiros dos utilizadores.
+  - **`admins.pug`**: Interface para gestão de administradores.
   - **`error.pug`**: Página de erro para exibição de mensagens de erro.
   - **`success.pug`**: Página de sucesso para exibição de mensagens de sucesso.
 
@@ -142,6 +143,8 @@ A interface HTML é configurada para ser executada em um container Docker, garan
 
 - **Registo de Utilizador**: Formulário para criar uma nova conta de utilizador.
 - **Registo de Administrador**: Formulário para criar uma nova conta de Administrador, caso já seja um.
+- **Consulta e Remoção de Utilizadores**: Página que permite visualizar os administradores que existem, e remover caso seja necessário.
+- **Alteração de Password**: Formulário para alterar a password do utilizador.
 - **Login**: Formulário de login que autentica os utilizadores e gera um token JWT.
 - **Logout**: Opção de logout que termina a sessão do utilizador.
 - **Verificação de Sessão**: Verifica se um utilizador está autenticado e se o token JWT é válido.
@@ -206,10 +209,22 @@ Este projeto representa uma solução integrada e modular para a gestão de UCs,
 ![Página de Ficheiros de um Utilizador (2)](./imgs/Ficheiros2.png)
 ![Página de Ficheiros de um Utilizador (3)](./imgs/Ficheiros3.png)
 
+### Página de Mudar Password
+
+![Página de Mudar Password](./imgs/ChangePassword.png)
+
+### Página de Adicionar Administrador
+
+![Página de Adicionar Administrador](./imgs/AddAdmin.png)
+
+### Página de Gestão Administradores
+
+![Página de Gestão Administradores](./imgs/Admins.png)
+
 ### Página de Sucesso
 
-![Página de Sucesso](./imgs/Sucesso.png)
+![Página de Sucesso](./imgs/Success.png)
 
 ### Página de Erro
 
-![Página de Erro](./imgs/Erro.png)
+![Página de Erro](./imgs/Error.png)

@@ -38,6 +38,8 @@ router.get('/', async function (req, res, next) {
 		return;
 	}
 
+	var folderName = path.basename(absolutePath);
+
     fs.readdir(absolutePath, { withFileTypes: true }, (err, files) => {
         if (err) {
 			res.render('error', { error: { status: 501, message: 'Erro ao listar ficheiros' }, title: 'Erro', userLogged, isAdmin, username});
@@ -48,7 +50,7 @@ router.get('/', async function (req, res, next) {
             isDirectory: file.isDirectory()
         }));
 
-        res.render('files', { path: relativePath, files: fileList, title: 'Ficheiros', userLogged, isAdmin, username });
+        res.render('files', { path: relativePath, files: fileList, title: 'Ficheiros: ' + folderName, userLogged, isAdmin, username });
     })
 });
 

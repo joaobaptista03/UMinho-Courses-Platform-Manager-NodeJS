@@ -214,7 +214,7 @@ router.get('/addAdmin', async function (req, res, next) {
 		return;
 	}
 	
-	res.render('addAdmin', { title: 'Registar Administrador' });
+	res.render('addAdmin', { title: 'Registar Administrador', userLogged, isAdmin, username });
 });
 
 router.post('/signup', async function (req, res, next) {
@@ -285,7 +285,7 @@ router.post('/signupAdmin', async function (req, res, next) {
 	axios.post(process.env.AUTH_URI + "/registerAdmin", req.body)
 		.then(response => {
 			if (response.data.error && response.data.message) {
-				res.render('addAdmin', { title: 'Registar Administrador', error: response.data.message });
+				res.render('addAdmin', { title: 'Registar Administrador', error: response.data.message, userLogged, isAdmin, username});
 				return;
 			}
 
@@ -356,6 +356,72 @@ router.post('/changePassword', async function (req, res, next) {
 				return;
 			}
 			res.render('success', { title: 'Sucesso', sucesso: 'Password alterada com sucesso.', userLogged, isAdmin, username });
+		})
+		.catch(e => {
+			res.render('error', { error: { status: 501, message: e.response.data.message }, title: 'Erro', userLogged, isAdmin, username });
+		})
+});
+
+router.get('/admins', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+
+	if (!isAdmin) {
+		res.redirect('/')
+		return;
+	}
+
+	axios.get(process.env.AUTH_URI + '/admins?token=' + req.cookies.token)
+		.then(response => {
+			res.render('admins', { admins: response.data, title: 'Administradores', userLogged, isAdmin, username });
+		})
+		.catch(e => {
+			res.render('error', { error: { status: 501, message: e.response.data.message }, title: 'Erro', userLogged, isAdmin, username });
+		})
+});
+
+router.get('/admins/delete', async function (req, res, next) {
+	var userLogged = false;
+	var isAdmin = false;
+	var username = "";
+
+	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
+		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
+		if (response.data.isExpired || response.data.isError) {
+			res.cookie('token', undefined)
+			res.render('login', { title: 'Login', error: 'Login Expirado.' });
+			return;
+		}
+		userLogged = response.data.isLogged;
+		isAdmin = response.data.isAdmin;
+		username = response.data.username;
+	}
+
+	if (!isAdmin) {
+		res.redirect('/')
+		return;
+	}
+
+	axios.post(process.env.AUTH_URI + '/deleteAdmin?username=' + req.query.username + '&token=' + req.cookies.token)
+		.then(response => {
+			if (response.data.error) {
+				res.render('error', { error: { status: 501, message: response.data.error }, title: 'Erro', userLogged, isAdmin, username });
+				return;
+			}
+			res.render('success', { title: 'Sucesso', sucesso: 'Administrador removido com sucesso.', userLogged, isAdmin, username });
 		})
 		.catch(e => {
 			res.render('error', { error: { status: 501, message: e.response.data.message }, title: 'Erro', userLogged, isAdmin, username });

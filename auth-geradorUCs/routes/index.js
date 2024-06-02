@@ -12,6 +12,22 @@ router.get('/admins', function (req, res) {
     .catch(e => res.status(500).jsonp({ error: e }))
 });
 
+router.post('/deleteAdmin', auth.verificaAcesso, function (req, res) {
+  if (req.payload.level !== 'admin') {
+    res.status(401).jsonp({ error: "Unauthorized" });
+    return;
+  }
+
+  User.findOneAndDelete({ username: req.query.username, level: 'admin' }).exec()
+    .then(dados => {
+      if (dados)
+        res.jsonp({ message: "Admin deleted with success" })
+      else
+        res.status(404).jsonp({ error: "Admin not found" })
+    })
+    .catch(e => res.status(500).jsonp({ error: e }))
+});
+
 router.post('/changePassword', auth.verificaAcesso, function (req, res) {
   const oldPassword = req.body.oldPassword;
   const newPassword = req.body.newPassword;

@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  .w3-center
+    h2 Administradores
+    a.w3-button.w3-green.w3-round-large.w3-large.w3-margin-right.w3-hover-shadow(href="/addAdmin") Adicionar Novo Administrador
+
+  .w3-container.w3-padding-16
+    if admins && admins.length > 0
+      table.w3-table.w3-bordered.w3-striped.w3-white.w3-card-4
+        thead.w3-light-grey
+          tr
+            th Nome
+            th Email
+            th Ação
+        tbody
+          each admin in admins
+            tr
+              td= admin.name
+              td= admin.email
+              td
+                a.w3-button.w3-red.w3-round-large.w3-hover-shadow.w3-margin-right(onclick=`deleteAdmin('${admin.username}')`) Apagar
+    else
+      p Nenhum administrador encontrado.
+
+  script.
+    function deleteAdmin(adminUsername) {
+      if (confirm('Tem a certeza que deseja apagar?')) {
+        fetch(`/admins/delete?username=${adminUsername}`, {
+          method: 'GET'
+        })
+        .then(() => {
+          window.location.reload();
+        })
+        .catch(err => {
+          console.error(err);
+        });
+      }
+    }
