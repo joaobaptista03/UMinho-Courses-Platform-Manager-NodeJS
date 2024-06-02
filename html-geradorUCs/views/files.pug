@@ -43,7 +43,7 @@ block content
           <div class="w3-container">
             <form method="POST" action="/files/upload" enctype="multipart/form-data" class="w3-container">
               <p>
-                <input type="file" name="file" class="w3-input w3-border w3-margin-bottom" required>
+                <input type="file" name="file" class="w3-input w3-border w3-round-large" required>
               </p>
               <input type="hidden" name="path" value="${path}">
               <p>
@@ -86,7 +86,7 @@ block content
           <div class="w3-container">
             <form method="POST" action="/files/createFolder" class="w3-container">
               <p>
-                <input type="text" name="folderName" class="w3-input w3-border w3-margin-bottom" required>
+                <input type="text" placeholder="Nome da Pasta" name="folderName" class="w3-input w3-border w3-round-large" required>
               </p>
               <input type="hidden" name="path" value="${path}">
               <p>

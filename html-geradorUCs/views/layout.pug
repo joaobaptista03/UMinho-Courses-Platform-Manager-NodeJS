@@ -11,16 +11,16 @@ html
         a.w3-button.w3-padding-large.w3-round-large(href='/') Home
         
       if userLogged
-        .w3-right.w3-bar-item
-          a.w3-padding-large(style='cursor: default;') Welcome, #{username}
+        .w3-left.w3-bar-item
+          a.w3-button.w3-padding-large.w3-round-large(href="/admins") Admins
+        .w3-left.w3-bar-item
+          a.w3-button.w3-padding-large.w3-round-large(href='/files') Os Meus Ficheiros
         .w3-right.w3-bar-item
           a.w3-button.w3-padding-large.w3-round-large(onclick="logout()") Logout
         .w3-right.w3-bar-item
-          a.w3-button.w3-padding-large.w3-round-large(href='/files') Os Meus Ficheiros
-        .w3-right.w3-bar-item
           a.w3-button.w3-padding-large.w3-round-large(onclick="showAlterarPasswordModal()") Alterar Password
         .w3-right.w3-bar-item
-          a.w3-button.w3-padding-large.w3-round-large(href="/admins") Admins
+          a.w3-padding-large(style='cursor: default;') Welcome, #{username}
 
       else
         .w3-right.w3-bar-item
@@ -57,10 +57,10 @@ html
             <div class="w3-container">
               <form method="POST" action="/changePassword" class="w3-container">
                 <p>
-                  <input type="password" name="oldPassword" placeholder="Password Antiga" class="w3-input w3-border w3-margin-bottom" required>
+                  <input type="password" name="oldPassword" placeholder="Password Antiga" class="w3-input w3-border w3-round-large" required>
                 </p>
                 <p>
-                  <input type="password" name="newPassword" placeholder="Password Nova" class="w3-input w3-border w3-margin-bottom" required>
+                  <input type="password" name="newPassword" placeholder="Password Nova" class="w3-input w3-border w3-round-large" required>
                 </p>
                 <p>
                   <button type="submit" class="w3-button w3-blue w3-round-large w3-hover-shadow">Alterar Password</button>
