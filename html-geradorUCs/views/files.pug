@@ -24,6 +24,7 @@ block content
               else
                 a.w3-button.w3-blue.w3-round-large.w3-hover-shadow.w3-margin-right(href=`/files/download?path=${username}/${path}/${file.name}`) Download
                 a.w3-button.w3-red.w3-round-large.w3-hover-shadow(onclick=`deleteFile('${path}','${file.name}', "file")`) Apagar
+                a.w3-button.w3-red.w3-round-large.w3-hover-shadow(onclick=`copyHyperlink('${path}','${file.name}')`) Copiar Hyperlink
 
   script.
     const path = !{JSON.stringify(path)};
@@ -97,4 +98,17 @@ block content
       `;
       document.body.appendChild(modal);
       document.getElementById('addFolderModal').style.display = 'block';
+    }
+
+    const username = !{JSON.stringify(username)};
+
+    function copyHyperlink(path, fileName) {
+      const url = `[${fileName}](./${username}/${path}/${fileName})`;
+      navigator.clipboard.writeText(url)
+      .then(() => {
+        alert('Hyperlink copiado para a área de transferência');
+      })
+      .catch(err => {
+        console.error(err);
+      });
     }
