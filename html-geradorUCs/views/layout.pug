@@ -11,8 +11,9 @@ html
         a.w3-button.w3-padding-large.w3-round-large(href='/') Home
         
       if userLogged
-        .w3-left.w3-bar-item
-          a.w3-button.w3-padding-large.w3-round-large(href="/admins") Admins
+        if isAdmin
+          .w3-left.w3-bar-item
+            a.w3-button.w3-padding-large.w3-round-large(href="/admins") Admins
         .w3-left.w3-bar-item
           a.w3-button.w3-padding-large.w3-round-large(href='/files') Os Meus Ficheiros
         .w3-right.w3-bar-item
