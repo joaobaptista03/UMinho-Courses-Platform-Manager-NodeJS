@@ -6,15 +6,50 @@ var jwt = require('jsonwebtoken')
 
 const router = express.Router();
 
-function updateLastAccess(id, d) {
-  return User.updateOne({ username: id }, { lastAccess: d })
-    .then(resposta => {
-      return resposta
+router.get('/admins', function (req, res) {
+  User.find({ level: 'admin' }).exec()
+    .then(dados => res.jsonp(dados))
+    .catch(e => res.status(500).jsonp({ error: e }))
+});
+
+router.post('/changePassword', auth.verificaAcesso, function (req, res) {
+  const oldPassword = req.body.oldPassword;
+  const newPassword = req.body.newPassword;
+
+  if (oldPassword === newPassword) {
+    res.jsonp({ error: "Old password and new password are the same" });
+    return;
+  }
+
+  User.findOne({ username: req.payload.username }).exec()
+    .then(user => {
+      if (!user) {
+        res.status(404).jsonp({ error: "User not found" });
+        return;
+      }
+
+      user.authenticate(oldPassword, function (err, result) {
+        if (err) {
+          res.status(500).jsonp({ error: err });
+        } else if (!result) {
+          res.jsonp({ error: "Invalid old password" });
+        } else {
+          user.setPassword(newPassword, function (err) {
+            if (err) {
+              res.status(500).jsonp({ error: err });
+            } else {
+              user.save()
+                .then(() => res.jsonp({ message: "Password changed successfully" }))
+                .catch(e => res.status(500).jsonp({ error: e }));
+            }
+          });
+        }
+      });
     })
-    .catch(erro => {
-      return erro
-    })
-}
+    .catch(e => {
+      res.status(500).jsonp({ error: e });
+    });
+});
 
 router.post('/register', function (req, res) {
   User.register(new User({
@@ -49,8 +84,6 @@ router.post('/registerAdmin', function (req, res) {
 })
 
 router.post('/login', passport.authenticate('local'), function (req, res) {
-  var d = new Date().toISOString().substring(0, 19);
-
   jwt.sign({
     username: req.user.username, level: req.user.level,
     sub: 'Gerador WebSite UCs - EngWeb2024'
@@ -60,13 +93,7 @@ router.post('/login', passport.authenticate('local'), function (req, res) {
     function (e, token) {
       if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })
       else {
-        updateLastAccess(req.user.username, d)
-          .then(dados => {
-            res.status(201).jsonp({ token: token })
-          })
-          .catch((e) => {
-            res.status(508).jsonp({ error: "Erro a atualizar último acesso do utilizador: " + e })
-          })
+        res.status(201).jsonp({ token: token })
       }
     });
 })
@@ -82,7 +109,7 @@ router.get('/isLogged', auth.verificaAcesso, function (req, res) {
     })
     return
   }
-  
+
   res.jsonp({
     isAdmin: (req.payload.level === "admin" ? true : false),
     username: req.payload.username,
