@@ -421,7 +421,13 @@ router.get('/admins/delete', async function (req, res, next) {
 				res.render('error', { error: { status: 501, message: response.data.error }, title: 'Erro', userLogged, isAdmin, username });
 				return;
 			}
-			res.render('success', { title: 'Sucesso', sucesso: 'Administrador removido com sucesso.', userLogged, isAdmin, username });
+
+			fs.rmdir(path.join(__dirname, '/../public/filesUploaded/', req.query.username), { recursive: true }, (err) => {
+				if (err) {
+					res.render('error', { error: { status: 501, message: 'Erro ao apagar pasta' }, title: 'Erro', userLogged, isAdmin, username });
+				}
+				res.render('success', { title: 'Sucesso', sucesso: 'Administrador removido com sucesso.', userLogged, isAdmin, username });
+			});
 		})
 		.catch(e => {
 			res.render('error', { error: { status: 501, message: e.response.data.message }, title: 'Erro', userLogged, isAdmin, username });
