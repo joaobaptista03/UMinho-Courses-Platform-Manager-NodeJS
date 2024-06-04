@@ -9,15 +9,19 @@ html
     header.w3-bar
       .w3-bar-item
         a.w3-button.w3-padding-large.w3-round-large(href='/') Home
-        
-      if userLogged
+
+
+      if username && username !== ''
         if isAdmin
           .w3-left.w3-bar-item
-            a.w3-button.w3-padding-large.w3-round-large(href="/admins") Admins
+            a.w3-button.w3-padding-large.w3-round-large(href="/users?role=admin") Admins
+          .w3-left.w3-bar-item
+            a.w3-button.w3-padding-large.w3-round-large(href="/users?role=docente") Docentes
           .w3-left.w3-bar-item
             a.w3-button.w3-padding-large.w3-round-large(href="/files?path=../") Todos os Ficheiros 
-        .w3-left.w3-bar-item
-          a.w3-button.w3-padding-large.w3-round-large(href='/files') Os Meus Ficheiros
+        if isAdmin || isDocente
+          .w3-left.w3-bar-item
+            a.w3-button.w3-padding-large.w3-round-large(href='/files') Os Meus Ficheiros
         .w3-right.w3-bar-item
           a.w3-button.w3-padding-large.w3-round-large(onclick="logout()") Logout
         .w3-right.w3-bar-item
@@ -27,12 +31,12 @@ html
 
       else
         .w3-right.w3-bar-item
-          a.w3-button.w3-padding-large.w3-round-large(href='/login') Login
+          a.w3-button.w3-padding-large.w3-round-large(href='/users/login') Login
         .w3-right.w3-bar-item
-          a.w3-button.w3-padding-large.w3-round-large(href='/signup') Registar
+          a.w3-button.w3-padding-large.w3-round-large(href='/users/registar?role=aluno') Registar
           
 
-    if title != 'Erro' && title != 'Sucesso'
+    if title && title != 'Erro' && title != 'Sucesso'
       .w3-card-4.w3-margin.w3-white.w3-padding
         .w3-container.w3-padding-16
           h1.w3-xxlarge.w3-text-blue.w3-center= title
@@ -42,7 +46,7 @@ html
 
     script.
       function logout() {
-        fetch('/logout', { method: 'GET' })
+        fetch('/users/logout', { method: 'POST' })
           .then(() => window.location = '/')
       }
 
@@ -58,7 +62,7 @@ html
               <h2>Alterar Password</h2>
             </header>
             <div class="w3-container">
-              <form method="POST" action="/changePassword" class="w3-container">
+              <form method="POST" action="/users/changePassword" class="w3-container">
                 <p>
                   <input type="password" name="oldPassword" placeholder="Password Antiga" class="w3-input w3-border w3-round-large" required>
                 </p>

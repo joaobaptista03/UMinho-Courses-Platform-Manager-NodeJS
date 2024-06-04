@@ -2,7 +2,7 @@ extends layout
 
 block content
   .w3-container.w3-padding-16
-    form(action=`/uc/edit/${uc._id}` method="POST" class="w3-container w3-padding-large w3-card-4 w3-white")
+    form(action=`/ucs/edit/${uc._id}` method="POST" class="w3-container w3-padding-large w3-card-4 w3-white")
       .w3-section
         label.w3-text-deep-purple ID:
         input.w3-input.w3-border.w3-round-large(type="text" name="_id" value=uc._id readonly)
@@ -13,8 +13,8 @@ block content
         label.w3-text-deep-purple Docentes:
         select.w3-input.w3-border.w3-round-large(name="docentes" multiple required id="docentes-select")
           each docente in docentes
-            - const isSelected = uc.docentes.some(d => d._id === docente._id)
-            option.w3-border.w3-round-large(value=docente._id selected=isSelected style="margin:7px; padding:7px;") #{docente.nome}
+            - const isSelected = uc.docentes.some(d => d.username === docente.username)
+            option.w3-border.w3-round-large(value=docente.username selected=isSelected style="margin:7px; padding:7px;") #{docente.name}
       .w3-section
         label.w3-text-deep-purple Horários Teóricos (separados por ponto e vírgula):
         input.w3-input.w3-border.w3-round-large(type="text" name="horarioTeoricas" value=uc.horario.teoricas.join(';') required)

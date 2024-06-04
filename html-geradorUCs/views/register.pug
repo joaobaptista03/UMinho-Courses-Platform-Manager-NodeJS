@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  .w3-container.w3-padding-16
+    form.w3-container.w3-padding-large.w3-card-4.w3-white(action="/users?role=" + role method="POST", enctype="multipart/form-data")
+      .w3-section
+        label.w3-text-deep-purple Username:
+        input.w3-input.w3-border.w3-round-large(type="text" name="username" required)
+      .w3-section
+        label.w3-text-deep-purple Nome:
+        input.w3-input.w3-border.w3-round-large(type="text" name="name" required)
+      .w3-section
+        label.w3-text-deep-purple Email:
+        input.w3-input.w3-border.w3-round-large(type="email" name="email" required)
+      .w3-section
+        label.w3-text-deep-purple Password:
+        input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
+      .w3-section
+        label.w3-text-deep-purple Foto:
+        input.w3-input.w3-border.w3-round-large(type="file" name="foto" required)
+      .w3-section
+        label.w3-text-deep-purple Categoria:
+        input.w3-input.w3-border.w3-round-large(type="text" name="categoria" required)
+      .w3-section
+        label.w3-text-deep-purple Filiação:
+        input.w3-input.w3-border.w3-round-large(type="text" name="filiacao" required)
+      .w3-section
+        label.w3-text-deep-purple Webpage:
+        input.w3-input.w3-border.w3-round-large(type="text" name="webpage")
+
+      if role && role.toLowerCase() === 'admin'
+        .w3-section
+          label.w3-text-deep-purple É docente: 
+          input.w3-check(type="checkbox" name="docente")
+
+      if error
+        .w3-section
+          p.w3-text-red #{error}
+      button.w3-button.w3-blue.w3-large.w3-round-large(type="submit") Registar

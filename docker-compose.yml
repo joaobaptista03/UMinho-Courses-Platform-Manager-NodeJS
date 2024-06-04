@@ -22,8 +22,7 @@ services:
       mongosh mongo/projeto-geradorUCS --eval 'db.dropDatabase()' &&
       sleep 1 &&
       mongoimport --host mongo --db projeto-geradorUCS --collection users --type json --file /data/users.json --jsonArray &&
-      mongoimport --host mongo --db projeto-geradorUCS --collection ucs --type json --file /data/ucs.json --jsonArray &&
-      mongoimport --host mongo --db projeto-geradorUCS --collection docentes --type json --file /data/docentes.json --jsonArray"
+      mongoimport --host mongo --db projeto-geradorUCS --collection ucs --type json --file /data/ucs.json --jsonArray"
     networks:
       - app-network
     restart: "no"

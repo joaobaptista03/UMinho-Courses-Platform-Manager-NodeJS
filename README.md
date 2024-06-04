@@ -1,178 +1,208 @@
 # Relatório do Projeto
 
-## Introdução
+## Preparação do Dataset e do Povoamento Inicial
 
-Este projeto envolve a criação de uma plataforma web para a gestão e consulta de Unidades Curriculares (UCs). Utiliza Node.js, Express.js, MongoDB e Docker para fornecer uma solução completa e modular. A plataforma é composta por três serviços principais: Servidor de API de Dados, Servidor de Autenticação e Servidor de Interface.
+Dado o dataset que nos foi disponibilizado (um ficheiro json para cada UC), decidimos juntar tudo em um único ficheiro json, em forma de array. Alteramos também os docentes, representando-os dentro da UC apenas com a sua sigla. Criamos também outro ficheiro json (que corresponde a outra coleção) para armazenar os docentes (que, neste caso, são utilizadores do sistema, com permissões de Docente, exceto o professor José Carlos Ramalho que tem permissões de AdminDocente (Docente + Administrador)).
 
-O conteúdo inicial já contém dados de exemplo (ATP2023, RPCW2024 e EngWeb2024), incluíndo os seus ficheiros.
-
-![Página Inicial](./imgs/IndexAdmin.png)
+Posteriormente, decidimos baixar todos os ficheiros relativos às 3 UCs que estavam presentes nos datasets, copiando-os para a pasta `public/filesUploaded/jcr`. Isto significa que os ficheiros foram carregados para o site pelo professor com a sigla `jcr` (mais abaixo é explicado como funciona o sistema de ficheiros).
 
 ## Estrutura do Projeto
 
-### 1. **API de Dados (`api-geradorUCs`)**
+O projeto é uma aplicação web completa que integra várias partes para fornecer um sistema de gestão de Unidades Curriculares (UCs). A aplicação é composta por três componentes principais: API, Autenticação e Interface de Utilizador. Abaixo, uma visão detalhada:
 
-#### Função
+```plaintext
+/api-geradorUCs
+/auth-geradorUCs
+/html-geradorUCs
+/docker-compose.yml
+/export.sh
+/import.sh
+/install.sh
+/uninstall.sh
+/reinstall.sh
+```
 
-Implementa operações CRUD para UCs e Docentes, expondo funcionalidades através de uma API RESTful.
+## Componentes Principais
 
-#### Principais Componentes
+### 1. API de Gestão de UCs (api-geradorUCs)
 
-- **Modelos**
-  - **`Docente`**: Representa os docentes com propriedades como `nome`, `categoria`, `filiacao`, `email`, `webpage`, e `fotoExt`.
-  - **`UC`**: Representa as Unidades Curriculares, incluindo informações como `titulo`, `docentes`, `horario`, `avaliacao`, `datas`, `aulas`, e `criador`.
+A API é responsável por gerir as Unidades Curriculares (UCs). Utiliza o framework Express.js para construir endpoints RESTful que permitem a criação, leitura, atualização e eliminação (CRUD) de UCs.
 
-- **Controladores**
-  - **`docente.js`**: Contém funções para listar, procurar por ID, inserir, atualizar e remover docentes.
-  - **`uc.js`**: Similar ao controlador de docentes, mas para operações relacionadas às UCs.
+#### Estrutura
 
-- **Rotas**
-  - **`docentes.js`**: Define endpoints para operações CRUD sobre docentes (`/docentes`).
-  - **`ucs.js`**: Define endpoints para operações CRUD sobre UCs (`/ucs`).
+- `models/uc.js`: Define o schema da UC no MongoDB usando Mongoose.
+- `routes/ucs.js`: Define os endpoints relacionados às UCs.
+- `app.js`: Configura a aplicação Express, conecta à base de dados MongoDB e inicializa as rotas.
 
-- **Configuração do Servidor**
-  - **`www`**: Configura o servidor HTTP, define a porta e gere eventos de erro e de escuta.
+#### Funcionalidades
 
-- **Ficheiro de Inicialização**
-  - **`app.js`**: Configura o Express, define middleware e rotas, e gere a conexão com o MongoDB.
+1. **Criar UC**: Permite a criação de uma nova UC.
+2. **Ler UCs**: Permite a obtenção de todas as UCs ou uma UC específica.
+3. **Atualizar UC**: Permite a atualização dos dados de uma UC específica.
+4. **Eliminar UC**: Permite a eliminação de uma UC específica.
 
-#### Docker
+#### Dockerfiles
 
-A API é colocada num container usando Docker. O `Dockerfile` define o ambiente de execução, e o `Dockerfile-seed` é usado para inicializar a base de dados com dados de exemplo.
+##### Dockerfile
 
-### 2. **Autenticação (`auth-geradorUCs`)**
+1. Atribui à pasta do container `/usr/src/app` o diretório de trabalho
 
-#### Função
+2. Copia o package.json para o diretório de trabalho
 
-Lida com a autenticação dos utilizadores, utilizando tokens JWT para verificar a sessão e controlar o acesso.
+3. npm install
 
-#### Principais Componentes
+4. Copia o resto dos ficheiros para o container
 
-- **Modelo `User`**
-  - Define o modelo do utilizador, incluindo campos como `username`, `password`, `email`, `name`, e `level`.
-  - Usa `passport-local-mongoose` para simplificar a autenticação com Passport.js.
+5. Expõe a porta 3124
 
-- **Rotas**
-  - **`index.js`**: Inclui rotas para registo (`/register`), registo de administradores (`/registerAdmin`), login (`/login`) verificação de sessão (`/isLogged`), listar administradores (`/admins`), apagar administradores (`/deleteAdmin`) e alterar palavra-passe (`/changePassword`).
+6. npm start
 
-- **Middleware de Autenticação**
-  - **`auth.js`**: Middleware que verifica e valida tokens JWT fornecidos nas requisições, e gere erros de autenticação.
+##### Dockerfile-seed
 
-- **Configuração do Servidor**
-  - **`www`**: Configura o servidor HTTP, define a porta e gere eventos de erro e de escuta.
+1. Atribui à pasta do container `/data` o diretório de trabalho
 
-- **Arquivo de Inicialização**
-  - **`app.js`**: Configura o Express, define middleware, gere a sessão do utilizador com Passport.js e Express-Session, e configura a conexão com o MongoDB.
+2. Copia os ficheiros `ucs.json` e `users.json` para o diretório de trabalho do container
 
-#### Docker
+### 2. Sistema de Autenticação (auth-geradorUCs)
 
-O serviço de autenticação é configurado para ser executado em um container Docker, garantindo a segurança e o isolamento do ambiente de autenticação.
+#### Estrutura
 
-### 3. **Interface HTML (`html-geradorUCs`)**
+- `models/user.js`: Define o schema do utilizador no MongoDB utilizando Mongoose e Passport-Local Mongoose.
+- `routes/index.js`: Define os endpoints relacionados à autenticação e gestão de utilizadores.
+- `auth/auth.js`: Middleware que implementa a verificação do token JWT.
+- `app.js`: Configura a aplicação Express, conecta à base de dados MongoDB e inicializa as rotas.
 
-#### Função
+#### Funcionalidades
 
-Fornece a interface ao utilizador para integração com a plataforma, permitindo a gestão visual de UCs e Docentes.
+1. **Registo de Utilizador**: Permite o registo de novos utilizadores.
+2. **Login**: Autentica utilizadores e emite tokens JWT.
+3. **Alteração da Palavra-Passe**: Permite a alteração de senha dos utilizadores autenticados.
+4. **Verificação de Token**: Verifica a validade dos tokens JWT e identifica utilizadores.
 
-#### Principais Componentes
+#### Permissões
 
-- **Rotas**
-  - **`index.js`**: gere o rendering das páginas cujos botões existem na página inicial e header, bem como o login, registo, logout, alterar password e adicionar e remover administradores (no caso de já ser um).
-  - **`uc.js`**: gere a adição, edição e visualização de detalhes das UCs.
-  - **`addDocente.js`**: gere a adição de novos docentes.
-  - **`files.js`**: gere o upload, download e organização de ficheiros dos utilizadores.
+Existem 3 níveis de acesso (e mais 1 que combina 2 deles): Admin, Docente, Aluno e AdminDocente (que combina as permissões de Docente e Admin, logo, quando se falar em permissões de Administrador, o AdminDocente está incluído)
 
-- **Views**
-  - **`index.pug`**: Página principal que lista todas as UCs.
-  - **`addUC.pug`**: Formulário para adicionar uma nova UC.
-  - **`editUC.pug`**: Formulário para editar uma UC existente.
-  - **`addDocente.pug`**: Formulário para adicionar um novo docente.
-  - **`addAdmin.pug`**: Formulário para adicionar um novo Administrador.
-  - **`uc.pug`**: Página de detalhes de uma UC específica.
-  - **`login.pug`**: Formulário de login do utilizador.
-  - **`signup.pug`**: Formulário de registo de novo utilizador.
-  - **`files.pug`**: Interface para gestão de ficheiros dos utilizadores.
-  - **`admins.pug`**: Interface para gestão de administradores.
-  - **`error.pug`**: Página de erro para exibição de mensagens de erro.
-  - **`success.pug`**: Página de sucesso para exibição de mensagens de sucesso.
+- **Listar Utilizadores**: Qualquer nível (omite-se, obviamente, os atributos sensíveis)
+- **Registar Administrador, Administrador-Docente, ou Docente**: Apenas Administradores
+- **Registar Aluno**: Qualquer nível
+- **Apagar Utilizador**: Apenas Administradores
+- **Alterar Palavra-Passe**: Apenas o utilizador que tem a sessão iniciada
+- **Obter Utilizador**: Qualquer nível (omite-se, obviamente, os atributos sensíveis)
 
-- **Configuração do Servidor**
-  - **`www`**: Configura o servidor HTTP, define a porta e gere eventos de erro e de escuta.
+#### Dockerfile
 
-- **Arquivo de Inicialização**
-  - **`app.js`**: Configura o Express, define middleware, gere cookies, e define rotas estáticas para ficheiros públicos.
+1. Atribui à pasta do container `/usr/src/app` o diretório de trabalho
 
-#### Docker
+2. Copia o package.json para o diretório de trabalho
 
-A interface HTML é configurada para ser executada em um container Docker, garantindo consistência entre diferentes ambientes de execução.
+3. npm install
 
-## Scripts de Automação
+4. Copia o resto dos ficheiros para o container
 
-- **`export.sh`**: Exporta dados do MongoDB para ficheiros JSON.
-- **`import.sh`**: Importa dados de ficheiros JSON para o MongoDB (processo inverso).
-- **Scripts de gestão Docker**:
-  - **`install.sh`**: Constrói e inicia os containers Docker.
-  - **`uninstall.sh`**: Para e remove os containers Docker e suas imagens.
-  - **`reinstall.sh`**: Reinstala os containers Docker, removendo os existentes e construindo novos.
+5. Expõe a porta 3123
 
-## Funcionalidades do Site
+6. npm start
 
-### 1. **Página Principal**
+### 3. Interface de Utilizador (html-geradorUCs)
 
-- **Pesquisa de UCs**: Permite aos utilizadores pesquisar UCs por título e docente.
-- **Listagem de UCs**: Apresenta uma lista de todas as UCs disponíveis com a opção de ver detalhes, editar ou eliminar (conforme as permissões do utilizador).
+#### Estrutura
 
-### 2. **Gestão de UCs**
+- **views**: Contém os templates Pug para as diferentes páginas da aplicação.
+- **routes**: Define as rotas que renderizam as páginas e processam formulários, verificando também as permissões.
 
-- **Adicionar UC**: Formulário para adicionar uma nova UC, especificando título, docentes, horários, avaliação e datas importantes.
-- **Editar UC**: Formulário para editar uma UC existente, permitindo a atualização de todas as informações associadas, incluindo adicionar e remover aulas. Para adicionar um ficheiro ou link a um sumário de uma aula, pode-se utilizar a notação MD, por exemplo: "`[Nome do Ficheiro](./<CaminhoParaOFicheiro>)`", para ficheiros que já estão carregados na plataforma do utilizador; ou então simplesmente, no `<CaminhoParaOFicheiro>` colocar qualquer link externo que, com a ajuda de REGEX, o programa reconhece que o é. Para simplificação, existe um botão "Copiar HyperLink" em cada ficheiro, na página dos ficheiros, que copia automaticamente.
-- **Eliminar UC**: Opção para eliminar uma UC, disponível apenas para criadores ou administradores.
+#### Funcionalidades
 
-### 3. **Gestão de Docentes**
+1. **Página Inicial**: Exibe uma lista de UC com botões para ver detalhes, editar ou apagar. Permite a pesquisa por título e docente.
+2. **Adicionar UC**: Formulário para adicionar novas UCs.
+3. **Editar UC**: Formulário para editar UCs existentes.
+4. **Gestão de Ficheiros**: Permite o upload, download e gestão de ficheiros do utilizador / servidor.
+5. **Gestão de Utilizadores**: Permite aos gerir outros Docentes / Administradores (adicionar, eliminar).
+6. **Alterar Palavra-Passe**: Formulário modal para alterar a palavra-passe.
 
-- **Adicionar Docente**: Formulário para adicionar um novo docente, incluindo upload de foto e informações de contato.
+#### Permissões
 
-### 4. **Gestão de Ficheiros**
+- **Gerir todos os Ficheiros do Servidor**: Apenas Administradores
+- **Gerir os seus próprios Ficheiros**: Docente que têm a sessão iniciada e Administradores
+- **Alterar Palavra-Passe**: O utilizador que tem a sessão iniciada
+- **Gerir Docentes e Administradores**: Apenas Administradores
 
-- **Upload de Ficheiros**: Permite aos utilizadores fazer upload de ficheiros.
-- **Download de Ficheiros**: Permite aos utilizadores baixar ficheiros carregados.
-- **Criação de Pastas**: Permite a organização de ficheiros em pastas.
-- **Eliminação de Ficheiros/Pastas**: Opção para eliminar ficheiros e pastas.
+#### Dockerfile
 
-### 5. **Autenticação e Autorização**
+1. Atribui à pasta do container `/usr/src/app` o diretório de trabalho
 
-- **Registo de Utilizador**: Formulário para criar uma nova conta de utilizador.
-- **Registo de Administrador**: Formulário para criar uma nova conta de Administrador (é necessário ser administrador).
-- **Consulta e Remoção de Administradores**: Página que permite visualizar os administradores que existem, e remover caso seja necessário (é necessário ser administrador).
-- **Consulta e Remoção de Todos os Ficheiros**: Página que permite aos administradores visualizar e remover todos os ficheiros do servidor.  
-- **Alteração de Password**: Formulário para alterar a password do utilizador.
-- **Login**: Formulário de login que autentica os utilizadores e gera um token JWT.
-- **Logout**: Opção de logout que termina a sessão do utilizador.
-- **Verificação de Sessão**: Verifica se um utilizador está autenticado e se o token JWT é válido.
+2. Copia o package.json para o diretório de trabalho
 
-### 6. **Páginas de Erro**
+3. npm install
 
-- **Página de Erro**: Apresenta mensagens de erro detalhadas quando ocorrem problemas na aplicação, como erros de autenticação ou problemas com a base de dados.
+4. Copia o resto dos ficheiros para o container
+
+5. Expõe a porta 3123
+
+6. npm start
+
+## Configuração e Execução
+
+### Pré-requisitos
+
+- Docker
+- Docker Compose
+
+### Configuração do Ambiente
+
+1. Instalação: Para instalar e configurar o projeto, utilize o script install.sh
+
+```bash
+./install.sh
+```
+
+2. Reinstalação: Para reinstalar o projeto, utilize o script reinstall.sh
+
+```bash
+./reinstall.sh
+```
+
+3. Desinstalação: Para desinstalar o projeto, utilize o script uninstall.sh
+
+```bash
+./uninstall.sh
+```
+
+### Utilização dos Scripts de Exportação e Importação
+
+- Exportação de Dados: Para exportar dados do MongoDB, utilize o script export.sh
+
+```bash
+./export.sh <database_name>
+```
+
+- Importação de Dados (processo inverso): Para importar dados para o MongoDB, utilize o script import.sh
+
+```bash
+./import.sh <folder>
+```
 
 ## Docker Compose
 
-A orquestração dos serviços é realizada com Docker Compose. O `docker-compose.yml` define a configuração dos serviços, volumes e redes necessários para a operação da plataforma, incluindo:
+O ficheiro docker-compose.yml define os serviços necessários para a execução da aplicação.
 
-- **Serviço MongoDB**: Base de dados MongoDB.
-- **Serviço de Seed MongoDB**: Inicializa a base de dados com dados de exemplo.
-- **Serviço API**: Executa o servidor da API de dados.
-- **Serviço de Autenticação**: Executa o servidor de autenticação.
-- **Serviço de Interface HTML**: Executa o servidor da interface.
+### Serviços Definidos
 
-## Conclusão
-
-Este projeto representa uma solução integrada e modular para a gestão de UCs, destacando-se pela sua arquitetura baseada em micro serviços e pela facilidade de implantação e manutenção proporcionada pelo docker. A estrutura modular e o uso do Docker garantem escalabilidade e flexibilidade, tornando o sistema fácil de manter e expandir.
+- **mongo**: Serviço do MongoDB.
+- **mongo-seed**: Serviço para popular o MongoDB com dados iniciais.
+- **api-geradorucs**: Serviço da API de Gestão de UCs.
+- **html-geradorucs**: Serviço da Interface de Utilizador.
+- **auth-geradorucs**: Serviço de Autenticação.
 
 ## Screenshots do Site
 
 ### Página Inicial (não autenticado)
 
 ![Página Inicial (não autenticado)](./imgs/Index.png)
+
+### Página Inicial (Docente)
+
+![Página Inicial (não autenticado)](./imgs/IndexDocente.png)
 
 ### Página Inicial (Administrador)
 
@@ -200,10 +230,6 @@ Este projeto representa uma solução integrada e modular para a gestão de UCs,
 
 ![Página de Adicionar uma UC](./imgs/AddUC.png)
 
-### Página de Adicionar um Docente
-
-![Página de Adicionar uma UC](./imgs/AddDocente.png)
-
 ### Página de Ficheiros de um Utilizador
 
 ![Página de Ficheiros de um Utilizador (1)](./imgs/Ficheiros1.png)
@@ -214,13 +240,21 @@ Este projeto representa uma solução integrada e modular para a gestão de UCs,
 
 ![Página de Mudar Password](./imgs/ChangePassword.png)
 
+### Página de Gestão Administradores
+
+![Página de Gestão Administradores](./imgs/Admins.png)
+
 ### Página de Adicionar Administrador
 
 ![Página de Adicionar Administrador](./imgs/AddAdmin.png)
 
-### Página de Gestão Administradores
+### Página de Gestão Docentes
 
-![Página de Gestão Administradores](./imgs/Admins.png)
+![Página de Gestão Docentes](./imgs/Docentes.png)
+
+### Página de Adicionar Docente
+
+![Página de Adicionar Docente](./imgs/AddDocente.png)
 
 ### Página de Sucesso
 

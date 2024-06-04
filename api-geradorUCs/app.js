@@ -3,7 +3,6 @@ var path = require('path');
 var logger = require('morgan');
 
 var ucsRouter = require('./routes/ucs');
-var docentesRouter = require('./routes/docentes');
 
 var app = express();
 
@@ -27,6 +26,5 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/ucs', ucsRouter);
-app.use('/docentes', docentesRouter);
 
 module.exports = app;

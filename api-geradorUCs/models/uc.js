@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
 
+const aulaSchema = new mongoose.Schema({
+    tipo: String,
+    data: String,
+    sumario: [String],
+}, { _id: false });
+
 const ucSchema = new mongoose.Schema({
     _id: String,
     titulo: String,
@@ -14,11 +20,7 @@ const ucSchema = new mongoose.Schema({
         exame: String,
         projeto: String
     },
-    aulas: [{
-        tipo: String,
-        data: String,
-        sumario: [String],
-    }],
+    aulas: [aulaSchema],
     criador: String
 }, { versionKey: false });
 

@@ -4,12 +4,12 @@ var path = require('path');
 var logger = require('morgan');
 const favicon = require('serve-favicon');
 var cookieParser = require('cookie-parser');
-var axios = require('axios');
 
 var indexRouter = require('./routes/index');
-var ucRouter = require('./routes/uc');
-var addDocenteRouter = require('./routes/addDocente');
+var ucsRouter = require('./routes/ucs');
+var usersRouter = require('./routes/users');
 var filesRouter = require('./routes/files');
+const auth = require('./aux/auth'); 
 
 var app = express();
 
@@ -26,9 +26,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/uc', ucRouter);
-app.use('/addDocente', addDocenteRouter);
+app.use('/ucs', ucsRouter);
 app.use('/files', filesRouter);
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -37,34 +37,20 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(async function(err, req, res, next) {
-	var userLogged = false;
-	var isAdmin = false;
-	var username = "";
+    let { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
-	if (req.cookies.token != 'undefined' && req.cookies.token != undefined) {
-		const response = await axios.get(process.env.AUTH_URI + '/isLogged?token=' + req.cookies.token)
-		if (response.data.isExpired || response.data.isError) {
-			res.cookie('token', undefined)
-			res.render('login', { title: 'Login', error: 'Login Expirado.' });
-			return;
-		}
-		userLogged = response.data.isLogged;
-		isAdmin = response.data.isAdmin;
-		username = response.data.username;
-	}
+    if (error) {
+        res.render('login', { title: 'Login', error });
+        return;
+    }
 
-	if (!userLogged) {
-		res.redirect('/login')
-		return;
-	}
-  
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error', {error: { status: 500, message: err }, title: 'Erro', userLogged, isAdmin, username});
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error', { error: { status: 500, message: err.message }, title: 'Erro', isAdmin, username });
 });
 
 module.exports = app;

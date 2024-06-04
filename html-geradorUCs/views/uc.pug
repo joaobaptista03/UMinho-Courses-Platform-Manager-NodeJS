@@ -8,9 +8,9 @@ block content
         each docente in uc.docentes
           .w3-card-4.w3-margin.w3-padding.w3-white.w3-hover-shadow(style="flex: 1 1 600px; max-width: 600px; margin: 10px; height: fit-content")
             .w3-container.w3-center
-              img(src=`/images/docentes/${docente._id}.${docente.fotoExt}`, alt=docente.nome, class="w3-circle w3-margin-bottom", style="width:80px")
+              img(src=`/images/users/${docente.username}.${docente.fotoExt}`, alt=docente.name, class="w3-circle w3-margin-bottom", style="width:80px")
               p
-                strong #{docente.nome}
+                strong #{docente.name}
               p
                 | #{docente.categoria} - #{docente.filiacao}
               p
@@ -77,7 +77,7 @@ block content
   script.
     function deleteUC(id) {
       if (confirm('Tem a certeza que deseja apagar esta UC?')) {
-        fetch(`/uc/${id}`, {
+        fetch(`/ucs/${id}`, {
           method: 'DELETE'
         }).then(() => {
           window.location.href = '/';

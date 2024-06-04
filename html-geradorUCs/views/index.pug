@@ -11,10 +11,9 @@ block content
         button.w3-button.w3-blue.w3-round-large.w3-input.w3-margin-right.w3-hover-shadow(type="submit") Pesquisar
         button.w3-button.w3-gray.w3-round-large.w3-input.w3-hover-shadow(type="button", onclick="window.location.href='/'") Limpar Filtros
 
-  if userLogged
+  if isDocente || isAdmin
     .w3-container.w3-padding-16.w3-center
       a.w3-button.w3-green.w3-round-large.w3-large.w3-margin-right.w3-hover-shadow(href="/addUC") Adicionar Nova UC
-      a.w3-button.w3-green.w3-round-large.w3-large.w3-hover-shadow(href="/addDocente") Adicionar Novo Docente
 
   .w3-row-padding.w3-margin-top.w3-center
     .w3-container(style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;")
@@ -29,18 +28,18 @@ block content
                 p.w3-small
                   strong Docentes: 
                     each docente in uc.docentes
-                      span.w3-tag.w3-deep-purple.w3-round= docente.nome
+                      span.w3-tag.w3-deep-purple.w3-round= docente.name
                       | &nbsp;
               .w3-container.w3-padding-small.w3-center
-                button.w3-button.w3-green.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/uc/${uc._id}'`) Ver Detalhes
+                button.w3-button.w3-green.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/ucs/${uc._id}'`) Ver Detalhes
                 if uc.criador == username || isAdmin
-                  button.w3-button.w3-yellow.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/uc/edit/${uc._id}'`) Editar
+                  button.w3-button.w3-yellow.w3-round-large.w3-small.w3-margin-right.w3-hover-shadow(onclick=`window.location.href='/ucs/edit/${uc._id}'`) Editar
                   button.w3-button.w3-red.w3-round-large.w3-small.w3-hover-shadow(onclick=`deleteUC('${uc._id}')`) Apagar
 
   script.
     function deleteUC(id) {
       if (confirm('Tem a certeza que deseja apagar esta UC?')) {
-        fetch(`/uc/delete/${id}`, {
+        fetch(`/ucs/delete/${id}`, {
           method: 'GET'
         }).then(() => {
           window.location.reload();

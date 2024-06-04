@@ -2,7 +2,7 @@ extends layout
 
 block content
   div.w3-center
-    if path && path != '' && path != '/'
+    if path && path != '' && path != '/' && path != '../' && path != '/../'
       a.w3-button.w3-blue.w3-round-large.w3-hover-shadow.w3-margin-right(href=`/files?path=${path.split('/').slice(0, -1).join('/')}`) &#8592;
     a.w3-button.w3-green.w3-round-large.w3-large.w3-margin-right.w3-hover-shadow(onclick="addFicheiro()") Adicionar Novo Ficheiro
     a.w3-button.w3-green.w3-round-large.w3-large.w3-margin-right.w3-hover-shadow(onclick="addPasta()") Adicionar Nova Pasta
@@ -41,7 +41,7 @@ block content
             <h2>Adicionar Novo Ficheiro</h2>
           </header>
           <div class="w3-container">
-            <form method="POST" action="/files/upload" enctype="multipart/form-data" class="w3-container">
+            <form method="POST" action="/files" enctype="multipart/form-data" class="w3-container">
               <p>
                 <input type="file" name="file" class="w3-input w3-border w3-round-large" required>
               </p>

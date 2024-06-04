@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  .w3-center
+    if role.toLowerCase() === 'admin'
+      a.w3-button.w3-green.w3-round-large.w3-large.w3-margin-right.w3-hover-shadow(href="/users/registar?role=admin") Adicionar Novo Administrador
+    else if role.toLowerCase() === 'docente'
+      a.w3-button.w3-green.w3-round-large.w3-large.w3-margin-right.w3-hover-shadow(href="/users/registar?role=docente") Adicionar Novo Docente
+
+  .w3-container.w3-padding-16
+    if users && users.length > 0
+      table.w3-table.w3-bordered.w3-striped.w3-white.w3-card-4
+        thead.w3-light-grey
+          tr
+            th Nome
+            th Email
+            th Ação
+        tbody
+          each user in users
+            tr
+              td= user.name
+              td= user.email
+              td
+                a.w3-button.w3-red.w3-round-large.w3-hover-shadow.w3-margin-right(onclick=`deleteUser('${user.username}')`) Apagar
+    else
+      p Nenhum administrador encontrado.
+
+  script.
+    function deleteUser(username) {
+      if (confirm('Tem a certeza que deseja apagar?')) {
+        window.location.href = `/users/delete?username=${username}`;
+      }
+    }
