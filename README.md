@@ -24,46 +24,7 @@ O projeto é uma aplicação web completa que integra várias partes para fornec
 
 ## Componentes Principais
 
-### 1. API de Gestão de UCs (api-geradorUCs)
-
-A API é responsável por gerir as Unidades Curriculares (UCs). Utiliza o framework Express.js para construir endpoints RESTful que permitem a criação, leitura, atualização e eliminação (CRUD) de UCs.
-
-#### Estrutura
-
-- `models/uc.js`: Define o schema da UC no MongoDB usando Mongoose.
-- `routes/ucs.js`: Define os endpoints relacionados às UCs.
-- `app.js`: Configura a aplicação Express, conecta à base de dados MongoDB e inicializa as rotas.
-
-#### Funcionalidades
-
-1. **Criar UC**: Permite a criação de uma nova UC.
-2. **Ler UCs**: Permite a obtenção de todas as UCs ou uma UC específica.
-3. **Atualizar UC**: Permite a atualização dos dados de uma UC específica.
-4. **Eliminar UC**: Permite a eliminação de uma UC específica.
-
-#### Dockerfiles
-
-##### Dockerfile
-
-1. Atribui à pasta do container `/usr/src/app` o diretório de trabalho
-
-2. Copia o package.json para o diretório de trabalho
-
-3. npm install
-
-4. Copia o resto dos ficheiros para o container
-
-5. Expõe a porta 3124
-
-6. npm start
-
-##### Dockerfile-seed
-
-1. Atribui à pasta do container `/data` o diretório de trabalho
-
-2. Copia os ficheiros `ucs.json` e `users.json` para o diretório de trabalho do container
-
-### 2. Sistema de Autenticação (auth-geradorUCs)
+### 1. Sistema de Autenticação (auth-geradorUCs)
 
 #### Estrutura
 
@@ -103,6 +64,52 @@ Existem 3 níveis de acesso (e mais 1 que combina 2 deles): Admin, Docente, Alun
 5. Expõe a porta 3123
 
 6. npm start
+
+### 2. API de Gestão de UCs (api-geradorUCs)
+
+A API é responsável por gerir as Unidades Curriculares (UCs). Utiliza o framework Express.js para construir endpoints RESTful que permitem a criação, leitura, atualização e eliminação (CRUD) de UCs.
+
+#### Estrutura
+
+- `models/uc.js`: Define o schema da UC no MongoDB usando Mongoose.
+- `routes/ucs.js`: Define os endpoints relacionados às UCs.
+- `app.js`: Configura a aplicação Express, conecta à base de dados MongoDB e inicializa as rotas.
+
+#### Funcionalidades
+
+1. **Criar UC**: Permite a criação de uma nova UC.
+2. **Ler UCs**: Permite a obtenção de todas as UCs ou uma UC específica.
+3. **Atualizar UC**: Permite a atualização dos dados de uma UC específica.
+4. **Eliminar UC**: Permite a eliminação de uma UC específica.
+
+#### Permissões
+
+- **Listar UCs**: Qualquer nível
+- **Obter UC**: Qualquer nível
+- **Atualizar UC**: Apenas Administradores ou o Docente Criador da UC
+- **Eliminar UC**: Apenas Administradores ou o Docente Criador da UC
+
+#### Dockerfiles
+
+##### Dockerfile
+
+1. Atribui à pasta do container `/usr/src/app` o diretório de trabalho
+
+2. Copia o package.json para o diretório de trabalho
+
+3. npm install
+
+4. Copia o resto dos ficheiros para o container
+
+5. Expõe a porta 3124
+
+6. npm start
+
+##### Dockerfile-seed
+
+1. Atribui à pasta do container `/data` o diretório de trabalho
+
+2. Copia os ficheiros `ucs.json` e `users.json` para o diretório de trabalho do container
 
 ### 3. Interface de Utilizador (html-geradorUCs)
 

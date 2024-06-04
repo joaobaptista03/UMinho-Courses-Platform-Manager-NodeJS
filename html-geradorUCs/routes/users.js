@@ -138,7 +138,7 @@ router.get('/delete', verifyUser, async (req, res) => {
                         dados.data.forEach(uc => {
                             if (uc.docentes.includes(req.query.username)) {
                                 uc.docentes = uc.docentes.filter(docente => docente !== req.query.username);
-                                axios.put(`${process.env.API_URI}/ucs/${uc._id}`, uc)
+                                axios.put(`${process.env.API_URI}/ucs/${uc._id}?token=${req.cookies.token}`, uc)
                                     .catch(e => {
                                         handleError(res, e, 'Erro inesperado ao remover o docente das UCs', 501, isAdmin, username);
                                     });

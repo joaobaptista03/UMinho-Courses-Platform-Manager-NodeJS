@@ -6,7 +6,7 @@ var jwt = require('jsonwebtoken')
 
 const router = express.Router();
 
-router.get('/', auth.verificaAcesso, function (req, res) {
+router.get('/', function (req, res) {
   if (req.query.role.toLowerCase() === 'admin') {
     User.find({ $or: [{ level: 'Admin' }, { level: 'AdminDocente' }] }).exec()
       .then(dados => {

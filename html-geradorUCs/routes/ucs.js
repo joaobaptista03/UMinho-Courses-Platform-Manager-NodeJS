@@ -35,7 +35,7 @@ router.post('/', async function (req, res, next) {
     };
 
     try {
-        const response = await axios.post(`${process.env.API_URI}/ucs`, newUC);
+        const response = await axios.post(`${process.env.API_URI}/ucs?token=${req.cookies.token}`, newUC);
         res.redirect(`/ucs/${response.data._id}`);
     } catch (error) {
         res.render('error', { error: { status: 501, message: 'Erro ao adicionar UC' }, title: 'Erro', isAdmin, username });
@@ -155,7 +155,7 @@ router.post('/edit/:id', async function (req, res, next) {
             aulas: JSON.parse(req.body.aulas)
         };
 
-        await axios.put(`${process.env.API_URI}/ucs/${req.params.id}`, updatedUC);
+        await axios.put(`${process.env.API_URI}/ucs/${req.params.id}?token=${req.cookies.token}`, updatedUC);
         res.redirect(`/ucs/${req.params.id}`);
     } catch (error) {
         res.render('error', { error: { status: 501, message: 'Erro ao editar UC' }, title: 'Erro', isAdmin, username });
@@ -182,7 +182,7 @@ router.get('/delete/:id', async function (req, res, next) {
     }
 
     try {
-        await axios.delete(`${process.env.API_URI}/ucs/${req.params.id}`);
+        await axios.delete(`${process.env.API_URI}/ucs/${req.params.id}?token=${req.cookies.token}`);
         res.redirect('/');
     } catch (error) {
         res.render('error', { error: { status: 501, message: 'Erro ao eliminar UC' }, title: 'Erro', isAdmin, username });
