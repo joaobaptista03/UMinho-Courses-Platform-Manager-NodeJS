@@ -1,39 +1,83 @@
 extends layout
 
 block content
-  .w3-container.w3-padding-16
-    form.w3-container.w3-padding-large.w3-card-4.w3-white(action="/users?role=" + role method="POST", enctype="multipart/form-data")
-      .w3-section
-        label.w3-text-deep-purple Username:
-        input.w3-input.w3-border.w3-round-large(type="text" name="username" required)
-      .w3-section
-        label.w3-text-deep-purple Nome:
-        input.w3-input.w3-border.w3-round-large(type="text" name="name" required)
-      .w3-section
-        label.w3-text-deep-purple Email:
-        input.w3-input.w3-border.w3-round-large(type="email" name="email" required)
-      .w3-section
-        label.w3-text-deep-purple Password:
-        input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
-      .w3-section
-        label.w3-text-deep-purple Foto:
-        input.w3-input.w3-border.w3-round-large(type="file" name="foto" required)
-      .w3-section
-        label.w3-text-deep-purple Categoria:
-        input.w3-input.w3-border.w3-round-large(type="text" name="categoria" required)
-      .w3-section
-        label.w3-text-deep-purple Filiação:
-        input.w3-input.w3-border.w3-round-large(type="text" name="filiacao" required)
-      .w3-section
-        label.w3-text-deep-purple Webpage:
-        input.w3-input.w3-border.w3-round-large(type="text" name="webpage")
-
-      if role && role.toLowerCase() === 'admin'
+  .w3-container.w3-padding-large(style="display: flex; justify-content: center; align-items: center;")
+    form.w3-container.w3-padding-large.w3-card-4.w3-white.w3-center(style="max-width: 1200px; flex: 1 1 1200px; display: flex; flex-direction: row; justify-content: space-between;")
+      .left-column(style="display: flex; flex-direction: column; flex: 1; padding-right: 25px;")
         .w3-section
-          label.w3-text-deep-purple É docente: 
-          input.w3-check(type="checkbox" name="docente")
-
-      if error
+          label.w3-text-deep-purple.w3-xlarge Username:
+          input.w3-input.w3-border.w3-round-large(type="text" name="username" required)
         .w3-section
-          p.w3-text-red #{error}
-      button.w3-button.w3-blue.w3-large.w3-round-large(type="submit") Registar
+          label.w3-text-deep-purple.w3-xlarge Nome:
+          input.w3-input.w3-border.w3-round-large(type="text" name="name" required)
+        .w3-section
+          label.w3-text-deep-purple.w3-xlarge Email:
+          input.w3-input.w3-border.w3-round-large(type="email" name="email" required)
+        .w3-section
+          label.w3-text-deep-purple.w3-xlarge Password:
+          input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
+        .w3-section
+          label.w3-text-deep-purple.w3-xlarge Confirmar Password:
+          input.w3-input.w3-border.w3-round-large(type="password" name="confirm_password" required)
+      .right-column(style="display: flex; flex-direction: column; flex: 1; padding-left: 25px;")
+        .w3-section
+          label.w3-text-deep-purple.w3-xlarge Foto:
+          input.w3-input.w3-border.w3-round-large(type="file" name="foto" required)
+        .w3-section
+          label.w3-text-deep-purple.w3-xlarge Categoria:
+          input.w3-input.w3-border.w3-round-large(type="text" name="categoria" required)
+        .w3-section
+          label.w3-text-deep-purple.w3-xlarge Filiação:
+          input.w3-input.w3-border.w3-round-large(type="text" name="filiacao" required)
+        .w3-section
+          label.w3-text-deep-purple.w3-xlarge Webpage:
+          input.w3-input.w3-border.w3-round-large(type="text" name="webpage")
+        .w3-section
+          if role && role.toLowerCase() === 'admin'
+            label.w3-text-deep-purple.w3-xlarge É docente:
+            input.w3-check(type="checkbox" name="docente")
+        .w3-section
+          button.w3-button.w3-large.w3-round-large(style="width: 200px; background-color: gray;" disabled)(type="submit") Registar
+  style.
+    .w3-input {
+      height: 45px;  // Definir altura fixa para todos os campos de entrada
+      padding: 8px 10px;  // Ajustar o padding para centralizar o texto verticalmente
+    }
+    input[type="file"] {
+      line-height: 20px;
+    }
+  
+  script.
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.querySelector('form');
+      const username = document.querySelector('[name="username"]');
+      const name = document.querySelector('[name="name"]');
+      const email = document.querySelector('[name="email"]');
+      const password = document.querySelector('[name="password"]');
+      const confirmPassword = document.querySelector('[name="confirm_password"]');
+      const foto = document.querySelector('[type="file"]');
+      const categoria = document.querySelector('[name="categoria"]');
+      const filiacao = document.querySelector('[name="filiacao"]');
+      const webpage = document.querySelector('[name="webpage"]');
+      const submitButton = document.querySelector('button[type="submit"]');
+
+      function updateButtonState() {
+        const allFilled = username.value && name.value && email.value && password.value && confirmPassword.value && foto.files.length > 0 && categoria.value && filiacao.value;
+
+        const passwordsMatch = password.value === confirmPassword.value;
+
+        submitButton.disabled = !allFilled || !passwordsMatch;
+        if(submitButton.disabled) {
+          submitButton.style.backgroundColor = 'gray';
+          submitButton.style.color = 'black'; 
+        } else {
+          submitButton.style.backgroundColor = '#2196F3';
+          submitButton.style.color = 'white';  
+        }
+      }
+
+      [username, name, email, password, confirmPassword, foto, categoria, filiacao, webpage].forEach(field => {
+        field.addEventListener('input', updateButtonState);
+      });
+    });
+
