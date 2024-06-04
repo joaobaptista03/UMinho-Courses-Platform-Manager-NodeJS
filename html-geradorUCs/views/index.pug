@@ -4,11 +4,10 @@ block content
   .w3-container.w3-padding-16.w3-center
     form(action="/" method="GET" class="w3-row w3-margin-top w3-center w3-animate-opacity" style="display: flex; justify-content: center; flex-wrap: wrap; gap: 20px;")
       .w3-third.w3-margin-bottom(style="max-width: 400px; flex: 1 1 400px;")
-        input.w3-input.w3-border.w3-round-large(type="text" name="titulo" placeholder="Pesquisar por Título" value=titulo)
+        input.w3-input.w3-border.w3-round-large(type="text" name="titulo" placeholder="Pesquisar por Título" value=titulo oninput="filterUCs()")
       .w3-third.w3-margin-bottom(style="max-width: 400px; flex: 1 1 400px;")
-        input.w3-input.w3-border.w3-round-large(type="text" name="docente" placeholder="Pesquisar por Docente" value=docente)
-      .w3-third.w3-margin-bottom(style="display: flex; justify-content: space-around; max-width: 300px; flex: 1 1 300px;")
-        button.w3-button.w3-blue.w3-round-large.w3-input.w3-margin-right.w3-hover-shadow(type="submit") Pesquisar
+        input.w3-input.w3-border.w3-round-large(type="text" name="docente" placeholder="Pesquisar por Docente" value=docente oninput="filterUCs()")
+      .w3-third.w3-margin-bottom(style="display: flex; justify-content: space-around; max-width: 200px; flex: 1 1 200px;")
         button.w3-button.w3-gray.w3-round-large.w3-input.w3-hover-shadow(type="button", onclick="window.location.href='/'") Limpar Filtros
 
   if isDocente || isAdmin
@@ -54,3 +53,18 @@ block content
         alert(info);
       }
     });
+
+    function filterUCs() {
+      const titulo = document.querySelector('[name="titulo"]').value;
+      const docente = document.querySelector('[name="docente"]').value;
+
+      fetch(`/?titulo=${encodeURIComponent(titulo)}&docente=${encodeURIComponent(docente)}`)
+        .then(response => response.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const newContent = doc.querySelector('.w3-row-padding');
+          document.querySelector('.w3-row-padding').innerHTML = newContent.innerHTML;
+        })
+        .catch(error => console.error('Error loading the UCs:', error));
+    }
