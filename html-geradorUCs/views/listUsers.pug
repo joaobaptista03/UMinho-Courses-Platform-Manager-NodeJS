@@ -18,7 +18,10 @@ block content
         tbody
           each user in users
             tr
-              td= user.name
+              td
+                | #{user.name} 
+                if role.toLowerCase() === 'docente' && (user.level === 'Admin' || user.level === 'AdminDocente')
+                  span.w3-tag.w3-deep-purple.w3-round ADMIN
               td= user.email
               td
                 a.w3-button.w3-red.w3-round-large.w3-hover-shadow.w3-margin-right(onclick=`deleteUser('${user.username}')`) Apagar

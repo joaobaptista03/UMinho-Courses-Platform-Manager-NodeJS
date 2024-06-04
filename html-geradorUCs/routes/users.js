@@ -7,15 +7,9 @@ const multer = require('multer');
 const upload = multer({ dest: 'uploads' });
 const auth = require('./../aux/auth');
 
-function handleError(res, error, message = 'Erro inesperado', status = 500, isAdmin, username) {
+const handleError = (res, error, message = 'Erro inesperado', status = 500, isAdmin, username) => {
     res.status(status).render('error', { error: { status, message }, title: 'Erro', isAdmin, username });
-}
-
-function deleteFile(filePath) {
-    fs.unlink(filePath, (err) => {
-        res.status(500).render('error', { error: { status: 500, message: 'Erro inesperado ao apagar ficheiro.' }, title: 'Erro' });
-    });
-}
+};
 
 async function verifyUser(req, res, next) {
     const { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
@@ -30,7 +24,7 @@ async function verifyUser(req, res, next) {
 router.get('/', verifyUser, async (req, res) => {
     const { isAdmin, username } = req.user;
     if (!isAdmin) {
-        return res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
+        return handleError(res, null, 'Não tem permissões para aceder a esta página.', 403, isAdmin, username);
     }
 
     const role = req.query.role;
@@ -45,15 +39,15 @@ router.get('/', verifyUser, async (req, res) => {
 
 router.post('/', upload.single('foto'), verifyUser, async (req, res) => {
     const { isAdmin, username } = req.user;
-    const role  = req.query.role.toLowerCase();
+    const role = req.query.role.toLowerCase();
 
     if ((role === 'admin' || role === 'docente' || role === 'admindocente') && !isAdmin) {
-        if (req.file && req.file.path) deleteFile(req.file.path);
-        return res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
+        if (req.file && req.file.path) fs.unlink(req.file.path, () => {});
+        return handleError(res, null, 'Não tem permissões para aceder a esta página.', 403, isAdmin, username);
     }
 
     if (req.file.mimetype.split('/')[0] !== 'image') {
-        if (req.file && req.file.path) deleteFile(req.file.path);
+        if (req.file && req.file.path) fs.unlink(req.file.path, () => {});
         return res.render('register', { title: 'Registar', error: 'O ficheiro não é uma imagem.', role, isAdmin, username });
     }
 
@@ -63,19 +57,19 @@ router.post('/', upload.single('foto'), verifyUser, async (req, res) => {
 
     fs.access(oldPath, fs.constants.F_OK, (err) => {
         if (err) {
-            return res.render('error', { error: { status: 500, message: 'Uploaded file not found.' }, title: 'Erro', isAdmin, username });
+            return handleError(res, err, 'Uploaded file not found.', 500, isAdmin, username);
         }
 
         fs.mkdir(path.join(__dirname, '/../public/images/users/'), { recursive: true }, (err) => {
             if (err) {
-                deleteFile(oldPath);
-                return handleError(res, err, 'Erro ao criar pasta', 501, isAdmin, username);
+                fs.unlink(oldPath, () => {});
+                return handleError(res, err, 'Erro ao criar pasta', 500, isAdmin, username);
             }
 
             fs.rename(oldPath, newPath, async (err) => {
                 if (err) {
-                    deleteFile(oldPath);
-                    return handleError(res, err, 'Erro inesperado ao criar utilizador.', 501, isAdmin, username);
+                    fs.unlink(oldPath, () => {});
+                    return handleError(res, err, 'Erro inesperado ao criar utilizador.', 500, isAdmin, username);
                 }
 
                 try {
@@ -88,36 +82,34 @@ router.post('/', upload.single('foto'), verifyUser, async (req, res) => {
                         const folderPath = path.join(__dirname, '/../public/filesUploaded/', req.body.username);
                         fs.mkdir(folderPath, { recursive: true }, (err) => {
                             if (err) {
-                                deleteFile(newPath);
-                                return handleError(res, err, 'Erro ao criar pasta do utilizador.', 501, isAdmin, username);
+                                fs.unlink(newPath, () => {});
+                                return handleError(res, err, 'Erro ao criar pasta do utilizador.', 500, isAdmin, username);
                             }
 
                             const title = role.charAt(0).toUpperCase() + role.slice(1);
-
                             res.render('success', { title: 'Sucesso', sucesso: `${title} registado com sucesso.`, isAdmin, username });
                         });
                     } else {
-                        res.render('login', { title: 'Login', register: true })
+                        res.render('login', { title: 'Login', register: true });
                     }
                 } catch (err) {
-                    handleError(res, err, err.message, 501, isAdmin, username);
+                    handleError(res, err, err.message, 500, isAdmin, username);
                 }
             });
         });
     });
 });
 
-
 router.get('/delete', verifyUser, async (req, res) => {
     const { isAdmin, username } = req.user;
     if (!isAdmin) {
-        return res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
+        return handleError(res, null, 'Não tem permissões para aceder a esta página.', 403, isAdmin, username);
     }
 
     try {
         const response = await axios.delete(`${process.env.AUTH_URI}?username=${req.query.username}&token=${req.cookies.token}`);
         if (response.data.error) {
-            return handleError(res, response.data.error, response.data.error, 501, isAdmin, username);
+            return handleError(res, response.data.error, response.data.error, 500, isAdmin, username);
         }
 
         const userFolderPath = path.join(__dirname, '/../public/filesUploaded/', req.query.username);
@@ -125,12 +117,12 @@ router.get('/delete', verifyUser, async (req, res) => {
 
         fs.rm(userFolderPath, { recursive: true }, (err) => {
             if (err) {
-                return handleError(res, err, 'Erro ao apagar pasta', 501, isAdmin, username);
+                return handleError(res, err, 'Erro ao apagar pasta', 500, isAdmin, username);
             }
 
             fs.unlink(userImagePath, (err) => {
                 if (err) {
-                    return handleError(res, err, 'Erro ao apagar ficheiro', 501, isAdmin, username);
+                    return handleError(res, err, 'Erro ao apagar ficheiro', 500, isAdmin, username);
                 }
 
                 axios.get(process.env.API_URI + '/ucs')
@@ -139,20 +131,16 @@ router.get('/delete', verifyUser, async (req, res) => {
                             if (uc.docentes.includes(req.query.username)) {
                                 uc.docentes = uc.docentes.filter(docente => docente !== req.query.username);
                                 axios.put(`${process.env.API_URI}/ucs/${uc._id}?token=${req.cookies.token}`, uc)
-                                    .catch(e => {
-                                        handleError(res, e, 'Erro inesperado ao remover o docente das UCs', 501, isAdmin, username);
-                                    });
+                                    .catch(e => handleError(res, e, 'Erro inesperado ao remover o docente das UCs', 500, isAdmin, username));
                             }
                         });
                         res.render('success', { title: 'Sucesso', sucesso: 'Utilizador apagado com sucesso.', isAdmin, username });
                     })
-                    .catch(e => {
-                        handleError(res, e, 'Erro inesperado ao remover o docente das UCs', 501, isAdmin, username);
-                    });
+                    .catch(e => handleError(res, e, 'Erro inesperado ao remover o docente das UCs', 500, isAdmin, username));
             });
         });
     } catch (e) {
-        handleError(res, e, e.response.data.message, 501, isAdmin, username);
+        handleError(res, e, e.response.data.message, 500, isAdmin, username);
     }
 });
 
@@ -164,12 +152,7 @@ router.get('/login', verifyUser, (req, res) => {
     res.render('login', { title: 'Login' });
 });
 
-router.post('/login', verifyUser, async (req, res) => {
-    const { username } = req.user;
-    if (username) {
-        return res.redirect('/');
-    }
-
+router.post('/login', async (req, res) => {
     try {
         const response = await axios.post(`${process.env.AUTH_URI}/login`, req.body);
         res.cookie('token', response.data.token);
@@ -184,7 +167,7 @@ router.get('/registar', verifyUser, (req, res) => {
     const role = req.query.role.toLowerCase();
 
     if ((role === 'admin' || role === 'docente' || role === 'admindocente') && !isAdmin) {
-        return res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
+        return handleError(res, null, 'Não tem permissões para aceder a esta página.', 403, isAdmin, username);
     }
 
     if (username && !isAdmin) {
@@ -195,29 +178,25 @@ router.get('/registar', verifyUser, (req, res) => {
 });
 
 router.post('/logout', verifyUser, (req, res) => {
-    const { username } = req.user;
-    if (!username) {
-        return res.redirect('/');
-    }
     res.cookie('token', undefined);
     res.redirect('/');
 });
 
 router.post('/changePassword', verifyUser, async (req, res) => {
     const { isAdmin, username } = req.user;
-    
+
     if (!username) {
-        return res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro' });
+        return handleError(res, null, 'Não tem permissões para aceder a esta página.', 403, isAdmin, username);
     }
 
     try {
         const response = await axios.post(`${process.env.AUTH_URI}/changePassword?token=${req.cookies.token}`, req.body);
         if (response.data.error) {
-            return handleError(res, response.data.error, response.data.error, 501, isAdmin, username);
+            return handleError(res, response.data.error, response.data.error, 500, isAdmin, username);
         }
-        res.render('success', { title: 'Sucesso', sucesso: 'Password alterada com sucesso.', isAdmin , username });
+        res.render('success', { title: 'Sucesso', sucesso: 'Password alterada com sucesso.', isAdmin, username });
     } catch (e) {
-        handleError(res, e, e.response.data.message, 501, isAdmin, username);
+        handleError(res, e, e.response.data.message, 500, isAdmin, username);
     }
 });
 

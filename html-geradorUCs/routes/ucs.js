@@ -1,9 +1,9 @@
-var express = require('express');
-var router = express.Router();
-var axios = require('axios');
+const express = require('express');
+const router = express.Router();
+const axios = require('axios');
 const auth = require('./../aux/auth');
 
-router.post('/', async function (req, res, next) {
+router.post('/', async (req, res) => {
     let { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
     if (error) {
@@ -42,7 +42,7 @@ router.post('/', async function (req, res, next) {
     }
 });
 
-router.get('/:id', async function (req, res, next) {
+router.get('/:id', async (req, res) => {
     let { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
     if (error) {
@@ -57,13 +57,12 @@ router.get('/:id', async function (req, res, next) {
             return;
         }
 
-        hadError = false;
+        let hadError = false;
         const newDocentes = await Promise.all(dados.data.docentes.map(async (docenteId) => {
             try {
                 const docenteData = await axios.get(`${process.env.AUTH_URI}/${docenteId}?token=${req.cookies.token}`);
                 return docenteData.data;
             } catch (error) {
-                console.log(error); // Log the error
                 hadError = true;
                 return null;
             }
@@ -82,7 +81,7 @@ router.get('/:id', async function (req, res, next) {
     }
 });
 
-router.get('/edit/:id', async function (req, res, next) {
+router.get('/edit/:id', async (req, res) => {
     let { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
     if (error) {
@@ -97,27 +96,27 @@ router.get('/edit/:id', async function (req, res, next) {
 
     try {
         let ucResponse = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}`);
-        
+
         if (ucResponse.data.criador !== username && !isAdmin) {
             res.render('error', { error: { status: 401, message: 'Não tem permissões para editar esta UC' }, title: 'Erro', isAdmin, username });
             return;
         }
-        
+
         const docentesResponse = await axios.get(`${process.env.AUTH_URI}?role=docente&token=${req.cookies.token}`);
         const docentes = docentesResponse.data;
-        
+
         ucResponse.data.docentes = await Promise.all(ucResponse.data.docentes.map(async (docenteId) => {
             const docenteResponse = await axios.get(`${process.env.AUTH_URI}/${docenteId}?token=${req.cookies.token}`);
             return docenteResponse.data;
         }));
-        
+
         res.render('editUC', { uc: ucResponse.data, docentes, title: `Editar UC: ${ucResponse.data.titulo}`, isAdmin, username });
     } catch (error) {
         res.render('error', { error: { status: 501, message: 'Erro ao consultar UC ou Docentes' }, title: 'Erro', isAdmin, username });
     }
 });
 
-router.post('/edit/:id', async function (req, res, next) {
+router.post('/edit/:id', async (req, res) => {
     let { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
     if (error) {
@@ -162,7 +161,7 @@ router.post('/edit/:id', async function (req, res, next) {
     }
 });
 
-router.get('/delete/:id', async function (req, res, next) {
+router.get('/delete/:id', async (req, res) => {
     let { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
     if (error) {

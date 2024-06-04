@@ -16,4 +16,4 @@ async function verifyToken(req) {
     return {};
 }
 
-module.exports = {verifyToken};
+module.exports = { verifyToken };

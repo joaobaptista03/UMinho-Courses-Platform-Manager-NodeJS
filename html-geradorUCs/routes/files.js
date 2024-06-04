@@ -1,13 +1,16 @@
-var express = require('express');
-var router = express.Router();
-var axios = require('axios');
+const express = require('express');
+const router = express.Router();
 const path = require('path');
 const fs = require('fs');
-var multer = require('multer');
-var upload = multer({ dest: 'uploads' });
-var auth = require('./../aux/auth');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads' });
+const auth = require('./../aux/auth');
 
-router.get('/', async function (req, res, next) {
+const handleError = (res, error, message = 'Erro inesperado', status = 500) => {
+    res.status(status).render('error', { error: { status, message }, title: 'Erro' });
+};
+
+router.get('/', async (req, res) => {
     const { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
     if (error) {
@@ -16,7 +19,7 @@ router.get('/', async function (req, res, next) {
     }
 
     if (!isAdmin && !isDocente) {
-        res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
+        res.render('error', { error: { status: 403, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
         return;
     }
 
@@ -25,7 +28,7 @@ router.get('/', async function (req, res, next) {
     const absolutePath = path.join(subPath, relativePath);
 
     if (!absolutePath.startsWith(subPath) && !isAdmin) {
-        res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
+        res.render('error', { error: { status: 403, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
         return;
     }
 
@@ -33,7 +36,7 @@ router.get('/', async function (req, res, next) {
 
     fs.readdir(absolutePath, { withFileTypes: true }, (err, files) => {
         if (err) {
-            res.render('error', { error: { status: 501, message: 'Erro ao listar ficheiros' }, title: 'Erro', isAdmin, username });
+            handleError(res, err, 'Erro ao listar ficheiros', 500, isAdmin, username);
             return;
         }
 
@@ -46,7 +49,7 @@ router.get('/', async function (req, res, next) {
     });
 });
 
-router.post('/', upload.single('file'), async function (req, res, next) {
+router.post('/', upload.single('file'), async (req, res) => {
     const { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
     if (error) {
@@ -55,7 +58,7 @@ router.post('/', upload.single('file'), async function (req, res, next) {
     }
 
     if (!isAdmin && !isDocente) {
-        res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
+        res.render('error', { error: { status: 403, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
         return;
     }
 
@@ -64,12 +67,14 @@ router.post('/', upload.single('file'), async function (req, res, next) {
 
     fs.mkdir(absolutePath, { recursive: true }, err => {
         if (err) {
-            return next(err);
+            handleError(res, err, 'Erro ao criar pasta', 500, isAdmin, username);
+            return;
         }
 
         fs.rename(req.file.path, path.join(absolutePath, req.file.originalname), err => {
             if (err) {
-                return next(err);
+                handleError(res, err, 'Erro ao mover ficheiro', 500, isAdmin, username);
+                return;
             }
 
             res.redirect('/files?path=' + relativePath);
@@ -77,7 +82,7 @@ router.post('/', upload.single('file'), async function (req, res, next) {
     });
 });
 
-router.get('/delete', async function (req, res, next) {
+router.get('/delete', async (req, res) => {
     const { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
     if (error) {
@@ -86,7 +91,7 @@ router.get('/delete', async function (req, res, next) {
     }
 
     if (!isAdmin && !isDocente) {
-        res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
+        res.render('error', { error: { status: 403, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
         return;
     }
 
@@ -102,11 +107,11 @@ router.get('/delete', async function (req, res, next) {
         }
         res.redirect('/files?path=' + path.dirname(relativePath));
     } catch (err) {
-        next(err);
+        handleError(res, err, 'Erro ao eliminar', 500, isAdmin, username);
     }
 });
 
-router.get('/download', async function (req, res, next) {
+router.get('/download', async (req, res) => {
     const { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
     if (error) {
@@ -115,7 +120,7 @@ router.get('/download', async function (req, res, next) {
     }
 
     if (!username) {
-        res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
+        res.render('error', { error: { status: 403, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
         return;
     }
 
@@ -124,12 +129,12 @@ router.get('/download', async function (req, res, next) {
 
     res.download(absolutePath, err => {
         if (err) {
-            next(err);
+            handleError(res, err, 'Erro ao baixar o ficheiro', 500, isAdmin, username);
         }
     });
 });
 
-router.post('/files/folder', async function (req, res, next) {
+router.post('/folder', async (req, res) => {
     const { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
     if (error) {
@@ -138,7 +143,7 @@ router.post('/files/folder', async function (req, res, next) {
     }
 
     if (!isAdmin && !isDocente) {
-        res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
+        res.render('error', { error: { status: 403, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
         return;
     }
 
@@ -147,7 +152,8 @@ router.post('/files/folder', async function (req, res, next) {
 
     fs.mkdir(absolutePath, err => {
         if (err) {
-            return next(err);
+            handleError(res, err, 'Erro ao criar pasta', 500, isAdmin, username);
+            return;
         }
 
         res.redirect('/files?path=' + relativePath);
