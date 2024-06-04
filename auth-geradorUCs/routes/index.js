@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken');
 const router = express.Router();
 
 const handleError = (res, error, message = 'Erro inesperado', status = 500) => {
-    res.status(status).jsonp({ error: message, details: error });
+    res.status(status).jsonp({ error: message, message: error });
 };
 
 router.get('/', (req, res) => {
@@ -36,10 +36,10 @@ router.get('/', (req, res) => {
         .catch(e => handleError(res, e));
 });
 
-router.post('/', auth.verificaAcesso, (req, res) => {
+router.post('/', auth.isAdmin, (req, res) => {
     const role = req.query.role.toLowerCase();
 
-    if ((role === 'admin' || role === 'docente' || role === 'admindocente') && (req.payload.level !== 'Admin' && req.payload.level !== 'AdminDocente')) {
+    if ((role === 'admin' || role === 'docente' || role === 'admindocente') && (!res.isAdmin)) {
         return res.status(403).jsonp({ error: "Unauthorized" });
     }
 
@@ -59,7 +59,7 @@ router.post('/', auth.verificaAcesso, (req, res) => {
         fotoExt: req.body.fotoExt
     }), req.body.password, (err, user) => {
         if (err) {
-            handleError(res, err, "Register error: " + err);
+            handleError(res, err, err, 501);
         } else {
             res.jsonp({ message: "User registered with success" });
         }
