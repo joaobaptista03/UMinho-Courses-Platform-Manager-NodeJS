@@ -17,13 +17,14 @@ async function verifyUser(req, res, next) {
         res.render('login', { title: 'Login', error });
         return;
     }
-    req.user = { isAdmin, isDocente, username };
+    req.user = { isAdmin, isDocente, username, fotoExt };
     next();
 }
 
 router.get('/', verifyUser, async (req, res) => {
     const role = req.query.role.toLowerCase();
     const { isAdmin, username, fotoExt } = req.user;
+
     if (!isAdmin) {
         return handleError(res, 'Não tem permissões para aceder a esta página.', 403, isAdmin, username, fotoExt);
     }

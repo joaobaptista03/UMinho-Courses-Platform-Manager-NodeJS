@@ -33,7 +33,12 @@ router.get('/', async (req, res) => {
         return;
     }
 
-    const folderName = path.basename(absolutePath);
+    var folderName = 'Pasta ' + relativePath.slice(1);
+    if (relativePath === '' || relativePath === '/') {
+        folderName = 'Os Meus Ficheiros';
+    } else if (relativePath === '../' || relativePath === '..' || relativePath === '/..') {
+        folderName = 'Todos os Ficheiros';
+    }
 
     fs.readdir(absolutePath, { withFileTypes: true }, (err, files) => {
         if (err) {
@@ -46,7 +51,7 @@ router.get('/', async (req, res) => {
             isDirectory: file.isDirectory()
         }));
 
-        res.render('files', { path: relativePath, files: fileList, title: 'Pasta: ' + folderName, isAdmin, username, fotoExt });
+        res.render('files', { path: relativePath, files: fileList, title: folderName, isAdmin, username, fotoExt });
     });
 });
 
