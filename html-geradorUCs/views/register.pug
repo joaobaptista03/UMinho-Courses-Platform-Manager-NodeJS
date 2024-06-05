@@ -2,7 +2,7 @@ extends layout
 
 block content
   .w3-container.w3-padding-large(style="display: flex; justify-content: center; align-items: center; margin-top: 140px;")
-    form.w3-container.w3-padding-large.w3-card-4.w3-center(style="max-width: 1200px; flex: 1 1 1200px; display: flex; flex-direction: row; justify-content: space-between;background-color: rgba(255, 255, 255, 0.95);")(action="/users?role=" + role method="POST", enctype="multipart/form-data")
+    form.w3-container.w3-padding-large.w3-card-4.w3-center(style="max-width: 1200px; flex: 1 1 1200px; display: flex; flex-direction: row; justify-content: space-between;background-color: rgba(255, 255, 255, 0.95);" action="/users?role=" + role method="POST", enctype="multipart/form-data")
       .left-column
         .w3-section
           label.w3-text-blue.w3-xlarge Username:
@@ -37,10 +37,10 @@ block content
             label.w3-text-blue.w3-xlarge É docente:
             input.w3-check(type="checkbox" name="docente")
           .w3-section
-            button.w3-button.w3-large.w3-round-large(style="width: 200px; background-color: gray; height: 45px;" disabled)(type="submit") Registar
+            button.w3-button.w3-large.w3-round-large(style="width: 200px; background-color: gray; height: 45px;" disabled type="submit") Registar
         else
           .w3-section
-            button.w3-button.w3-large.w3-round-large(style="width: 200px; background-color: gray; margin-top: 35px; height: 45px;" disabled)(type="submit") Registar
+            button.w3-button.w3-large.w3-round-large(style="width: 200px; background-color: gray; margin-top: 35px; height: 45px;" disabled type="submit") Registar
   style.
     .left-column, .right-column {
       display: flex;

@@ -93,7 +93,7 @@ router.post('/', upload.single('foto'), verifyUser, async (req, res) => {
                         res.render('login', { title: 'Login', register: true });
                     }
                 } catch (err) {
-                    if (err.response.data.error.name == 'UserExistsError') {
+                    if (err.response && err.response.data.error.name == 'UserExistsError') {
                         fs.unlink(newPath, () => {});
                         return res.render('register', { title: 'Registar', error: 'Utilizador já existe.', role, isAdmin, username });
                     }
