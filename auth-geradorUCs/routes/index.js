@@ -121,6 +121,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
     jwt.sign({
         username: req.user.username,
         level: req.user.level,
+        fotoExt: req.user.fotoExt,
         sub: 'Gerador WebSite UCs - EngWeb2024'
     }, "ProjetoEW2024-a100705-a100896-a100711", { expiresIn: 3600 }, (e, token) => {
         if (e) {
@@ -138,7 +139,8 @@ router.get('/verifyToken', auth.verificaAcesso, (req, res) => {
             isAdmin: false,
             isDocente: false,
             isExpired: req.tokenExpired,
-            isError: req.tokenError
+            isError: req.tokenError,
+            fotoExt: ""
         });
     } else {
         res.jsonp({
@@ -146,7 +148,8 @@ router.get('/verifyToken', auth.verificaAcesso, (req, res) => {
             isDocente: req.payload.level === "Docente",
             username: req.payload.username,
             isExpired: req.tokenExpired,
-            isError: req.tokenError
+            isError: req.tokenError,
+            fotoExt: req.payload.fotoExt
         });
     }
 });

@@ -3,9 +3,9 @@ const router = express.Router();
 const axios = require('axios');
 const auth = require('./../aux/auth');
 
-const handleError = (res, error, message = 'Erro inesperado', status = 500, isAdmin, username) => {
+const handleError = (res, error, message = 'Erro inesperado', status = 500, isAdmin, username, fotoExt) => {
     console.error(error);
-    res.status(status).render('error', { error: { status, message }, title: 'Erro', isAdmin, username });
+    res.status(status).render('error', { error: { status, message }, title: 'Erro', isAdmin, username, fotoExt });
 };
 
 const fetchDocente = async (docenteId, token) => {
@@ -29,7 +29,7 @@ const removeAccents = (str) => {
 
 router.get('/', async (req, res) => {
     const { titulo, docente } = req.query;
-    const { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
+    const { isAdmin, isDocente, username, fotoExt, error } = await auth.verifyToken(req);
 
     if (error) {
         return res.render('login', { title: 'Login', error });
@@ -48,7 +48,7 @@ router.get('/', async (req, res) => {
             try {
                 uc.docentes = await fetchDocentesForUc(uc, req.cookies.token);
             } catch (error) {
-                return handleError(res, error, 'Erro ao consultar Docente', 501, isAdmin, username);
+                return handleError(res, error, 'Erro ao consultar Docente', 501, isAdmin, username, fotoExt);
             }
         }
 
@@ -57,9 +57,9 @@ router.get('/', async (req, res) => {
             ucs = ucs.filter(uc => uc.docentes.some(d => removeAccents(d.name).includes(normalizedDocente)));
         }
 
-        res.render('index', { ucs, title: 'Lista de UCs', docente, isAdmin, isDocente, username, titulo });
+        res.render('index', { ucs, title: 'Lista de UCs', docente, isAdmin, isDocente, username, fotoExt, titulo });
     } catch (error) {
-        handleError(res, error, 'Erro ao consultar UCs', 501, isAdmin, username);
+        handleError(res, error, 'Erro ao consultar UCs', 501, isAdmin, username, fotoExt);
     }
 });
 
@@ -73,21 +73,21 @@ const fetchDocentes = async (token) => {
 };
 
 router.get('/addUC', async (req, res) => {
-    const { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
+    const { isAdmin, isDocente, username, fotoExt, error } = await auth.verifyToken(req);
 
     if (error) {
         return res.render('login', { title: 'Login', error });
     }
 
     if (!isAdmin && !isDocente) {
-        return res.render('error', { error: { status: 403, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
+        return res.render('error', { error: { status: 403, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username, fotoExt });
     }
 
     try {
         const docentes = await fetchDocentes(req.cookies.token);
-        res.render('addUC', { docentes, title: 'Adicionar UC', isAdmin, username });
+        res.render('addUC', { docentes, title: 'Adicionar UC', isAdmin, username, fotoExt });
     } catch (error) {
-        handleError(res, error, 'Erro ao obter docentes', 501, isAdmin, username);
+        handleError(res, error, 'Erro ao obter docentes', 501, isAdmin, username, fotoExt);
     }
 });
 

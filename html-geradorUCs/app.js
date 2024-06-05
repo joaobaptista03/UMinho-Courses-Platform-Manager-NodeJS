@@ -37,7 +37,7 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(async function(err, req, res, next) {
-    let { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
+    let { isAdmin, isDocente, username, fotoExt, error } = await auth.verifyToken(req);
 
     if (error) {
         res.render('login', { title: 'Login', error });
@@ -50,7 +50,7 @@ app.use(async function(err, req, res, next) {
 
     // render the error page
     res.status(err.status || 500);
-    res.render('error', { error: { status: 500, message: err.message }, title: 'Erro', isAdmin, username });
+    res.render('error', { error: { status: 500, message: err.message }, title: 'Erro', isAdmin, username, fotoExt });
 });
 
 module.exports = app;

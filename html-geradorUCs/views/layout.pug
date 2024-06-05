@@ -23,11 +23,12 @@ html
           .w3-left.w3-bar-item
             a.w3-button.w3-padding-large.w3-round-large(href='/files') Os Meus Ficheiros
         .w3-right.w3-bar-item
+          a.w3-padding-large(style='cursor: default;')= username
+          img.w3-circle(src='/images/users/' + username + '.' + fotoExt, alt='user', style='width: 50px; height: 50px;')
+        .w3-right.w3-bar-item
           a.w3-button.w3-padding-large.w3-round-large(onclick="logout()") Logout
         .w3-right.w3-bar-item
           a.w3-button.w3-padding-large.w3-round-large(onclick="showAlterarPasswordModal()") Alterar Password
-        .w3-right.w3-bar-item
-          a.w3-padding-large(style='cursor: default;') Welcome, #{username}
 
       else
         .w3-right.w3-bar-item

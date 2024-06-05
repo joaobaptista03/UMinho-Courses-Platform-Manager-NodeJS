@@ -16,6 +16,9 @@ block content
         label.w3-text-deep-purple Password:
         input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
       .w3-section
+        label.w3-text-deep-purple Confirm Password:
+        input.w3-input.w3-border.w3-round-large(type="password" name="password2" required)
+      .w3-section
         label.w3-text-deep-purple Foto:
         input.w3-input.w3-border.w3-round-large(type="file" name="foto" required)
       .w3-section
@@ -25,7 +28,7 @@ block content
         label.w3-text-deep-purple Filiação:
         input.w3-input.w3-border.w3-round-large(type="text" name="filiacao" required)
       .w3-section
-        label.w3-text-deep-purple Webpage:
+        label.w3-text-deep-purple Webpage (opcional):
         input.w3-input.w3-border.w3-round-large(type="text" name="webpage")
 
       if role && role.toLowerCase() === 'admin'
