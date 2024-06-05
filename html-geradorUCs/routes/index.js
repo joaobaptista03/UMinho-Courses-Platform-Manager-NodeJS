@@ -4,7 +4,27 @@ const axios = require('axios');
 const auth = require('./../aux/auth');
 
 const handleError = (res, error, message = 'Erro inesperado', status = 500, isAdmin, username) => {
+    console.error(error);
     res.status(status).render('error', { error: { status, message }, title: 'Erro', isAdmin, username });
+};
+
+const fetchDocente = async (docenteId, token) => {
+    try {
+        const response = await axios.get(`${process.env.AUTH_URI}/${docenteId}`, { params: { token } });
+        if (response.data.error) throw new Error(response.data.error);
+        return response.data;
+    } catch (error) {
+        throw new Error('Erro ao consultar Docente');
+    }
+};
+
+const fetchDocentesForUc = async (uc, token) => {
+    const docentePromises = uc.docentes.map(docenteId => fetchDocente(docenteId, token));
+    return Promise.all(docentePromises);
+};
+
+const removeAccents = (str) => {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 };
 
 router.get('/', async (req, res) => {
@@ -12,8 +32,7 @@ router.get('/', async (req, res) => {
     const { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
     if (error) {
-        res.render('login', { title: 'Login', error });
-        return;
+        return res.render('login', { title: 'Login', error });
     }
 
     try {
@@ -21,23 +40,21 @@ router.get('/', async (req, res) => {
         let ucs = ucResponse.data;
 
         if (titulo) {
-            ucs = ucs.filter(uc => uc.titulo.toLowerCase().includes(titulo.toLowerCase()));
+            const normalizedTitulo = removeAccents(titulo);
+            ucs = ucs.filter(uc => removeAccents(uc.titulo).includes(normalizedTitulo));
         }
 
         for (const uc of ucs) {
-            const newDocentes = [];
-            for (const docenteId of uc.docentes) {
-                const docenteResponse = await axios.get(`${process.env.AUTH_URI}/${docenteId}`, { params: { token: req.cookies.token } });
-                if (docenteResponse.data.error) {
-                    return handleError(res, docenteResponse.data.error, 'Erro ao consultar Docente', 501, isAdmin, username);
-                }
-                newDocentes.push(docenteResponse.data);
+            try {
+                uc.docentes = await fetchDocentesForUc(uc, req.cookies.token);
+            } catch (error) {
+                return handleError(res, error, 'Erro ao consultar Docente', 501, isAdmin, username);
             }
-            uc.docentes = newDocentes;
         }
 
         if (docente) {
-            ucs = ucs.filter(uc => uc.docentes.some(d => d.name.toLowerCase().includes(docente.toLowerCase())));
+            const normalizedDocente = removeAccents(docente);
+            ucs = ucs.filter(uc => uc.docentes.some(d => removeAccents(d.name).includes(normalizedDocente)));
         }
 
         res.render('index', { ucs, title: 'Lista de UCs', docente, isAdmin, isDocente, username, titulo });
@@ -46,26 +63,24 @@ router.get('/', async (req, res) => {
     }
 });
 
-async function fetchDocentes(token) {
+const fetchDocentes = async (token) => {
     try {
         const response = await axios.get(`${process.env.AUTH_URI}`, { params: { role: 'Docente', token } });
         return response.data;
     } catch (error) {
-        throw new Error('Erro ao obter docentes.');
+        throw new Error('Erro ao obter docentes');
     }
-}
+};
 
 router.get('/addUC', async (req, res) => {
     const { isAdmin, isDocente, username, error } = await auth.verifyToken(req);
 
     if (error) {
-        res.render('login', { title: 'Login', error });
-        return;
+        return res.render('login', { title: 'Login', error });
     }
 
     if (!isAdmin && !isDocente) {
-        res.render('error', { error: { status: 403, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
-        return;
+        return res.render('error', { error: { status: 403, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username });
     }
 
     try {
