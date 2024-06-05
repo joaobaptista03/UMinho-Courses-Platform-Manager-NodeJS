@@ -28,12 +28,10 @@ module.exports.isAdmin = async function (req, res, next) {
     }
 
     jwt.verify(myToken, secret, (err, payload) => {
-        if (err) {
+        if (err || !payload) {
             res.isAdmin = false;
             next();
-        }
-        
-        if (payload.level === "Admin" || payload.level === "AdminDocente") {
+        } else if (payload.level === "Admin" || payload.level === "AdminDocente") {
             res.isAdmin = true;
             next();
         }
