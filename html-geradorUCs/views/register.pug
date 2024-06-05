@@ -1,50 +1,68 @@
 extends layout
 
 block content
-  .w3-container.w3-padding-large(style="display: flex; justify-content: center; align-items: center;")
-    form.w3-container.w3-padding-large.w3-card-4.w3-white.w3-center(style="max-width: 1200px; flex: 1 1 1200px; display: flex; flex-direction: row; justify-content: space-between;")
-      .left-column(style="display: flex; flex-direction: column; flex: 1; padding-right: 25px;")
+  .w3-container.w3-padding-large(style="display: flex; justify-content: center; align-items: center; margin-top: 140px;")
+    form.w3-container.w3-padding-large.w3-card-4.w3-center(style="max-width: 1200px; flex: 1 1 1200px; display: flex; flex-direction: row; justify-content: space-between;background-color: rgba(255, 255, 255, 0.95);")(action="/users?role=" + role method="POST", enctype="multipart/form-data")
+      .left-column
         .w3-section
-          label.w3-text-deep-purple.w3-xlarge Username:
+          label.w3-text-blue.w3-xlarge Username:
           input.w3-input.w3-border.w3-round-large(type="text" name="username" required)
         .w3-section
-          label.w3-text-deep-purple.w3-xlarge Nome:
+          label.w3-text-blue.w3-xlarge Nome:
           input.w3-input.w3-border.w3-round-large(type="text" name="name" required)
         .w3-section
-          label.w3-text-deep-purple.w3-xlarge Email:
+          label.w3-text-blue.w3-xlarge Email:
           input.w3-input.w3-border.w3-round-large(type="email" name="email" required)
         .w3-section
-          label.w3-text-deep-purple.w3-xlarge Password:
+          label.w3-text-blue.w3-xlarge Password:
           input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
         .w3-section
-          label.w3-text-deep-purple.w3-xlarge Confirmar Password:
+          label.w3-text-blue.w3-xlarge Confirmar Password:
           input.w3-input.w3-border.w3-round-large(type="password" name="confirm_password" required)
-      .right-column(style="display: flex; flex-direction: column; flex: 1; padding-left: 25px;")
+      .right-column
         .w3-section
-          label.w3-text-deep-purple.w3-xlarge Foto:
+          label.w3-text-blue.w3-xlarge Foto:
           input.w3-input.w3-border.w3-round-large(type="file" name="foto" required)
         .w3-section
-          label.w3-text-deep-purple.w3-xlarge Categoria:
+          label.w3-text-blue.w3-xlarge Categoria:
           input.w3-input.w3-border.w3-round-large(type="text" name="categoria" required)
         .w3-section
-          label.w3-text-deep-purple.w3-xlarge Filiação:
+          label.w3-text-blue.w3-xlarge Filiação:
           input.w3-input.w3-border.w3-round-large(type="text" name="filiacao" required)
         .w3-section
-          label.w3-text-deep-purple.w3-xlarge Webpage(opcional):
+          label.w3-text-blue.w3-xlarge Webpage(opcional):
           input.w3-input.w3-border.w3-round-large(type="text" name="webpage")
-        .w3-section
-          if role && role.toLowerCase() === 'admin'
-            label.w3-text-deep-purple.w3-xlarge É docente:
+        if role && role.toLowerCase() === 'admin'  
+          .w3-section
+            label.w3-text-blue.w3-xlarge É docente:
             input.w3-check(type="checkbox" name="docente")
-        .w3-section
-          button.w3-button.w3-large.w3-round-large(style="width: 200px; background-color: gray;" disabled)(type="submit") Registar
+          .w3-section
+            button.w3-button.w3-large.w3-round-large(style="width: 200px; background-color: gray; height: 45px;" disabled)(type="submit") Registar
+        else
+          .w3-section
+            button.w3-button.w3-large.w3-round-large(style="width: 200px; background-color: gray; margin-top: 35px; height: 45px;" disabled)(type="submit") Registar
   style.
+    .left-column, .right-column {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+    .left-column {
+      padding-right: 30px;
+    }
+    .right-column {
+      padding-left: 30px;
+    }
     .w3-input {
       height: 45px;  // Definir altura fixa para todos os campos de entrada
       padding: 8px 10px;  // Ajustar o padding para centralizar o texto verticalmente
     }
     input[type="file"] {
       line-height: 20px;
+    }
+    body {
+      background: url('/images/EngWeb.jpg') no-repeat center center fixed;
+      background-size: cover;
     }
   
   script.

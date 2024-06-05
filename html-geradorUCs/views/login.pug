@@ -5,16 +5,22 @@ block content
     .w3-container
       p.w3-text-green Registrado com sucesso! Faça login para continuar.
 
-  .w3-container.w3-padding-large(style="display: flex; justify-content: center; align-items: center;")
-    form.w3-container.w3-padding-large.w3-card-4.w3-white.w3-center(style="max-width: 750px; flex: 1 1 750px; height: 340px; justify-content: space-around; display: flex; flex-direction: column;")
+  .w3-container.w3-padding-large(style="display: flex; justify-content: center; align-items: center; margin-top: 140px;")
+    form.w3-container.w3-padding-large.w3-card-4.w3-center(style="max-width: 750px; flex: 1 1 750px; height: 340px; justify-content: space-around; display: flex; flex-direction: column; background-color: rgba(255, 255, 255, 0.95);")(action="/users/login" method="POST")
       .w3-section
-        label.w3-text-deep-purple.w3-xlarge Username:
+        label.w3-text-blue.w3-xlarge Username:
         input.w3-input.w3-border.w3-round-large(type="text" name="username" required)
       .w3-section
-        label.w3-text-deep-purple.w3-xlarge Password:
+        label.w3-text-blue.w3-xlarge Password:
         input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
       if error
         .w3-section
           p.w3-text-red= error
       .w3-section
         button.w3-button.w3-blue.w3-large.w3-round-large(type="submit") Login
+
+  style.
+    body {
+      background: url('/images/EngWeb.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
