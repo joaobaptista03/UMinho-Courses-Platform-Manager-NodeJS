@@ -24,7 +24,11 @@ O projeto é uma aplicação web completa que integra várias partes para fornec
     │   └── ucs.js
     ├── app.js
     ├── Dockerfile
-    └── Dockerfile-seed
+    ├── Dockerfile-seed
+    ├── ucs.json
+    ├── users.json
+    └── package.json
+
 /auth-geradorUCs
     ├── auth
     │   └── auth.js
@@ -35,7 +39,9 @@ O projeto é uma aplicação web completa que integra várias partes para fornec
     ├── routes
     │   └── index.js
     ├── app.js
-    └── Dockerfile
+    ├── Dockerfile
+    └── package.json
+
 /html-geradorUCs
     ├── aux
     │   └── auth.js
@@ -44,11 +50,31 @@ O projeto é uma aplicação web completa que integra várias partes para fornec
     ├── routes
     │   ├── files.js
     │   ├── index.js
+    │   ├── ucs.js
     │   └── users.js
+    ├── uploads
     ├── views
+    │   ├── addUC.pug
+    │   ├── editUC.pug
+    │   ├── error.pug
+    │   ├── files.pug
+    │   ├── index.pug
+    │   ├── layout.pug
+    │   ├── listUsers.pug
+    │   ├── login.pug
+    │   ├── register.pug
+    │   ├── success.pug
+    │   └── uc.pug
     ├── public
+    │   ├── filesUploaded
+    │   ├── images
+    |       └── users
+    │   ├── javascripts
+    │   ├── stylesheets
+    │   └── favicon.ico
     ├── app.js
     └── Dockerfile
+
 /docker-compose.yml
 /export.sh
 /import.sh
