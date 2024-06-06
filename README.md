@@ -12,8 +12,43 @@ O projeto é uma aplicação web completa que integra várias partes para fornec
 
 ```plaintext
 /api-geradorUCs
+    ├── auth
+    │   └── auth.js
+    ├── bin
+    │   └── www
+    ├── controllers
+    │   └── uc.js
+    ├── models
+    │   └── uc.js
+    ├── routes
+    │   └── ucs.js
+    ├── app.js
+    ├── Dockerfile
+    └── Dockerfile-seed
 /auth-geradorUCs
+    ├── auth
+    │   └── auth.js
+    ├── bin
+    │   └── www
+    ├── models
+    │   └── user.js
+    ├── routes
+    │   └── index.js
+    ├── app.js
+    └── Dockerfile
 /html-geradorUCs
+    ├── aux
+    │   └── auth.js
+    ├── bin
+    │   └── www
+    ├── routes
+    │   ├── files.js
+    │   ├── index.js
+    │   └── users.js
+    ├── views
+    ├── public
+    ├── app.js
+    └── Dockerfile
 /docker-compose.yml
 /export.sh
 /import.sh

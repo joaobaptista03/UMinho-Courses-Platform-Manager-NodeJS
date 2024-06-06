@@ -18,11 +18,9 @@ services:
     depends_on:
       - mongo
     command: >
-      bash -c "sleep 3 && 
-      mongosh mongo/projeto-geradorUCS --eval 'db.dropDatabase()' &&
-      sleep 1 &&
-      mongoimport --host mongo --db projeto-geradorUCS --collection users --type json --file /data/users.json --jsonArray &&
-      mongoimport --host mongo --db projeto-geradorUCS --collection ucs --type json --file /data/ucs.json --jsonArray"
+      bash -c "sleep 1 && 
+      mongoimport --host mongo --db projeto-geradorUCS --collection users --type json --drop --file /data/users.json --jsonArray &&
+      mongoimport --host mongo --db projeto-geradorUCS --collection ucs --type json --drop --file /data/ucs.json --jsonArray"
     networks:
       - app-network
     restart: "no"

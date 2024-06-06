@@ -4,15 +4,10 @@ const axios = require('axios');
 const auth = require('./../aux/auth');
 
 router.post('/', async (req, res) => {
-    let { isAdmin, isDocente, username, fotoExt, error } = await auth.verifyToken(req);
-
-    if (error) {
-        res.render('login', { title: 'Login', error });
-        return;
-    }
+    let { isAdmin, isDocente, username, fotoExt } = await auth.verifyToken(req);
 
     if (!isAdmin && !isDocente) {
-        res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username, fotoExt });
+        res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
         return;
     }
 
@@ -38,22 +33,17 @@ router.post('/', async (req, res) => {
         const response = await axios.post(`${process.env.API_URI}/ucs?token=${req.cookies.token}`, newUC);
         res.redirect(`/ucs/${response.data._id}`);
     } catch (error) {
-        res.render('error', { error: { status: 501, message: 'Erro ao adicionar UC' }, title: 'Erro', isAdmin, username, fotoExt });
+        res.render('error', { error: { status: 501, message: 'Erro ao adicionar UC' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
     }
 });
 
 router.get('/:id', async (req, res) => {
-    let { isAdmin, isDocente, username, fotoExt, error } = await auth.verifyToken(req);
-
-    if (error) {
-        res.render('login', { title: 'Login', error });
-        return;
-    }
+    let { isAdmin, isDocente, username, fotoExt } = await auth.verifyToken(req);
 
     try {
         let dados = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}`);
         if (!dados.data) {
-            res.render('error', { error: { status: 404, message: 'UC não encontrada' }, title: 'Erro', isAdmin, username, fotoExt });
+            res.render('error', { error: { status: 404, message: 'UC não encontrada' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
             return;
         }
 
@@ -69,28 +59,23 @@ router.get('/:id', async (req, res) => {
         }));
 
         if (hadError) {
-            res.render('error', { error: { status: 501, message: 'Erro ao consultar Docentes' }, title: 'Erro', isAdmin, username, fotoExt });
+            res.render('error', { error: { status: 501, message: 'Erro ao consultar Docentes' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
             return;
         }
 
         dados.data.docentes = newDocentes.filter(d => d !== null);
 
-        res.render('uc', { uc: dados.data, title: `UC: ${dados.data.titulo}`, isAdmin, username, fotoExt });
+        res.render('uc', { uc: dados.data, title: `UC: ${dados.data.titulo}`, isAdmin, isDocente, username, fotoExt });
     } catch (error) {
-        res.render('error', { error: { status: 501, message: 'Erro ao consultar UC' }, title: 'Erro', isAdmin, username, fotoExt });
+        res.render('error', { error: { status: 501, message: 'Erro ao consultar UC' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
     }
 });
 
 router.get('/edit/:id', async (req, res) => {
-    let { isAdmin, isDocente, username, fotoExt, error } = await auth.verifyToken(req);
-
-    if (error) {
-        res.render('login', { title: 'Login', error });
-        return;
-    }
+    let { isAdmin, isDocente, username, fotoExt } = await auth.verifyToken(req);
 
     if (!isAdmin && !isDocente) {
-        res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username, fotoExt });
+        res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
         return;
     }
 
@@ -98,7 +83,7 @@ router.get('/edit/:id', async (req, res) => {
         let ucResponse = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}`);
 
         if (ucResponse.data.criador !== username && !isAdmin) {
-            res.render('error', { error: { status: 401, message: 'Não tem permissões para editar esta UC' }, title: 'Erro', isAdmin, username, fotoExt });
+            res.render('error', { error: { status: 401, message: 'Não tem permissões para editar esta UC' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
             return;
         }
 
@@ -110,29 +95,24 @@ router.get('/edit/:id', async (req, res) => {
             return docenteResponse.data;
         }));
 
-        res.render('editUC', { uc: ucResponse.data, docentes, title: `Editar UC: ${ucResponse.data.titulo}`, isAdmin, username, fotoExt });
+        res.render('editUC', { uc: ucResponse.data, docentes, title: `Editar UC: ${ucResponse.data.titulo}`, isAdmin, isDocente, username, fotoExt });
     } catch (error) {
-        res.render('error', { error: { status: 501, message: 'Erro ao consultar UC ou Docentes' }, title: 'Erro', isAdmin, username, fotoExt });
+        res.render('error', { error: { status: 501, message: 'Erro ao consultar UC ou Docentes' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
     }
 });
 
 router.post('/edit/:id', async (req, res) => {
-    let { isAdmin, isDocente, username, fotoExt, error } = await auth.verifyToken(req);
-
-    if (error) {
-        res.render('login', { title: 'Login', error });
-        return;
-    }
+    let { isAdmin, isDocente, username, fotoExt } = await auth.verifyToken(req);
 
     if (!isAdmin && !isDocente) {
-        res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username, fotoExt });
+        res.render('error', { error: { status: 401, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
         return;
     }
 
     const ucResponse = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}`);
 
     if (ucResponse.data.criador !== username && !isAdmin) {
-        res.render('error', { error: { status: 401, message: 'Não tem permissões para editar esta UC' }, title: 'Erro', isAdmin, username, fotoExt });
+        res.render('error', { error: { status: 401, message: 'Não tem permissões para editar esta UC' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
         return;
     }
 
@@ -157,26 +137,21 @@ router.post('/edit/:id', async (req, res) => {
         await axios.put(`${process.env.API_URI}/ucs/${req.params.id}?token=${req.cookies.token}`, updatedUC);
         res.redirect(`/ucs/${req.params.id}`);
     } catch (error) {
-        res.render('error', { error: { status: 501, message: 'Erro ao editar UC' }, title: 'Erro', isAdmin, username, fotoExt });
+        res.render('error', { error: { status: 501, message: 'Erro ao editar UC' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
     }
 });
 
 router.get('/delete/:id', async (req, res) => {
-    let { isAdmin, isDocente, username, fotoExt, error } = await auth.verifyToken(req);
-
-    if (error) {
-        res.render('login', { title: 'Login', error });
-        return;
-    }
+    let { isAdmin, isDocente, username, fotoExt } = await auth.verifyToken(req);
 
     if (!isAdmin && !isDocente) {
-        res.render('error', { error: { status: 401, message: 'Não tem permissões para eliminar esta UC' }, title: 'Erro', isAdmin, username, fotoExt });
+        res.render('error', { error: { status: 401, message: 'Não tem permissões para eliminar esta UC' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
         return;
     }
 
     const ucResponse = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}`);
     if (ucResponse.data.criador !== username && !isAdmin) {
-        res.render('error', { error: { status: 401, message: 'Não tem permissões para eliminar esta UC' }, title: 'Erro', isAdmin, username, fotoExt });
+        res.render('error', { error: { status: 401, message: 'Não tem permissões para eliminar esta UC' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
         return;
     }
 
@@ -184,7 +159,7 @@ router.get('/delete/:id', async (req, res) => {
         await axios.delete(`${process.env.API_URI}/ucs/${req.params.id}?token=${req.cookies.token}`);
         res.redirect('/');
     } catch (error) {
-        res.render('error', { error: { status: 501, message: 'Erro ao eliminar UC' }, title: 'Erro', isAdmin, username, fotoExt });
+        res.render('error', { error: { status: 501, message: 'Erro ao eliminar UC' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
     }
 });
 

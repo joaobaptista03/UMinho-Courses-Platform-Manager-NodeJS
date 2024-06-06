@@ -3,9 +3,9 @@ const router = express.Router();
 const axios = require('axios');
 const auth = require('./../aux/auth');
 
-const handleError = (res, error, message = 'Erro inesperado', status = 500, isAdmin, username, fotoExt) => {
+const handleError = (res, error, message = 'Erro inesperado', status = 500, isAdmin, isDocente, username, fotoExt) => {
     console.error(error);
-    res.status(status).render('error', { error: { status, message }, title: 'Erro', isAdmin, username, fotoExt });
+    res.status(status).render('error', { error: { status, message }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
 };
 
 const fetchDocente = async (docenteId, token) => {
@@ -29,11 +29,7 @@ const removeAccents = (str) => {
 
 router.get('/', async (req, res) => {
     const { titulo, docente } = req.query;
-    const { isAdmin, isDocente, username, fotoExt, error } = await auth.verifyToken(req);
-
-    if (error) {
-        return res.render('login', { title: 'Login', error });
-    }
+    let { isAdmin, isDocente, username, fotoExt } = await auth.verifyToken(req);
 
     try {
         const ucResponse = await axios.get(`${process.env.API_URI}/ucs`);
@@ -48,7 +44,7 @@ router.get('/', async (req, res) => {
             try {
                 uc.docentes = await fetchDocentesForUc(uc, req.cookies.token);
             } catch (error) {
-                return handleError(res, error, 'Erro ao consultar Docente', 501, isAdmin, username, fotoExt);
+                return handleError(res, error, 'Erro ao consultar Docente', 501, isAdmin, isDocente, username, fotoExt);
             }
         }
 
@@ -59,7 +55,7 @@ router.get('/', async (req, res) => {
 
         res.render('index', { ucs, title: 'Lista de UCs', docente, isAdmin, isDocente, username, fotoExt, titulo });
     } catch (error) {
-        handleError(res, error, 'Erro ao consultar UCs', 501, isAdmin, username, fotoExt);
+        handleError(res, error, 'Erro ao consultar UCs', 501, isAdmin, isDocente, username, fotoExt);
     }
 });
 
@@ -73,21 +69,17 @@ const fetchDocentes = async (token) => {
 };
 
 router.get('/addUC', async (req, res) => {
-    const { isAdmin, isDocente, username, fotoExt, error } = await auth.verifyToken(req);
-
-    if (error) {
-        return res.render('login', { title: 'Login', error });
-    }
+    let { isAdmin, isDocente, username, fotoExt } = await auth.verifyToken(req);
 
     if (!isAdmin && !isDocente) {
-        return res.render('error', { error: { status: 403, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, username, fotoExt });
+        return res.render('error', { error: { status: 403, message: 'Não tem permissões para aceder a esta página.' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
     }
 
     try {
         const docentes = await fetchDocentes(req.cookies.token);
-        res.render('addUC', { docentes, title: 'Adicionar UC', isAdmin, username, fotoExt });
+        res.render('addUC', { docentes, title: 'Adicionar UC', isAdmin, isDocente, username, fotoExt });
     } catch (error) {
-        handleError(res, error, 'Erro ao obter docentes', 501, isAdmin, username, fotoExt);
+        handleError(res, error, 'Erro ao obter docentes', 501, isAdmin, isDocente, username, fotoExt);
     }
 });
 
