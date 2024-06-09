@@ -5,12 +5,12 @@ module.exports.verificaAcesso = function (req, res, next) {
     const myToken = req.query.token || req.body.token || req.headers['authorization'];
 
     if (!myToken) {
-        return res.status(401).jsonp({ error: "Token not provided!" });
+        req.tokenError = true;
     }
 
     jwt.verify(myToken, secret, (err, payload) => {
         if (err) {
-            return res.status(401).jsonp({ error: "Token invalid or expired!" });
+            req.tokenExpired = true;
         }
 
         req.payload = payload;
