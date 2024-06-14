@@ -6,6 +6,8 @@ Dado o dataset que nos foi disponibilizado (um ficheiro json para cada UC), deci
 
 Posteriormente, decidimos baixar todos os ficheiros relativos às 3 UCs que estavam presentes nos datasets, copiando-os para a pasta `public/filesUploaded/jcr`. Isto significa que os ficheiros foram carregados para o site pelo professor com a sigla `jcr` (mais abaixo é explicado como funciona o sistema de ficheiros).
 
+Em relação à verificação de ficheiros contra o manifesto, achamos que não seria necessário neste contexto, dado que os docentes podem carregar qualquer tipo de ficheiro para a sua pasta (para disponibilizar nos sumários) e apenas o seu nome (do ficheiro) é necessário.
+
 ## Estrutura do Projeto
 
 O projeto é uma aplicação web completa que integra várias partes para fornecer um sistema de gestão de Unidades Curriculares (UCs). A aplicação é composta por três componentes principais: API, Autenticação e Interface de Utilizador. Abaixo, uma visão detalhada:
