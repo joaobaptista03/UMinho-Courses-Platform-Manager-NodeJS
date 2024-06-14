@@ -47,4 +47,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use('/', indexRouter);
 
+app.use(async function(err, req, res, next) {
+  console.error(err.stack);
+});
+
 module.exports = app;

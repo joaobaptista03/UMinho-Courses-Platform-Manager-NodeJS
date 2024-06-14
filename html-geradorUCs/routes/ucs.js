@@ -3,6 +3,25 @@ const router = express.Router();
 const axios = require('axios');
 const auth = require('./../aux/auth');
 
+router.post('/add', async (req, res) => {
+    let { isAdmin, isDocente, username, fotoExt } = await auth.verifyToken(req);
+
+    if (isAdmin || isDocente) {
+        res.render('error', { error: { status: 402, message: 'Não necessita de adicionar UCs.' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
+        return;
+    }
+
+    const uc = req.body.sigla
+
+    axios.post(`${process.env.AUTH_URI}/ucs?token=${req.cookies.token}&uc=` + uc)
+        .then(() => {
+            res.redirect('/');
+        })
+        .catch(() => {
+            res.render('error', { error: { status: 501, message: 'Erro ao adicionar UC' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
+        });
+});
+
 router.post('/', async (req, res) => {
     let { isAdmin, isDocente, username, fotoExt } = await auth.verifyToken(req);
 
@@ -41,7 +60,7 @@ router.get('/:id', async (req, res) => {
     let { isAdmin, isDocente, username, fotoExt } = await auth.verifyToken(req);
 
     try {
-        let dados = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}`);
+        let dados = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}?token=${req.cookies.token}`);
         if (!dados.data) {
             res.render('error', { error: { status: 404, message: 'UC não encontrada' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
             return;
@@ -80,7 +99,7 @@ router.get('/edit/:id', async (req, res) => {
     }
 
     try {
-        let ucResponse = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}`);
+        let ucResponse = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}?token=${req.cookies.token}`);
 
         if (ucResponse.data.criador !== username && !isAdmin) {
             res.render('error', { error: { status: 401, message: 'Não tem permissões para editar esta UC' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
@@ -109,7 +128,7 @@ router.post('/edit/:id', async (req, res) => {
         return;
     }
 
-    const ucResponse = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}`);
+    const ucResponse = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}?token=${req.cookies.token}`);
 
     if (ucResponse.data.criador !== username && !isAdmin) {
         res.render('error', { error: { status: 401, message: 'Não tem permissões para editar esta UC' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
@@ -149,7 +168,7 @@ router.get('/delete/:id', async (req, res) => {
         return;
     }
 
-    const ucResponse = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}`);
+    const ucResponse = await axios.get(`${process.env.API_URI}/ucs/${req.params.id}?token=${req.cookies.token}`);
     if (ucResponse.data.criador !== username && !isAdmin) {
         res.render('error', { error: { status: 401, message: 'Não tem permissões para eliminar esta UC' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
         return;

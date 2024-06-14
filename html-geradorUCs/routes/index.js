@@ -29,10 +29,15 @@ const removeAccents = (str) => {
 
 router.get('/', async (req, res) => {
     const { titulo, docente } = req.query;
-    let { isAdmin, isDocente, username, fotoExt } = await auth.verifyToken(req);
+    var verifyRes = await auth.verifyToken(req);
+    let { isAdmin, isDocente, username, fotoExt } = verifyRes;
+
+    if (username === '' || verifyRes.error || username === undefined) {
+        return res.render('error', { error: { status: 401, message: 'Tem de iniciar sessão.' }, title: 'Erro', isAdmin, isDocente, username, fotoExt });
+    }
 
     try {
-        const ucResponse = await axios.get(`${process.env.API_URI}/ucs`);
+        const ucResponse = await axios.get(`${process.env.API_URI}/ucs?token=${req.cookies.token}`);
         let ucs = ucResponse.data;
 
         if (titulo) {

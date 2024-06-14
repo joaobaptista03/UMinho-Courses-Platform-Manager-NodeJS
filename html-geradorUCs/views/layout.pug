@@ -27,6 +27,9 @@ html
           a.w3-button.w3-padding-large.w3-round-large(onclick="logout()") Logout
         .w3-right.w3-bar-item
           a.w3-button.w3-padding-large.w3-round-large(onclick="showAlterarPasswordModal()") Alterar Password
+        if !isAdmin && !isDocente
+          .w3-right.w3-bar-item
+            a.w3-button.w3-padding-large.w3-round-large(onclick="showAddUC()") Adicionar UC
 
       else
         .w3-right.w3-bar-item
@@ -77,4 +80,31 @@ html
         `;
         document.body.appendChild(modal);
         document.getElementById('alterarPasswordModal').style.display = 'block';
+      }
+
+      function showAddUC() {
+        const modal = document.createElement('div');
+        modal.setAttribute('id', 'addUCModal');
+        modal.classList.add('w3-modal');
+        modal.innerHTML = `
+          <div class="w3-modal-content w3-animate-opacity w3-card-4">
+            <header class="w3-container w3-fadeblue"> 
+              <span onclick="document.getElementById('addUCModal').style.display='none'" 
+              class="w3-buttonX w3-display-topright">&times;</span>
+              <h2>Adicionar UC</h2>
+            </header>
+            <div class="w3-container">
+              <form method="POST" action="/ucs/add" class="w3-container">
+                <p>
+                  <input type="text" name="sigla" placeholder="Sigla" class="w3-input w3-border w3-round-large" required>
+                </p>
+                <p>
+                  <button type="submit" class="w3-button w3-blue w3-round-large w3-hover-shadow">Adicionar UC</button>
+                </p>
+              </form>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('addUCModal').style.display = 'block';
       }

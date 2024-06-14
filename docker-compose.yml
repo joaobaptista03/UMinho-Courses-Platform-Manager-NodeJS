@@ -35,6 +35,7 @@ services:
       - mongo-seed
     environment:
       - MONGODB_URI=mongodb://mongo:27017/projeto-geradorUCS
+      - AUTH_URI=http://auth-geradorucs:3123
     networks:
       - app-network
     restart: always
@@ -60,8 +61,10 @@ services:
       - "3123:3123"
     depends_on:
       - mongo
+      - api-geradorucs
     environment:
       - MONGODB_URI=mongodb://mongo:27017/projeto-geradorUCS
+      - API_URI=http://api-geradorucs:3124
     networks:
       - app-network
     restart: always

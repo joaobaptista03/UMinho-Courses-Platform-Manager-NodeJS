@@ -3,12 +3,43 @@ const passport = require('passport');
 const User = require('../models/user');
 const auth = require('../auth/auth');
 const jwt = require('jsonwebtoken');
+const axios = require('axios');
 
 const router = express.Router();
 
 const handleError = (res, error, message = 'Erro inesperado', status = 500) => {
     res.status(status).jsonp({ error: message, message: error });
 };
+
+router.post('/ucs', auth.verificaAcesso, async (req, res) => {
+    const uc = req.query.uc;
+
+    if (!uc) {
+        return res.status(400).jsonp({ error: "Missing UC" });
+    }
+
+    if (req.payload.level == 'Admin' || req.payload.level == 'AdminDocente') {
+        return res.status(403).jsonp({ error: "Não necessita de adicionar UCs" });
+    }
+
+    const ucResponse = await axios.get(`${process.env.API_URI}/ucs/exists/` + uc)
+    if (ucResponse.data.error) {
+        return res.status(404).jsonp({ error: "UC not found" });
+    }
+
+    User.findOne({ username: req.payload.username }).exec()
+        .then(dados => {
+            if (!dados) {
+                return res.status(404).jsonp({ error: "User not found" });
+            }
+
+            dados.ucs.push(uc);
+            dados.save()
+                .then(() => res.jsonp({ message: "UC added successfully" }))
+                .catch(e => handleError(res, e));
+        })
+        .catch(e => handleError(res, e));
+});
 
 router.get('/', (req, res) => {
     const role = req.query.role.toLowerCase();

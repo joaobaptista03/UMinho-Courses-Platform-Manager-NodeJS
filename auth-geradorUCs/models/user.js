@@ -10,9 +10,14 @@ var userSchema = new mongoose.Schema({
     filiacao: String,
     webpage: String,
     level: String,
-    fotoExt: String
+    fotoExt: String,
+    ucs: [String]
   });
 
 userSchema.plugin(passportLocalMongoose);
+
+userSchema.addUC = function (uc) {
+    this.ucs.push(uc);
+}
 
 module.exports = mongoose.model('user', userSchema)

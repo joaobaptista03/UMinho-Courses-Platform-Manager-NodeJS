@@ -108,6 +108,7 @@ O projeto é uma aplicação web completa que integra várias partes para fornec
 Existem 3 níveis de acesso (e mais 1 que combina 2 deles): Admin, Docente, Aluno e AdminDocente (que combina as permissões de Docente e Admin, logo, quando se falar em permissões de Administrador, o AdminDocente está incluído)
 
 - **Listar Utilizadores**: Qualquer nível (omite-se, obviamente, os atributos sensíveis)
+- **Adicionar acesso a uma UC**: Apenas Alunos (Administradores e Docentes já têm acesso a todas)
 - **Registar Administrador, Administrador-Docente, ou Docente**: Apenas Administradores
 - **Registar Aluno**: Qualquer nível
 - **Apagar Utilizador**: Apenas Administradores
@@ -147,8 +148,8 @@ A API é responsável por gerir as Unidades Curriculares (UCs). Utiliza o framew
 
 #### Permissões
 
-- **Listar UCs**: Qualquer nível
-- **Obter UC**: Qualquer nível
+- **Listar UCs**: Qualquer nível, porém aos Alunos apenas lhes são devolvidas as UCs que têm acesso
+- **Obter UC**: Qualquer nível, porém aos Alunos apenas lhe é permitido obter a informação de uma UC que tenha acesso
 - **Atualizar UC**: Apenas Administradores ou o Docente Criador da UC
 - **Eliminar UC**: Apenas Administradores ou o Docente Criador da UC
 
@@ -189,6 +190,7 @@ A API é responsável por gerir as Unidades Curriculares (UCs). Utiliza o framew
 4. **Gestão de Ficheiros**: Permite o upload, download e gestão de ficheiros do utilizador / servidor.
 5. **Gestão de Utilizadores**: Permite aos gerir outros Docentes / Administradores (adicionar, eliminar).
 6. **Alterar Palavra-Passe**: Formulário modal para alterar a palavra-passe.
+7. **Obter Acesso a UC**: Formulário modal para inserir o código da UC para ter acesso à mesma.
 
 #### Permissões
 
@@ -196,6 +198,7 @@ A API é responsável por gerir as Unidades Curriculares (UCs). Utiliza o framew
 - **Gerir os seus próprios Ficheiros**: Docente que têm a sessão iniciada e Administradores
 - **Alterar Palavra-Passe**: O utilizador que tem a sessão iniciada
 - **Gerir Docentes e Administradores**: Apenas Administradores
+- **Obter Acesso a UC**: Apenas Alunos (Administradores e Docentes já têm acesso a todas as UCs)
 
 #### Dockerfile
 
@@ -299,6 +302,10 @@ O ficheiro docker-compose.yml define os serviços necessários para a execução
 ### Página de Adicionar uma UC
 
 ![Página de Adicionar uma UC](./imgs/AddUC.png)
+
+### Página de Obter Acesso a uma UC
+
+![Página de Obter Acesso a uma UC](./imgs/AccessUC.png)
 
 ### Página de Ficheiros de um Utilizador
 
