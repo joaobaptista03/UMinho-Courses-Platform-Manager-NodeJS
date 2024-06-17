@@ -1,43 +1,47 @@
 extends layout
 
 block content
-  .w3-container.w3-padding-16
+  .w3-container.w3-padding-16(style="display:flex; justify-content:center")
     form.w3-container.w3-padding-large.w3-card-4.w3-white(action="/users?role=" + role method="POST", enctype="multipart/form-data")
-      .w3-section
-        label.w3-text-deep-purple Username:
-        input.w3-input.w3-border.w3-round-large(type="text" name="username" required)
-      .w3-section
-        label.w3-text-deep-purple Nome:
-        input.w3-input.w3-border.w3-round-large(type="text" name="name" required)
-      .w3-section
-        label.w3-text-deep-purple Email:
-        input.w3-input.w3-border.w3-round-large(type="email" name="email" required)
-      .w3-section
-        label.w3-text-deep-purple Password:
-        input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
-      .w3-section
-        label.w3-text-deep-purple Confirm Password:
-        input.w3-input.w3-border.w3-round-large(type="password" name="password2" required)
-      .w3-section
-        label.w3-text-deep-purple Foto:
-        input.w3-input.w3-border.w3-round-large(type="file" name="foto" required)
-      .w3-section
-        label.w3-text-deep-purple Categoria:
-        input.w3-input.w3-border.w3-round-large(type="text" name="categoria" required)
-      .w3-section
-        label.w3-text-deep-purple Filiação:
-        input.w3-input.w3-border.w3-round-large(type="text" name="filiacao" required)
-      .w3-section
-        label.w3-text-deep-purple Webpage (opcional):
-        input.w3-input.w3-border.w3-round-large(type="text" name="webpage")
-
-      if role && role.toLowerCase() === 'admin'
-        .w3-section
-          label.w3-text-deep-purple É docente: 
-          input.w3-check(type="checkbox" name="docente")
-
-      if error
-        .w3-section
-          p.w3-text-red #{error}
+      .w3-row-padding(style="display:flex; justify-content:space-around;")
+        .w3-half(style="width:700px;margin-right: 30px;")
+          .w3-section
+            label.w3-text-deep-purple Username:
+            input.w3-input.w3-border.w3-round-large(type="text" name="username" required)
+          .w3-section
+            label.w3-text-deep-purple Nome:
+            input.w3-input.w3-border.w3-round-large(type="text" name="name" required)
+          .w3-section
+            label.w3-text-deep-purple Email:
+            input.w3-input.w3-border.w3-round-large(type="email" name="email" required)
+          .w3-section
+            label.w3-text-deep-purple Password:
+            input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
+          .w3-section
+            label.w3-text-deep-purple Confirm Password:
+            input.w3-input.w3-border.w3-round-large(type="password" name="password2" required)
+        .w3-half(style="width:700px;margin-left: 30px;")
+          .w3-section
+            label.w3-text-deep-purple Foto:
+            input.w3-input.w3-border.w3-round-large(type="file" name="foto" required style="height: 44.5px;padding: 7px;")
+          .w3-section
+            label.w3-text-deep-purple Categoria:
+            input.w3-input.w3-border.w3-round-large(type="text" name="categoria" required)
+          .w3-section
+            label.w3-text-deep-purple Filiação:
+            input.w3-input.w3-border.w3-round-large(type="text" name="filiacao" required)
+          .w3-section
+            label.w3-text-deep-purple Webpage (opcional):
+            input.w3-input.w3-border.w3-round-large(type="text" name="webpage")
           
-      button.w3-button.w3-blue.w3-large.w3-round-large(type="submit") Registar
+          if role && role.toLowerCase() === 'admin'
+            .w3-section
+              label.w3-text-deep-purple É docente:
+              input.w3-check(type="checkbox" name="docente")
+              
+          if error
+            .w3-section
+              p.w3-text-red #{error}
+              
+          .w3-section(style="display:flex; justify-content:center; align-items: end; height: 67px;")
+            button.w3-button.w3-blue.w3-large.w3-round-large(style="width: 200px;" type="submit") Registar

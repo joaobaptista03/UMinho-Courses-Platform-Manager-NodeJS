@@ -1,16 +1,16 @@
 extends layout
 
 block content
-  .w3-container.w3-padding-16
-    form.w3-container.w3-padding-large.w3-card-4.w3-white(action="/users/login" method="POST")
+  .w3-container.w3-padding-16(style="display:flex; justify-content:center")
+    form.w3-container.w3-padding-large.w3-card-4.w3-white(style="width: 600px;" action="/users/login" method="POST")
       .w3-section
         label.w3-text-deep-purple Username:
         input.w3-input.w3-border.w3-round-large(type="text" name="username" required)
       .w3-section
         label.w3-text-deep-purple Password:
         input.w3-input.w3-border.w3-round-large(type="password" name="password" required)
-      
-      button.w3-button.w3-blue.w3-large.w3-round-large(type="submit") Login
+      .w3-section(style="display:flex; justify-content:center")
+        button.w3-button.w3-blue.w3-large.w3-round-large(style="width: 200px;" type="submit") Login
 
       if error
         .w3-section
